@@ -5,6 +5,7 @@ import Search from "./pages/Search";
 import Dashboard from "./pages/Dashboard";
 
 function App() {
+  
   return (
     <Router>
       <div>
