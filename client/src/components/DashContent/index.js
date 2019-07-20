@@ -6,17 +6,17 @@ import AddBtn from '../AddBtn';
 
 const DashContent = (props) => {
 
-  if (props.content) {
+ 
     return ( 
       <div className="col-md">
-        <Header title={props.content.title} />
+        <Header title="MARK" />
         <DashProjects />
         <AddBtn />
       </div> 
       );
-  }
+  
 
-return null ;
+
 
 }
  

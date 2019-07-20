@@ -5,23 +5,26 @@ import DashContent from '../components/DashContent';
 
 class Dashboard extends Component {
 
-    constructor(props){
-        super(props)(
-            this.state={
-                name:'',
-                email:''
-            }
-        )
-    }
+    // constructor(props){
+    //     super(props)(
+    //         this.state={
+    //             name:'',
+    //             email:''
+    //         }
+    //     )
+    // }
+   
+
   render(){
       return(
-    <div className="container-fluid">
-        <div className="row">
-            <DashContent />
-            <h1>DashBoard</h1>
+        <div className="container-fluid">
+            <div className="row">
+                <DashContent />
+                {/* <h1>poop</h1> */}
+            </div>
         </div>
-    </div>
-       ) }
+       ); 
+    }
 }
 
 export default Dashboard;
