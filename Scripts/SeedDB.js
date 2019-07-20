@@ -7,14 +7,15 @@ mongoose.connect(
 );
 
 
-Promise.all([
-  User.create([{ email: "laurabermudezg@gmail.com" }]),
-  Organization.create([{ name: 'Cub Scouts Pack' }]),
-  Project.create([{ name: 'Webelos Den' }]),
 
-]).then(([users, projects]) => {
-  const lessonPlans = [
-      { title: 'Test Lesson Plan', user: users[0], projects: projects[0] }
-  ];    
-  return LessonPlan.create(lessonPlans);
-})
+db.LessonPlan.create([{ title: 'Test Lesson Plan' }])
+  .then(([lessonPlans]) => {
+    Promise.all([
+      db.User.create([{ email: "laurabermudezg@gmail.com", lessonPlans: lessonPlans[0] }]),
+      db.Project.create([{ name: 'Webelos Den', lessonPlans: lessonPlans[0] }])
+    ]).then(([projects]) => {
+      return db.Organization.create([{ name: 'Cub Scouts Pack', projects: projects[0] }]);
+    })
+  });
+
+
