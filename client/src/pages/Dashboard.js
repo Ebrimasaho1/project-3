@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-<<<<<<< HEAD
 class Dashboard extends Component {
 
     constructor(props){
@@ -16,22 +15,6 @@ class Dashboard extends Component {
          this.setState({name: data.userData.name})
     }
     
-=======
-
-import DashContent from '../components/DashContent';
-
-
-class Dashboard extends Component {
-
-    // constructor(props){
-    //     super(props)(
-    //         this.state={
-    //             name:'',
-    //             email:''
-    //         }
-    //     )
-    // }
->>>>>>> 67ca6eade925636308a6f35cacfdbde138ea837c
   render(){
       return(
         <div className="container-fluid">
