@@ -21,21 +21,14 @@ class Login extends Component {
     const responseGoogle = (response) => {
       //console.log(response);
       console.log(response);
-<<<<<<< HEAD
       var name=response.w3.ig
       console.log(name);
       var email=response.w3.U3
       console.log(email);
 
-      sessionStorage.setItem("currentData", JSON.stringify(user));
+    
       var user = {fullName:name, email:email};
-
-=======
-      console.log(response.w3.ig);
-      console.log(response.w3.U3);
-      var user = {fullName: response.w3.ig, email: response.w3.U3};
       sessionStorage.setItem("currentUser", JSON.stringify(user));
->>>>>>> fa452678b7e72303f596d7ce6ea6d0b75c8e3f03
       api.saveUser(user);
     }
 
