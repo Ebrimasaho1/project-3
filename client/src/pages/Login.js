@@ -2,6 +2,7 @@
 import React, { Component } from "react";
 import GoogleLogin from 'react-google-login';
 
+import api from '../utils/api'
 
 class Login extends Component {
   render(){
@@ -10,6 +11,9 @@ class Login extends Component {
       console.log(response);
       console.log(response.w3.ig);
       console.log(response.w3.U3);
+      var user = {fullName: response.w3.ig, email: response.w3.U3};
+      sessionStorage.setItem("currentUser", JSON.stringify(user));
+      api.saveUser(user);
     }
     return(
       <GoogleLogin
