@@ -4,8 +4,6 @@ import './dashproj.css'
 import api from '../../utils/api';
 
 const DashProjects = () => {
-
-
   //1. Get data via AJAX (get)
   //2. in the .then()
 
