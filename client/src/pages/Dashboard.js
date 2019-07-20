@@ -3,14 +3,14 @@ import React, { Component } from "react";
 
 class Dashboard extends Component {
 
-    constructor(props){
-        super(props)(
-            this.state={
-                name:'',
-                email:''
-            }
-        )
-    }
+    // constructor(props){
+    //     super(props)(
+    //         this.state={
+    //             name:'',
+    //             email:''
+    //         }
+    //     )
+    // }
   render(){
       return(
     <div>
