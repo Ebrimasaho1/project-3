@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 
+import DashContent from '../components/DashContent';
+
 
 class Dashboard extends Component {
 
@@ -13,9 +15,12 @@ class Dashboard extends Component {
     }
   render(){
       return(
-    <div>
-      <h1>DashBoard</h1>
-      </div>
+    <div className="container-fluid">
+        <div className="row">
+            <DashContent />
+            <h1>DashBoard</h1>
+        </div>
+    </div>
        ) }
 }
 
