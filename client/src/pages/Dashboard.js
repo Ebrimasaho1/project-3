@@ -19,7 +19,6 @@ class Dashboard extends Component {
         <div className="container-fluid">
             <div className="row">
                 <DashContent />
-                {/* <h1>poop</h1> */}
             </div>
         </div>
        ); 
