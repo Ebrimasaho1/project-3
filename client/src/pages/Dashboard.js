@@ -12,8 +12,7 @@ class Dashboard extends Component {
     //             email:''
     //         }
     //     )
-    // }
-   
+    // }    
 
   render(){
       return(
