@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import DashContent from '../components/DashContent';
 class Dashboard extends Component {
 
     constructor(props){
@@ -9,11 +10,11 @@ class Dashboard extends Component {
        };
     }
     
-    componentDidMount() {
-         let data = JSON.parse(sessionStorage.getItem('userData'));
-         console.log(data);
-         this.setState({name: data.userData.name})
-    }
+    // componentDidMount() {
+    //      let data = JSON.parse(sessionStorage.getItem('userData'));
+    //      console.log(data);
+    //      this.setState({name: data.userData.name})
+    // }
     
   render(){
       return(

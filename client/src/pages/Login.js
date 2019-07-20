@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import GoogleLogin from 'react-google-login';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Dashboard from "./Dashboard";
+import api from '../../utils/api';
 
 
 class Login extends Component {
@@ -23,6 +24,11 @@ class Login extends Component {
       console.log(name);
       var email=response.w3.U3
       console.log(email);
+
+      sessionStorage.setItem("currentData", JSON.stringify(user));
+      var user = {fullName:name, email:email};
+
+      api.saveUser(user);
     }
 
     return (
