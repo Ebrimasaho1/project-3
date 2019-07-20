@@ -9,7 +9,7 @@ const DashContent = (props) => {
  
     return ( 
       <div className="col-md">
-        <Header title="MARK" />
+        <Header />
         <DashProjects />
         <AddBtn />
       </div> 
