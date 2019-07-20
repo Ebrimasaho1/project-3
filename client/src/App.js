@@ -11,7 +11,7 @@ function App() {
       <div>
        
         <Switch>
-          <Route exact path="/" component={Login} />
+          <Route exact path="/" component={Login}/>
           <Route exact path="/search" component={Search} />
           <Route exact path="/dashboard" component={Dashboard}/>
         </Switch>
@@ -21,3 +21,5 @@ function App() {
 }
 
 export default App;
+
+//render={() => <Login user={this.props}/>  for rerouting
