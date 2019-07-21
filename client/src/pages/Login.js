@@ -3,9 +3,7 @@ import React, { Component } from "react";
 import GoogleLogin from 'react-google-login';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Dashboard from "./Dashboard";
-import api from '../../utils/api';
-
-import api from '../utils/api'
+import api from '../utils/api';
 
 class Login extends Component {
   constructor(props){
@@ -30,6 +28,9 @@ class Login extends Component {
       var user = {fullName:name, email:email};
       sessionStorage.setItem("currentUser", JSON.stringify(user));
       api.saveUser(user);
+
+      //Redirect to dashbaord
+      //Need to know corsOptions
     }
 
     return (
