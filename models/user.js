@@ -9,7 +9,7 @@ const userSchema = new Schema({
       type: Schema.Types.ObjectId,
       ref: "LessonPlan"
     }
-  ],
+  ]
 });
 
 const User = mongoose.model("User", userSchema);

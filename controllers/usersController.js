@@ -18,6 +18,8 @@ module.exports = {
     db.User
       .findById(req.params.id)
       .populate('lessonPlans')
+      .populate('project')
+      .populate('organization')
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },

@@ -11,7 +11,11 @@ const lessonPlanSchema = new Schema({
   materials: [{ type: String }],
   tips: { type: String },
   links: [{type: String}],
-  attachments: [{type: String}]
+  attachments: [{type: String}],
+
+  project: { type: Schema.Types.ObjectId, ref: 'Project' },
+  user: { type: Schema.Types.ObjectId, ref: 'User' }
+
 });
 
 const LessonPlan = mongoose.model("LessonPlan", lessonPlanSchema);

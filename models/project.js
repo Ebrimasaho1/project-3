@@ -9,6 +9,7 @@ const projectSchema = new Schema({
       ref: "LessonPlan"
     }
   ],
+  organization: { type: Schema.Types.ObjectId, ref: 'Organization' }
 });
 
 const Project = mongoose.model("Project", projectSchema);
