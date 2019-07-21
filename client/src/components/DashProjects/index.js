@@ -7,9 +7,11 @@ const DashProjects = () => {
   //1. Get data via AJAX (get)
   //2. in the .then()
 
-    api.getLessonPlans().then((results) => {
+  let userId = sessionStorage.getItem("currentUserId");
+  console.log("UserId Read from session: " + userId);
+
+  api.getLessonPlans(userId).then((results) => {
     console.log(results.data);
-    
   });
 
   return ( 

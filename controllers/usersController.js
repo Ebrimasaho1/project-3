@@ -8,6 +8,12 @@ module.exports = {
   //     .then(dbModel => res.json(dbModel))
   //     .catch(err => res.status(422).json(err));
   // },
+  getUser: function(req, res){
+    db.User
+      .find(req.body)
+      .then(dbModel => res.json(dbModel))
+      .catch(err => res.status(422).json(err));
+  },
   findById: function(req, res) {
     db.User
       .findById(req.params.id)
@@ -15,11 +21,20 @@ module.exports = {
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
+  //only create if it doesn't exist, but always return the user
   create: function(req, res) {
     db.User
-      .create(req.body)
-      .then(dbModel => res.json(dbModel))
-      .catch(err => res.status(422).json(err));
+    .find(req.body).then( (docs) => {
+      if (!docs.length){
+        console.log("user doesn't exist... creating");
+        db.User.create(req.body)
+        .then(dbModel => res.json(dbModel))
+        .catch(err => res.status(422).json(err));
+      }else{
+        console.log("User already exists, returning: " + docs);
+        return res.json(docs);
+      }
+    }); 
   },
   update: function(req, res) {
     db.User

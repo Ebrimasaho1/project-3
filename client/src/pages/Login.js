@@ -1,9 +1,8 @@
 
 import React, { Component } from "react";
 import GoogleLogin from 'react-google-login';
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import Dashboard from "./Dashboard";
-import api from '../../utils/api';
+import { BrowserRouter as Router } from "react-router-dom";
+//import Dashboard from "./Dashboard";
 
 import api from '../utils/api'
 
@@ -19,17 +18,19 @@ class Login extends Component {
 
   render() {
     const responseGoogle = (response) => {
-      //console.log(response);
       console.log(response);
       var name=response.w3.ig
       console.log(name);
       var email=response.w3.U3
       console.log(email);
-
     
       var user = {fullName:name, email:email};
       sessionStorage.setItem("currentUser", JSON.stringify(user));
-      api.saveUser(user);
+
+      api.saveUser(user).then((res)=>{
+        console.log("User Saved Id: " + res.data[0]._id);
+        sessionStorage.setItem("currentUserId", res.data[0]._id);
+      });
       //redirect to dashboard
     }
 
