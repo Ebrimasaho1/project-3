@@ -14,6 +14,7 @@ class Login extends Component {
       var user = {fullName: response.w3.ig, email: response.w3.U3};
       sessionStorage.setItem("currentUser", JSON.stringify(user));
       api.saveUser(user);
+      //redirect to dashboard
     }
     return(
       <GoogleLogin
