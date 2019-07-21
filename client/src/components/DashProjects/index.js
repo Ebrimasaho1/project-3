@@ -8,6 +8,7 @@ const DashProjects = () => {
   //2. in the .then()
 
   let userId = sessionStorage.getItem("currentUserId");
+
   console.log("UserId Read from session: " + userId);
 
   api.getLessonPlans(userId).then((results) => {
@@ -18,19 +19,17 @@ const DashProjects = () => {
     <div className="container">
     <div className="row">
       <div className="col-md-4">
-      <h3>My Lessons</h3>
+      <h3>My Lesson Plans</h3>
       {/* <p>{results.data[0].title}</p> */}
       <p>things</p>
       </div> 
       <div className="col-md-4">
-      <h3>My Projects</h3>
+      <h3>Project</h3>
       <p>project</p>
-      <p>project things</p>
       </div> 
       <div className="col-md-4">
-      <h3>My Organizations</h3>
+      <h3>Organization</h3>
       <p>organization</p>
-      <p>IRC</p>
       </div> 
     </div>
   </div>
