@@ -4,12 +4,10 @@ const Schema = mongoose.Schema;
 const userSchema = new Schema({
   email: { type: String, required: true },
   fullName: {type: String, required: true },
-  plans: [
+  lessonPlans: [
     {
-      // Store ObjectIds in the array
       type: Schema.Types.ObjectId,
-      // The ObjectIds will refer to the ids in the Note model
-      ref: "lessonPlan"
+      ref: "LessonPlan"
     }
   ],
 });

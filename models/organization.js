@@ -6,7 +6,7 @@ const organizationSchema = new Schema({
   projects: [
     {
       type: Schema.Types.ObjectId,
-      ref: "project"
+      ref: "Project"
     }
   ],
 });

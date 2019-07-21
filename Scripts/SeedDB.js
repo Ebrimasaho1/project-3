@@ -9,10 +9,10 @@ mongoose.connect(
 db.LessonPlan.create([{ title: 'Test Lesson Plan' }])
   .then(([lessonPlans]) => {
     Promise.all([
-      db.User.create([{ email: "guest@gmail.com", fullName: "John Doe", lessonPlans: lessonPlans[0] }]),
-      db.Project.create([{ name: 'Webelos Den', lessonPlans: lessonPlans[0] }])
+      db.User.create([{ email: "laurabermudezg@gmail.com", fullName: "Laura Bermudez", lessonPlans: lessonPlans }]),
+      db.Project.create([{ name: 'Webelos Den', lessonPlans: lessonPlans }])
     ]).then(([projects]) => {
-      return db.Organization.create([{ name: 'Cub Scouts Pack', projects: projects[0] }]);
+      return db.Organization.create([{ name: 'Cub Scouts Pack', projects: projects }]);
     })
   });
 
