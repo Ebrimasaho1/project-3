@@ -1,0 +1,7 @@
+input, textarea {
+  margin-bottom: 20px;
+}
+
+#links, #attach {
+  width: 200px;
+}
