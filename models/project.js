@@ -5,12 +5,11 @@ const projectSchema = new Schema({
   name: { type: String, required: true },
   lessonPlans: [
     {
-      // Store ObjectIds in the array
       type: Schema.Types.ObjectId,
-      // The ObjectIds will refer to the ids in the Note model
-      ref: "lessonPlan"
+      ref: "LessonPlan"
     }
   ],
+  organization: { type: Schema.Types.ObjectId, ref: 'Organization' }
 });
 
 const Project = mongoose.model("Project", projectSchema);

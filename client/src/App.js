@@ -7,21 +7,24 @@ import NavBar from "./components/Navbar";
 import Form from "./components/Form";
 
 function App() {
+<<<<<<< HEAD
   //NEW CODE STARTS
   // state={
   //   loggedIn: false
   // }
   //NEW CODE ENDS
+=======
+>>>>>>> 5ddb91c2be70c9a94fcff4eec8929a25f9c0d068
 
   return (
     <Router>
-      <div>   
+      <div>
         <NavBar />
         <Switch>
-          <Route exact path="/" component={Login}/>
+          <Route exact path="/" component={Login} />
           <Route exact path="/search" component={Search} />
-          <Route exact path="/dashboard" component={Dashboard}/>
-          <Route exact path="/form" component={Form}/>
+          <Route exact path="/dashboard" component={Dashboard} />
+          <Route exact path="/form" component={Form} />
         </Switch>
       </div>
     </Router>

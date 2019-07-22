@@ -1,29 +1,37 @@
 import React, { Component } from "react";
 import DashContent from '../components/DashContent';
+import { Redirect } from 'react-router-dom';
+
 class Dashboard extends Component {
 
-    constructor(props){
+    constructor(props) {
         super(props);
+
+        if (sessionStorage.getItem('currentUserId') == null) {
+            var isLoggedIn = false;
+        }else{
+            isLoggedIn = true;
+          }
+
         this.state = {
-           name:'',
-           redirect: false,
-       };
+            redirect: !isLoggedIn,
+        };
+
     }
-    
-    // componentDidMount() {
-    //      let data = JSON.parse(sessionStorage.getItem('userData'));
-    //      console.log(data);
-    //      this.setState({name: data.userData.name})
-    // }
-    
-  render(){
-      return(
-        <div className="container-fluid">
-            <div className="row">
-                <DashContent />
-            </div>
-        </div>
-       ); 
+
+    render() {
+        if (this.state.redirect) {
+            console.log('redirecting....');
+            return <Redirect to='/' />
+        }else{
+            return(
+                <div className="container-fluid">
+                    <div className="row">
+                        <DashContent />
+                    </div>
+                </div>
+            );
+        }
     }
 }
 
