@@ -1,9 +1,10 @@
 
 import React, { Component } from "react";
 import GoogleLogin from 'react-google-login';
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import Dashboard from "./Dashboard";
+import { BrowserRouter as Router} from "react-router-dom";
+//import Dashboard from "./Dashboard";
 import api from '../utils/api';
+
 
 class Login extends Component {
   constructor(props){
@@ -31,6 +32,7 @@ class Login extends Component {
 
       //Redirect to dashbaord
       //Need to know corsOptions
+      
     }
 
     return (

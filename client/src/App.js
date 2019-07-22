@@ -7,7 +7,12 @@ import NavBar from "./components/Navbar";
 import Form from "./components/Form";
 
 function App() {
-  
+  //NEW CODE STARTS
+  // state={
+  //   loggedIn: false
+  // }
+  //NEW CODE ENDS
+
   return (
     <Router>
       <div>   
