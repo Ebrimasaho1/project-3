@@ -54,14 +54,16 @@ class Login extends Component {
     } else {
       return (
 
-        <div>
-          <GoogleLogin
+        <div className="login">
+          <div className="container">
+          <GoogleLogin className="mx-auto"
             clientId="547450952468-l421k7hpgmguervl65qd35ci8gpvrgs7.apps.googleusercontent.com"
             buttonText="Login with Google"
             onSuccess={this.responseGoogle}
             onFailure={this.failedToLogin}
             cookiePolicy={'single_host_origin'}
           />
+          </div>
         </div>
       )
     }
