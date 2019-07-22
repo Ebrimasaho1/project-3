@@ -11,62 +11,59 @@ class Login extends Component {
   constructor(props) {
     super(props);
 
+    if (sessionStorage.getItem('currentUserId') == null) {
+      var loggedIn = false;
+    } else {
+      loggedIn = true;
+    }
+
     this.state = {
-      redirect: false
-    }
-
-    if (props.user) {
-      alert("You can't login if you're logged in")
-      props.history.push('/dashboard');
+      isLoggedIn: loggedIn
     }
   }
 
-  renderRedirect = () => {
-    if (this.state.redirect) {
-      return <Redirect to='/dashboard' />
-    }
-  }
+  responseGoogle = (response) => {
 
-  render() {
-    const responseGoogle = (response) => {
-      console.log(response);
-      var name = response.w3.ig
-      console.log(name);
-      var email = response.w3.U3
-      console.log(email);
+    var name = response.w3.ig
+    var email = response.w3.U3
 
-      var user = { fullName: name, email: email };
-      sessionStorage.setItem("currentUser", JSON.stringify(user));
+    var user = { fullName: name, email: email };
+    sessionStorage.setItem("currentUser", JSON.stringify(user));
 
-      api.saveUser(user).then((res) => {
-        console.log("User Id: " + res.data[0]._id);
-        sessionStorage.setItem("currentUserId", res.data[0]._id);
-      });
+    api.saveUser(user).then((res) => {
+      console.log("User Id: " + res.data[0]._id);
+      sessionStorage.setItem("currentUserId", res.data[0]._id);
       //redirect to dashboard
       this.setState({
-        redirect: true
+        isLoggedIn: true
       })
+    });
+  };
+
+  failedToLogin = (response) => {
+    console.log(response);
+    return <Redirect to='/home' />
+  };
 
 
-    };
+  render() {
 
-    const failedToLogin = (response) => {
-      console.log(response);
-      return <Redirect to='/home' />
-    };
+    if (this.state.isLoggedIn) {
+      return <Redirect to='/dashboard' />
+    } else {
+      return (
 
-    return (
-      <div>
-        {this.renderRedirect()}
-        <GoogleLogin
-          clientId="547450952468-l421k7hpgmguervl65qd35ci8gpvrgs7.apps.googleusercontent.com"
-          buttonText="Login with Google"
-          onSuccess={responseGoogle}
-          onFailure={failedToLogin}
-          cookiePolicy={'single_host_origin'}
-        />
-      </div>
-    )
+        <div>
+          <GoogleLogin
+            clientId="547450952468-l421k7hpgmguervl65qd35ci8gpvrgs7.apps.googleusercontent.com"
+            buttonText="Login with Google"
+            onSuccess={this.responseGoogle}
+            onFailure={this.failedToLogin}
+            cookiePolicy={'single_host_origin'}
+          />
+        </div>
+      )
+    }
   }
 }
 
