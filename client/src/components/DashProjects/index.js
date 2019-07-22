@@ -5,12 +5,14 @@ import api from '../../utils/api';
 
 class DashProjects extends React.Component {
 
-  state = {
-    lessons: [],
-    userId: sessionStorage.getItem("currentUserId"),
-  }
-  
-  componentDidMount() {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      lessons: [],
+      userId: sessionStorage.getItem("currentUserId"),
+    }
+
     api.getLessonPlans(this.state.userId).then((results) => {
       console.log(results.data);
       this.setState({ lessons: results.data.lessonPlans });
