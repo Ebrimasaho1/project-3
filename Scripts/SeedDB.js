@@ -12,9 +12,10 @@ db.LessonPlan.create([{ title: 'Test Lesson Plan' }])
     Promise.all([
       db.User.create([{ email: 'laurabermudezg@gmail.com', fullName: 'Laura Bermudez', lessonPlans: lessonPlans }]),
       db.Project.create([{ name: 'Webelos Den', lessonPlans: lessonPlans }])
-    ]).then(([projects, users]) => {
+    ]).then(([users,projects ]) => {
       db.Organization.create([{ name: 'Cub Scouts Pack', projects: projects }]).then(([organizations])=>{
-        db.Project.updateOne(projects[0], {organization: organizations[0]}).then(()=>{
+        console.log(JSON.stringify(organizations));
+        return db.Project.updateOne(projects[0], {name:'Webelos2 Den', organization: organizations}).then(()=>{
           return db.LessonPlan.updateOne(lessonPlans[0], {user:users[0], project:projects[0]})
         });
       });

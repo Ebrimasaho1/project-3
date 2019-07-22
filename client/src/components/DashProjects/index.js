@@ -21,15 +21,15 @@ class DashProjects extends React.Component {
 
     return (
       this.state.lessons.map(lesson => (
-        <div className="row">
+        <div className="row" key={lesson._id}>
           <div className="col-md-4">
             <p>{lesson.title}</p>
           </div>
           <div className="col-md-4">
-            <p>{lesson.project}</p>
+            <p>{lesson.project.name}</p>
           </div>
           <div className="col-md-4">
-            <p>{lesson.organization}</p>
+            <p>{lesson.project.organization.name}</p>
           </div>
         </div>
       ))
