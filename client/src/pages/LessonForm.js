@@ -15,7 +15,6 @@ class LessonForm extends Component {
         this.state = {
             redirect: !isLoggedIn,
         };
-
     }
 
     render() {
@@ -26,7 +25,7 @@ class LessonForm extends Component {
             return (
                 <div className="container-fluid">
                     <div className="row">
-                        <Form />
+                        <Form lessonId={this.props.location.state.id} />
                     </div>
                 </div>
             );

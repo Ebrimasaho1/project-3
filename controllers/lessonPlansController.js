@@ -9,6 +9,7 @@ module.exports = {
       .catch(err => res.status(422).json(err));
   },
   findById: function(req, res) {
+    console.log("called find by id");
     db.LessonPlan
       .findById(req.params.id)
       .then(dbModel => res.json(dbModel))

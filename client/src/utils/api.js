@@ -8,6 +8,9 @@ export default {
     return axios.post("/api/user/", userData);
   },
   saveLessonPlan: function(lessonPlanData){
-    
+    return axios.post("/api/lessonPlans/", lessonPlanData);
+  },
+  getLessonPlan: function(lessonId){
+    return axios.get("/api/lessonPlans/"+lessonId);
   }
 };
