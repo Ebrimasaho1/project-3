@@ -58,8 +58,15 @@ class Form extends Component {
 
   render() {
     return ( 
+
+    
+
       <div className="container">
-         <h1>Add New Lesson</h1>
+        <h1>
+          <label>Title:</label>
+          <input type="text" className="form-control" id="title" placeholder="" 
+            name="title" value={this.state.lessonTitle} onChange={this.handleInputChange}></input>
+        </h1>
      
          <div className="d-flex justify-content-around">
            <label>Organization</label>
@@ -82,10 +89,6 @@ class Form extends Component {
              Add New
            </button>
          </div>
-     
-         <label>Lesson Title</label>
-         <input type="text" className="form-control" id="title" placeholder="" 
-            name="title" value={this.state.lessonTitle} onChange={this.handleInputChange}></input>
      
          <label>Objective</label>
          <textarea type="text" className="form-control" id="objective" placeholder="" 
