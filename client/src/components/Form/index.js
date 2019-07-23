@@ -5,8 +5,6 @@ const Form = () => {
 
   return (
     <div className="container">
-
-
         <h1>
           <label for="lessonTitle">Title:</label>
           <input type="text" className="form-control" id="lessonTitle" placeholder=""
