@@ -3,17 +3,19 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Login from "./pages/Login";
 import Search from "./pages/Search";
 import Dashboard from "./pages/Dashboard";
+import NavBar from "./components/Navbar";
+import LessonForm from "./pages/LessonForm";
 
-function App() {
-  
+function App() {  
   return (
     <Router>
-      <div>
-       
+      <div>   
+        <NavBar />
         <Switch>
-          <Route exact path="/" component={Login} />
+          <Route exact path="/" component={Login}/>
           <Route exact path="/search" component={Search} />
-          <Route exact path="/dashboard" component={Dashboard}/>
+          <Route exact path="/dashboard" component={Dashboard} />
+          <Route exact path="/lessonPlan" component={LessonForm} />
         </Switch>
       </div>
     </Router>
@@ -21,3 +23,5 @@ function App() {
 }
 
 export default App;
+
+//render={() => <Login user={this.props}/>  for rerouting

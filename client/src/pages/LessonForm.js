@@ -1,17 +1,16 @@
 import React, { Component } from "react";
-import DashContent from '../components/DashContent';
+import Form from '../components/Form';
 import { Redirect } from 'react-router-dom';
 
-class Dashboard extends Component {
-
+class LessonForm extends Component {
     constructor(props) {
         super(props);
 
         if (sessionStorage.getItem('currentUserId') == null) {
             var isLoggedIn = false;
-        }else{
+        } else {
             isLoggedIn = true;
-          }
+        }
 
         this.state = {
             redirect: !isLoggedIn,
@@ -23,11 +22,11 @@ class Dashboard extends Component {
         if (this.state.redirect) {
             console.log('redirecting....');
             return <Redirect to='/' />
-        }else{
-            return(
+        } else {
+            return (
                 <div className="container-fluid">
                     <div className="row">
-                        <DashContent />
+                        <Form />
                     </div>
                 </div>
             );
@@ -35,40 +34,4 @@ class Dashboard extends Component {
     }
 }
 
-export default Dashboard;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+export default LessonForm;
