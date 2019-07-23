@@ -6,14 +6,21 @@ class LessonForm extends Component {
     constructor(props) {
         super(props);
 
+        var isLoggedIn;
         if (sessionStorage.getItem('currentUserId') == null) {
-            var isLoggedIn = false;
+            isLoggedIn = false;
         } else {
             isLoggedIn = true;
         }
 
+        var id = "";
+        if(props.location.state != null){
+            id = this.props.location.state.id;
+        }
+
         this.state = {
             redirect: !isLoggedIn,
+            lessonId: id
         };
     }
 
@@ -25,8 +32,7 @@ class LessonForm extends Component {
             return (
                 <div className="container-fluid">
                     <div className="row">
-                        {/* This was causing the code to break */}
-                        <Form lessonId={this.props.location.state.id} />
+                        <Form lessonId={this.state.lessonId} />
                     </div>
                 </div>
             );
