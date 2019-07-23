@@ -5,3 +5,19 @@ input, textarea {
 #links, #attach {
   width: 200px;
 }
+
+#submit {
+  margin-top: 30px;
+}
+
+.invalid {
+  border-color: red;
+}
+
+.valid {
+  border-color: green;
+}
+
+button {
+  height: 40px;
+}

@@ -1,80 +1,255 @@
-import React from 'react';
+import React, { Component } from 'react';
 import './form.css'
 
-const Form = () => {
 
-  return ( 
- <div className="container">
-    <h1>Add New Lesson</h1>
+class Form extends Component {
+  state = {
+    lessonTitle: "",
+    objective: "",
+    overview: "",
+    preparation: "",
+    agenda: "",
+    materials: "",
+    description: ""
+  };
 
-    <div className="d-flex justify-content-around">
-      <label for="organization">Organization</label>
-      <select name="orgs" form="organization">
-        <option value="boyScouts">Boy Scouts of America</option>
-        <option value="rwa">Refugee Womens Alliance</option>
-        <option value="seattleFood">Seattle Food Bank</option>
-      </select>
-      <button type="button" className="btn btn-secondary">
-        Add New
-      </button>
+  handleInputChange = event => {
+    const { name, value } = event.target;
+    this.setState({
+      [name]: value
+    });
+  };
 
-      <label for="projects">Projects</label>
-      <select name="projs" form="projects">
-        <option value="archery">Archery</option>
-        <option value="fishing">Fishing</option>
-        <option value="camping">Camping</option>
-      </select>
-      <button type="button" className="btn btn-secondary">
-        Add New
-      </button>
-    </div>
 
-    <label for="lessonTitle">Lesson Title</label>
-    <input type="text" className="form-control" id="lessonTitle" placeholder="" 
-      onfocus="this.placeholder = ''" dataname="Lesson Title"></input>
+  handleFormSubmit = event => {
+    event.preventDefault();
+    this.setState({ lessonPlan: {
+      lessonTitle: "", 
+      objective: "", 
+      overview: "", 
+      preparation: "", 
+      agenda: "", 
+      materials: "", 
+      description: ""}
+     });
 
-    <label for="objective">Objective</label>
-    <textarea type="text" className="form-control" id="objective" placeholder="" 
-      onfocus="this.placeholder = ''" dataname="Objective"></textarea>
+    console.log(`
+    Lesson Title: ${this.state.lessonTitle}\n
+    Objectice: ${this.state.objective}\n
+    Overview: ${this.state.overview}\n
+    Preparation: ${this.state.preparation}\n
+    Agenda: ${this.state.agenda}\n
+    Materials: ${this.state.materials}\n
+    Description: ${this.state.description}\n
+    `);
 
-    <label for="oveview">Overview</label>
-    <textarea type="text" className="form-control" id="overview" placeholder="" 
-      onfocus="this.placeholder = ''" dataname="Overview"></textarea>
+    // function validate(lessonTitle) {
+    //   const errors = [];
+    
+    //   if (lessonTitle.length === 0) {
+    //     errors.push("Lesson Title can't be empty");
+    //   }
+    //   return errors;
+    // }
 
-    <label for="preparation">Preparation</label>
-    <textarea type="text" className="form-control" id="preparation" placeholder="" 
-      onfocus="this.placeholder = ''" dataname="Preparation"></textarea>
+  };
 
-    <label for="agenda">Agenda</label>
-    <textarea type="text" className="form-control" id="agenda" placeholder="" 
-      onfocus="this.placeholder = ''" dataname="Agenda"></textarea>
+  
 
-    <label for="materials">Materials</label>
-    <textarea type="text" className="form-control" id="materials" placeholder="" 
-      onfocus="this.placeholder = ''" dataname="Materials"></textarea>
+  render() {
+    return ( 
+      <div className="container">
+         <h1>Add New Lesson</h1>
+     
+         <div className="d-flex justify-content-around">
+           <label>Organization</label>
+           <select name="orgs" form="organization">
+             <option value="boyScouts">Boy Scouts of America</option>
+             <option value="rwa">Refugee Womens Alliance</option>
+             <option value="seattleFood">Seattle Food Bank</option>
+           </select>
+           <button type="button" className="btn btn-secondary">
+             Add New
+           </button>
+     
+           <label>Projects</label>
+           <select name="projs" form="projects">
+             <option value="archery">Archery</option>
+             <option value="fishing">Fishing</option>
+             <option value="camping">Camping</option>
+           </select>
+           <button type="button" className="btn btn-secondary">
+             Add New
+           </button>
+         </div>
+     
+         <label>Lesson Title</label>
+         <input type="text" className="form-control" id="lessonTitle" placeholder="" 
+            name="lessonTitle" value={this.state.lessonTitle} onChange={this.handleInputChange}></input>
+     
+         <label>Objective</label>
+         <textarea type="text" className="form-control" id="objective" placeholder="" 
+            name="objective" value={this.state.objective} onChange={this.handleInputChange}></textarea>
+     
+         <label>Overview</label>
+         <textarea type="text" className="form-control" id="overview" placeholder="" 
+          name="overview" value={this.state.overview} onChange={this.handleInputChange}></textarea>
+     
+         <label>Preparation</label>
+         <textarea type="text" className="form-control" id="preparation" placeholder="" 
+            name="preparation" value={this.state.preparation} onChange={this.handleInputChange}></textarea>
+     
+         <label>Agenda</label>
+         <textarea type="text" className="form-control" id="agenda" placeholder="" 
+            name="agenda" value={this.state.agenda} onChange={this.handleInputChange}></textarea>
+     
+         <label>Materials</label>
+         <textarea type="text" className="form-control" id="materials" placeholder="" 
+            name="materials" value={this.state.materials} onChange={this.handleInputChange}></textarea>
+     
+         <label>Description</label>
+         <textarea type="text" className="form-control" id="description" placeholder="" 
+            name="description" value={this.state.description} onChange={this.handleInputChange}></textarea>
+     
+     <div className="d-flex justify-content-around">
+           <label>Links</label>
+           <input type="text" className="form-control" id="links" placeholder="" 
+              dataname="links"></input>
+           <button type="button" className="btn btn-secondary">
+             Add New
+           </button>
+     
+           <label>Attachments</label>
+           <input type="text" className="form-control" id="attach" placeholder="" 
+               dataname="attachments"></input>
+           <button type="button" className="btn btn-secondary">
+             Add New
+           </button>
+         </div>
+     
+         <div className="d-flex justify-content-end">
+             <button type="submit" id="submit" className="btn btn-primary userSubmit" onClick={this.handleFormSubmit}>Submit</button>
+           </div>
+     
+       </div>
+     
+        );
+  }
+};
 
-    <label for="description">Description</label>
-    <textarea type="text" className="form-control" id="description" placeholder="" 
-      onfocus="this.placeholder = ''" dataname="Description"></textarea>
-
-<div className="d-flex justify-content-around">
-      <label for="links">Links</label>
-      <input type="text" className="form-control" id="links" placeholder="" 
-      onfocus="this.placeholder = ''" dataname="Links"></input>
-      <button type="button" className="btn btn-secondary">
-        Add New
-      </button>
-
-      <label for="attachments">Attachments</label>
-      <input type="text" className="form-control" id="attach" placeholder="" 
-      onfocus="this.placeholder = ''" dataname="Attachments"></input>
-      <button type="button" className="btn btn-secondary">
-        Add New
-      </button>
-    </div>
-
-  </div>
-   );
-}
  
 export default Form;
+
+// $("#submit").on("click", function (event) {
+//   event.preventDefault();
+//   console.log(event);
+
+//   // Form validation
+//   function validateForm() {
+//     var isValid = true;
+//     var errorMessage = "";
+//     $("#lessonTitle").each(function () {
+//       if ($(this).val() === "") {
+//         $(this).addClass("invalid");
+//         isValid = false;
+//         errorMessage += "Lesson Title \n";
+//       } else {
+//         $(this).removeClass("invalid");
+//         $(this).addClass("valid");
+//       }
+//     });
+//     $("#objective").each(function () {
+//       if ($(this).val() === "") {
+//         $(this).addClass("invalid");
+//         isValid = false;
+//         errorMessage += "Objective \n";
+//       } else {
+//         $(this).removeClass("invalid");
+//         $(this).addClass("valid");
+//       }
+//     });
+//     $("#overview").each(function () {
+//       if ($(this).val() === "") {
+//         $(this).addClass("invalid");
+//         isValid = false;
+//         errorMessage += "Overview \n";
+//       } else {
+//         $(this).removeClass("invalid");
+//         $(this).addClass("valid");
+//       }
+//     });
+//     $("#preparation").each(function () {
+//       if ($(this).val() === "") {
+//         $(this).addClass("invalid");
+//         isValid = false;
+//         errorMessage += "Preparation \n";
+//       } else {
+//         $(this).removeClass("invalid");
+//         $(this).addClass("valid");
+//       }
+//     });
+//     $("#agenda").each(function () {
+//       if ($(this).val() === "") {
+//         $(this).addClass("invalid");
+//         isValid = false;
+//         errorMessage += "Agenda \n";
+//       } else {
+//         $(this).removeClass("invalid");
+//         $(this).addClass("valid");
+//       }
+//     });
+//     $("#materials").each(function () {
+//       if ($(this).val() === "") {
+//         $(this).addClass("invalid");
+//         isValid = false;
+//         errorMessage += "Materials \n";
+//       } else {
+//         $(this).removeClass("invalid");
+//         $(this).addClass("valid");
+//       }
+//     });
+//     $("#description").each(function () {
+//       if ($(this).val() === "") {
+//         $(this).addClass("invalid");
+//         isValid = false;
+//         errorMessage += "Description \n";
+//       } else {
+//         $(this).removeClass("invalid");
+//         $(this).addClass("valid");
+//       }
+//     });
+    
+//     if (errorMessage !== "") {
+//       alert("Please complete the following fields:" + errorMessage);
+//     } else {
+//       return isValid;
+//     }
+
+//   }
+
+//  if (validateForm()) {
+//   var lessonTitle = $("#lessonTitle")
+//     .val()
+//     .trim();
+//   var objective = $("#objective")
+//     .val()
+//     .trim();
+//   var overview = $("#overview")
+//     .val()
+//     .trim();
+//   var preparation = $("#preparation")
+//     .val()
+//     .trim();
+//   var agenda = $("#agenda")
+//     .val()
+//     .trim();
+//   var materials = $("#materials")
+//     .val()
+//     .trim();
+//   var description = $("#description")
+//     .val()
+//     .trim();
+
+  
+// };
+// });
