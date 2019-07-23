@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import './form.css'
-import '../../utils/api'
-import api from '../../utils/api';
+import api from '../../utils/api'
+import Modal from 'react-modal';
+import Select from 'react-select';
 
+const organizations = [{ description: 'Boy Scouts of America', value: 'boyScouts' }, { description: 'Refugee Womens Alliance', value: 'rwa' }, { description: "Seattle Food Bank", value: "seattleFood" }]
 
 class Form extends Component {
   constructor(props) {
@@ -17,8 +19,16 @@ class Form extends Component {
         materials: "",
         description: "",
 
+        selectedOption: null,
+        modalIsOpen: false,
+
         lessonId: props.lessonId
       };
+
+    this.openModal = this.openModal.bind(this);
+    this.afterOpenModal = this.afterOpenModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
+    this.addOrganization = this.addOrganization.bind(this);
     
   }
 
@@ -26,7 +36,7 @@ class Form extends Component {
     console.log("Lesson id in form:" + this.state.lessonId);
     if (this.state.lessonId) {
       api.getLessonPlan(this.state.lessonId).then((result) => {
-        console.log(result);
+        console.log(result.data.title);
         this.setState = {
           title: result.data.title,
           objective: result.data.objective,
@@ -40,12 +50,37 @@ class Form extends Component {
     }
   }
 
+  handleChange = selectedOption => {
+    this.setState({ selectedOption });
+    console.log(`Option selected:`, selectedOption);
+  };
+
+  openModal() {
+    this.setState({ modalIsOpen: true });
+  };
+  closeModal() {
+    this.setState({ modalIsOpen: false });
+  };
+  afterOpenModal() {
+    // references are now sync'd and can be accessed.
+    this.subtitle.style.color = '#f00';
+  }
+
+
   handleInputChange = event => {
     const { name, value } = event.target;
     this.setState({
       [name]: value
     });
   };
+
+  addOrganization = event => {
+    console.log('Hello');
+    const { description, value } = event.target
+    this.setState({
+      [description]: value
+    })
+  }
 
 
   handleFormSubmit = event => {
@@ -74,10 +109,9 @@ class Form extends Component {
   };
 
 
-
   render() {
+    // const { selectedOption } = ;
     return (
-
       <div className="container">
         <h1>
           <label>Title:</label>
@@ -87,14 +121,28 @@ class Form extends Component {
 
         <div className="d-flex justify-content-around">
           <label>Organization</label>
-          <select name="orgs" form="organization">
-            <option value="boyScouts">Boy Scouts of America</option>
-            <option value="rwa">Refugee Womens Alliance</option>
-            <option value="seattleFood">Seattle Food Bank</option>
-          </select>
-          <button type="button" className="btn btn-secondary">
+          <Select className="org-select" name="orgs" form="organization"
+            value={this.state.selectedOption}
+            onChange={this.handleChange}
+            options={organizations}
+          />
+          <button type="button" className="btn btn-secondary" onClick={() => this.openModal()}>
             Add New
            </button>
+          <Modal
+            isOpen={this.state.modalIsOpen}
+            onAfterOpen={this.afterOpenModal}
+            onRequestClose={this.closeModal}
+            contentLabel="Example Modal"
+          >
+            <h2 ref={subtitle => this.subtitle = subtitle}>Hello</h2>
+            <button onClick={this.closeModal}>close</button>
+            <div>Add an organization or project</div>
+            <form>
+              <input />
+              <button onClick={this.addOrganization}>Submit</button>
+            </form>
+          </Modal>
 
           <label>Projects</label>
           <select name="projs" form="projects">
@@ -102,7 +150,7 @@ class Form extends Component {
             <option value="fishing">Fishing</option>
             <option value="camping">Camping</option>
           </select>
-          <button type="button" className="btn btn-secondary">
+          <button type="button" className="btn btn-secondary" onClick={this.openModal}>
             Add New
            </button>
         </div>
