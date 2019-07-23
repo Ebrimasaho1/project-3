@@ -25,6 +25,7 @@ class LessonForm extends Component {
             return (
                 <div className="container-fluid">
                     <div className="row">
+                        {/* This was causing the code to break */}
                         <Form lessonId={this.props.location.state.id} />
                     </div>
                 </div>
