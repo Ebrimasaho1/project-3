@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
-import './form.css'
+import './form.css';
+import Modal from 'react-modal';
+import Select from 'react-select';
 
+const organizations = [{ description: 'Boy Scouts of America', value: 'boyScouts' }, { description: 'Refugee Womens Alliance', value: 'rwa' }, { description: "Seattle Food Bank", value: "seattleFood" }]
 
 class Form extends Component {
   state = {
@@ -10,8 +13,38 @@ class Form extends Component {
     preparation: "",
     agenda: "",
     materials: "",
-    description: ""
+    description: "",
+    selectedOption: null
+
   };
+
+  constructor() {
+    super();
+    this.state = {
+      modalIsOpen: false
+    };
+    this.openModal = this.openModal.bind(this);
+    this.afterOpenModal = this.afterOpenModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
+    this.addOrganization = this.addOrganization.bind(this);
+  }
+
+  handleChange = selectedOption => {
+    this.setState({ selectedOption });
+    console.log(`Option selected:`, selectedOption);
+  };
+
+  openModal = () => {
+    this.setState({ modalIsOpen: true });
+  };
+  closeModal = () => {
+    this.setState({ modalIsOpen: false });
+  };
+  afterOpenModal() {
+    // references are now sync'd and can be accessed.
+    this.subtitle.style.color = '#f00';
+  }
+
 
   handleInputChange = event => {
     const { name, value } = event.target;
@@ -20,18 +53,29 @@ class Form extends Component {
     });
   };
 
+  addOrganization = event => {
+    console.log('Hello');
+    const { description, value } = event.target
+    this.setState({
+      [description]: value
+    })
+
+
+  }
 
   handleFormSubmit = event => {
     event.preventDefault();
-    this.setState({ lessonPlan: {
-      title: "", 
-      objective: "", 
-      overview: "", 
-      preparation: "", 
-      agenda: "", 
-      materials: "", 
-      description: ""}
-     });
+    this.setState({
+      lessonPlan: {
+        title: "",
+        objective: "",
+        overview: "",
+        preparation: "",
+        agenda: "",
+        materials: "",
+        description: ""
+      }
+    });
 
     console.log(`
     Lesson Title: ${this.state.title}\n
@@ -45,7 +89,7 @@ class Form extends Component {
 
     // function validate(lessonTitle) {
     //   const errors = [];
-    
+
     //   if (lessonTitle.length === 0) {
     //     errors.push("Lesson Title can't be empty");
     //   }
@@ -54,93 +98,105 @@ class Form extends Component {
 
   };
 
-  
+
 
   render() {
-    return ( 
-
-    
-
+    const { selectedOption } = this.state;
+    return (
       <div className="container">
         <h1>
           <label>Title:</label>
-          <input type="text" className="form-control" id="title" placeholder="" 
+          <input type="text" className="form-control" id="title" placeholder=""
             name="title" value={this.state.lessonTitle} onChange={this.handleInputChange}></input>
         </h1>
-     
-         <div className="d-flex justify-content-around">
-           <label>Organization</label>
-           <select name="orgs" form="organization">
-             <option value="boyScouts">Boy Scouts of America</option>
-             <option value="rwa">Refugee Womens Alliance</option>
-             <option value="seattleFood">Seattle Food Bank</option>
-           </select>
-           <button type="button" className="btn btn-secondary">
-             Add New
+
+        <div className="d-flex justify-content-around">
+          <label>Organization</label>
+          <Select className="org-select" name="orgs" form="organization"
+            value={selectedOption}
+            onChange={this.handleChange}
+            options={organizations}
+          />
+          <button type="button" className="btn btn-secondary" onClick={this.openModal}>
+            Add New
            </button>
-     
-           <label>Projects</label>
-           <select name="projs" form="projects">
-             <option value="archery">Archery</option>
-             <option value="fishing">Fishing</option>
-             <option value="camping">Camping</option>
-           </select>
-           <button type="button" className="btn btn-secondary">
-             Add New
+          <Modal
+            isOpen={this.state.modalIsOpen}
+            onAfterOpen={this.afterOpenModal}
+            onRequestClose={this.closeModal}
+            contentLabel="Example Modal"
+          >
+            <h2 ref={subtitle => this.subtitle = subtitle}>Hello</h2>
+            <button onClick={this.closeModal}>close</button>
+            <div>Add an organization or project</div>
+            <form>
+              <input />
+              <button onClick={this.addOrganization}>Submit</button>
+            </form>
+          </Modal>
+
+          <label>Projects</label>
+          <select name="projs" form="projects">
+            <option value="archery">Archery</option>
+            <option value="fishing">Fishing</option>
+            <option value="camping">Camping</option>
+          </select>
+          <button type="button" className="btn btn-secondary" onClick={this.openModal}>
+            Add New
            </button>
-         </div>
-     
-         <label>Objective</label>
-         <textarea type="text" className="form-control" id="objective" placeholder="" 
-            name="objective" value={this.state.objective} onChange={this.handleInputChange}></textarea>
-     
-         <label>Overview</label>
-         <textarea type="text" className="form-control" id="overview" placeholder="" 
+        </div>
+
+        <label>Objective</label>
+        <textarea type="text" className="form-control" id="objective" placeholder=""
+          name="objective" value={this.state.objective} onChange={this.handleInputChange}></textarea>
+
+        <label>Overview</label>
+        <textarea type="text" className="form-control" id="overview" placeholder=""
           name="overview" value={this.state.overview} onChange={this.handleInputChange}></textarea>
-     
-         <label>Preparation</label>
-         <textarea type="text" className="form-control" id="preparation" placeholder="" 
-            name="preparation" value={this.state.preparation} onChange={this.handleInputChange}></textarea>
-     
-         <label>Agenda</label>
-         <textarea type="text" className="form-control" id="agenda" placeholder="" 
-            name="agenda" value={this.state.agenda} onChange={this.handleInputChange}></textarea>
-     
-         <label>Materials</label>
-         <textarea type="text" className="form-control" id="materials" placeholder="" 
-            name="materials" value={this.state.materials} onChange={this.handleInputChange}></textarea>
-     
-         <label>Description</label>
-         <textarea type="text" className="form-control" id="description" placeholder="" 
-            name="description" value={this.state.description} onChange={this.handleInputChange}></textarea>
-     
-     <div className="d-flex justify-content-around">
-           <label>Links</label>
-           <input type="text" className="form-control" id="links" placeholder="" 
-              dataname="links"></input>
-           <button type="button" className="btn btn-secondary">
-             Add New
+
+        <label>Preparation</label>
+        <textarea type="text" className="form-control" id="preparation" placeholder=""
+          name="preparation" value={this.state.preparation} onChange={this.handleInputChange}></textarea>
+
+        <label>Agenda</label>
+        <textarea type="text" className="form-control" id="agenda" placeholder=""
+          name="agenda" value={this.state.agenda} onChange={this.handleInputChange}></textarea>
+
+        <label>Materials</label>
+        <textarea type="text" className="form-control" id="materials" placeholder=""
+          name="materials" value={this.state.materials} onChange={this.handleInputChange}></textarea>
+
+        <label>Description</label>
+        <textarea type="text" className="form-control" id="description" placeholder=""
+          name="description" value={this.state.description} onChange={this.handleInputChange}></textarea>
+
+        <div className="d-flex justify-content-around">
+          <label>Links</label>
+          <input type="text" className="form-control" id="links" placeholder=""
+            dataname="links"></input>
+          <button type="button" className="btn btn-secondary">
+            Add New
            </button>
-     
-           <label>Attachments</label>
-           <input type="text" className="form-control" id="attach" placeholder="" 
-               dataname="attachments"></input>
-           <button type="button" className="btn btn-secondary">
-             Add New
+
+          <label>Attachments</label>
+          <input type="text" className="form-control" id="attach" placeholder=""
+            dataname="attachments"></input>
+          <button type="button" className="btn btn-secondary">
+            Add New
            </button>
-         </div>
-     
-         <div className="d-flex justify-content-end">
-             <button type="submit" id="submit" className="btn btn-primary userSubmit" onClick={this.handleFormSubmit}>Save</button>
-           </div>
-     
-       </div>
-     
-        );
+        </div>
+
+        <div className="d-flex justify-content-end">
+          <button type="submit" id="submit" className="btn btn-primary userSubmit" onClick={this.handleFormSubmit}>Save</button>
+        </div>
+
+      </div>
+
+    );
   }
 };
 
- 
+
 export default Form;
 
 // $("#submit").on("click", function (event) {
@@ -221,7 +277,7 @@ export default Form;
 //         $(this).addClass("valid");
 //       }
 //     });
-    
+
 //     if (errorMessage !== "") {
 //       alert("Please complete the following fields:" + errorMessage);
 //     } else {
@@ -253,6 +309,6 @@ export default Form;
 //     .val()
 //     .trim();
 
-  
+
 // };
 // });
