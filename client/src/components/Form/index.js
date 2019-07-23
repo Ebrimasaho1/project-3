@@ -34,7 +34,7 @@ class Form extends Component {
 
   componentDidMount(){
     console.log("Lesson id in form:" + this.state.lessonId);
-    if (this.state.lessonId) {
+    if (this.state.lessonId !== "") {
       api.getLessonPlan(this.state.lessonId).then((result) => {
         console.log(result.data.title);
         this.setState = {
