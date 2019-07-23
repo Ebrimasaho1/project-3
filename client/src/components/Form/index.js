@@ -4,7 +4,7 @@ import './form.css'
 
 class Form extends Component {
   state = {
-    lessonTitle: "",
+    title: "",
     objective: "",
     overview: "",
     preparation: "",
@@ -24,7 +24,7 @@ class Form extends Component {
   handleFormSubmit = event => {
     event.preventDefault();
     this.setState({ lessonPlan: {
-      lessonTitle: "", 
+      title: "", 
       objective: "", 
       overview: "", 
       preparation: "", 
@@ -34,7 +34,7 @@ class Form extends Component {
      });
 
     console.log(`
-    Lesson Title: ${this.state.lessonTitle}\n
+    Lesson Title: ${this.state.title}\n
     Objectice: ${this.state.objective}\n
     Overview: ${this.state.overview}\n
     Preparation: ${this.state.preparation}\n
@@ -84,8 +84,8 @@ class Form extends Component {
          </div>
      
          <label>Lesson Title</label>
-         <input type="text" className="form-control" id="lessonTitle" placeholder="" 
-            name="lessonTitle" value={this.state.lessonTitle} onChange={this.handleInputChange}></input>
+         <input type="text" className="form-control" id="title" placeholder="" 
+            name="title" value={this.state.lessonTitle} onChange={this.handleInputChange}></input>
      
          <label>Objective</label>
          <textarea type="text" className="form-control" id="objective" placeholder="" 
@@ -128,7 +128,7 @@ class Form extends Component {
          </div>
      
          <div className="d-flex justify-content-end">
-             <button type="submit" id="submit" className="btn btn-primary userSubmit" onClick={this.handleFormSubmit}>Submit</button>
+             <button type="submit" id="submit" className="btn btn-primary userSubmit" onClick={this.handleFormSubmit}>Save</button>
            </div>
      
        </div>

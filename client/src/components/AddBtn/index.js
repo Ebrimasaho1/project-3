@@ -4,7 +4,7 @@ import "./addbtn.css";
 function AddNewBtn(props) {
   return (
     <div className="d-flex justify-content-beginning">
-      <a href="/form" className="btn btn-secondary">
+      <a href="/lessonPlan" className="btn btn-secondary">
         Add New Lesson
       </a>
     </div>
