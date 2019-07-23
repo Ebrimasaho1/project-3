@@ -4,9 +4,9 @@ import "./addbtn.css";
 function AddNewBtn(props) {
   return (
     <div className="d-flex justify-content-beginning">
-      <button type="button" className="btn btn-secondary">
+      <a href="/form" className="btn btn-secondary">
         Add New Lesson
-      </button>
+      </a>
     </div>
   );
 }

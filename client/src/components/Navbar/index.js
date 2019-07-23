@@ -1,5 +1,14 @@
 import React from "react";
 import "./navbar.css";
+import { GoogleLogout } from 'react-google-login';
+
+// Google Logout
+function Logout() {
+  console.log("Logout success");
+  sessionStorage.removeItem('currentUserId');
+  window.location.reload();
+}
+//End off Google Logout
 
 function Navbar() {
   return (
@@ -19,7 +28,13 @@ function Navbar() {
             <a className="nav-link" href="/search">Project Search</a>
           </li>
           <li className="nav-item">
-            <a className="nav-link" href="/logout">Logout</a>
+            <GoogleLogout
+              clientId="547450952468-l421k7hpgmguervl65qd35ci8gpvrgs7.apps.googleusercontent.com"
+              buttonText="Logout"
+              onLogoutSuccess={Logout}
+            >
+            </GoogleLogout>
+            {/* <a className="nav-link" href="/">Logout</a> */}
           </li>
         </ul>
       </div>
