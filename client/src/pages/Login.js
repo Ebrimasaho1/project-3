@@ -60,11 +60,7 @@ class Login extends Component {
         transform: 'translate(-50%, -50%)'
     }}>
 
-<<<<<<< HEAD
-<img className='welcome' ></img>
-=======
 <img  className='welcome' alt="Welcome"></img>
->>>>>>> ab7d2fd635ddf9ec09d565209e53f65ff19df65f
           <div className="Container">
            
           <GoogleLogin className="mx-auto"
