@@ -4,6 +4,8 @@ import api from '../../utils/api'
 import Modal from 'react-modal';
 import Select from 'react-select';
 
+const organizations = [{ description: 'Boy Scouts of America', value: 'boyScouts' }, { description: 'Refugee Womens Alliance', value: 'rwa' }, { description: "Seattle Food Bank", value: "seattleFood" }];
+const projects = [{description:'Archery', value:'archery'},{description:'Fishing', value:'fishing'},{description:'Camping', value:'camping'}];
 
 class Form extends Component {
   constructor(props) {
@@ -124,15 +126,16 @@ class Form extends Component {
 
         <div className="d-flex justify-content-around">
           <label>Organization</label>
-          <Select className="org-select" name="orgs" form="organization"
+          <Select className="org-select" name="orgs" form="organization" type="list"
             value={this.state.selectedOption}
             onChange={this.handleChange}
-            options={this.state.organizations}
+            //options={this.state.organizations}
+            options={organizations}
           />
           <button type="button" className="btn btn-secondary" onClick={() => this.openModal()}>
             Add New
            </button>
-          <Modal
+          <Modal 
             isOpen={this.state.modalIsOpen}
             onAfterOpen={this.afterOpenModal}
             onRequestClose={this.closeModal}
@@ -148,11 +151,11 @@ class Form extends Component {
           </Modal>
 
           <label>Projects</label>
-          <select name="projs" form="projects">
-            <option value="archery">Archery</option>
-            <option value="fishing">Fishing</option>
-            <option value="camping">Camping</option>
-          </select>
+          <Select className="proj-select" name="proj" form="projects" type="list"
+            value={this.state.selectedOption}
+            onChange={this.handleChange}
+            options={projects}
+            />
           <button type="button" className="btn btn-secondary" onClick={this.openModal}>
             Add New
            </button>

@@ -1,3 +1,17 @@
-.login{
-    margin: 0 auto;
+.Login{
+    /* margin: auto; */
+    /* position: 'absolute';
+    left: '50%';
+    top: '50%'; */
+        /* transform: translate(-50%, -50%); */
+      /* //background-image: url('./welcome.png'); */
+      height:200px;
+      background-color: white; 
+      width:200px;
+      
+}
+.welcome{
+    background-image: url('./welcome.png');
+    height:195px;
+    width:175px;
 }
