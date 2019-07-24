@@ -1,8 +1,18 @@
 import React, { Component } from 'react';
-import './form.css'
+
+import './form.css';
+
+import api from '../../utils/api';
 
 
 class Form extends Component {
+
+  constructor(props){
+    super(props);
+    if(props.lessonId){
+      api.getLessonPlans
+    }
+  }
   state = {
     title: "",
     objective: "",
@@ -43,18 +53,11 @@ class Form extends Component {
     Description: ${this.state.description}\n
     `);
 
-    // function validate(lessonTitle) {
-    //   const errors = [];
-    
-    //   if (lessonTitle.length === 0) {
-    //     errors.push("Lesson Title can't be empty");
-    //   }
-    //   return errors;
-    // }
-
+    api.saveLessonPlans(this.state.lessonPlan).then((results) => {
+      console.log("Lesson Plan Saved");
+      
+    });
   };
-
-  
 
   render() {
     return ( 
@@ -65,7 +68,7 @@ class Form extends Component {
         <h1>
           <label>Title:</label>
           <input type="text" className="form-control" id="title" placeholder="" 
-            name="title" value={this.state.lessonTitle} onChange={this.handleInputChange}></input>
+            name="title" value={this.state.title} onChange={this.handleInputChange}></input>
         </h1>
      
          <div className="d-flex justify-content-around">
