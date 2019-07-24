@@ -5,13 +5,13 @@ import Modal from 'react-modal';
 import Select from 'react-select';
 
 const organizations = [{ description: 'Boy Scouts of America', value: 'boyScouts' }, { description: 'Refugee Womens Alliance', value: 'rwa' }, { description: "Seattle Food Bank", value: "seattleFood" }];
-const projects = [{description:'Archery', value:'archery'},{description:'Fishing', value:'fishing'},{description:'Camping', value:'camping'}];
+const projects = [{ description: 'Archery', value: 'archery' }, { description: 'Fishing', value: 'fishing' }, { description: 'Camping', value: 'camping' }];
 
 class Form extends Component {
   constructor(props) {
     super(props);
-     
-      this.state = {
+
+    this.state = {
         title: "",
         objective: "",
         overview: "",
@@ -21,59 +21,63 @@ class Form extends Component {
         description: "",
         organization: "",
 
-        selectedOption: null,
-        modalIsOpen: false,
-        lessonId: props.lessonId,
-        organizations : [{ description: 'Boy Scouts of America', value: 'boyScouts' }, { description: 'Refugee Womens Alliance', value: 'rwa' }, { description: "Seattle Food Bank", value: "seattleFood" }]
- 
-      };
+      selectedOption: null,
+      modalIsOpen: false,
+      lessonId: props.lessonId,
+      organizations: [{ description: 'Boy Scouts of America', value: 'boyScouts' }, { description: 'Refugee Womens Alliance', value: 'rwa' }, { description: "Seattle Food Bank", value: "seattleFood" }]
 
+    };
+
+    this.handleSelectInputChange = this.handleSelectInputChange.bind(this);
     this.openModal = this.openModal.bind(this);
     this.afterOpenModal = this.afterOpenModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.addOrganization = this.addOrganization.bind(this);
-    
+
   }
 
-  componentDidMount(){
+  componentDidMount() {
     console.log("Lesson id in form:" + this.state.lessonId);
     if (this.state.lessonId && this.state.lessonId !== "") {
       api.getLessonPlan(this.state.lessonId).then((result) => {
-        console.log(result.data.title);
+        console.log("Title from database:" + result.data.title);
         this.setState = {
-          title: result.data.title,
-          objective: result.data.objective,
-          overview: result.data.overview,
-          preparation: result.data.preparation,
-          agenda: result.data.agenda,
-          materials: result.data.materials,
-          description: result.data.description
+          title: result.data.title
+          // ,
+          // objective: result.data.objective,
+          // overview: result.data.overview,
+          // preparation: result.data.preparation,
+          // agenda: result.data.agenda,
+          // materials: result.data.materials,
+          // description: result.data.description
         };
       });
     }
   }
 
-  handleChange = selectedOption => {
+  handleSelectInputChange = selectedOption => {
     this.setState({ selectedOption });
     console.log(`Option selected:`, selectedOption);
   };
 
   openModal = () => {
+    //console.log("this in open modal:" + JSON.stringify(this));
     this.setState({ modalIsOpen: true });
   };
+
   closeModal = () => {
     this.setState({ modalIsOpen: false });
   };
+
   afterOpenModal = () => {
     // references are now sync'd and can be accessed.
     this.subtitle.style.color = '#f00';
   }
 
-
   handleInputChange = event => {
     const { name, value } = event.target;
     this.setState({
-      [name]: value
+       [name]: value
     });
   };
 
@@ -82,7 +86,7 @@ class Form extends Component {
     const { value } = event.target;
     this.state.organizations.push(value);
     this.setState({
-      organization:value, 
+      organization: value,
       organizations: this.state.organizations
     })
   }
@@ -90,7 +94,7 @@ class Form extends Component {
 
   handleFormSubmit = event => {
     event.preventDefault();
-
+   
     console.log(`
     Lesson Title: ${this.state.title}\n
     Objectice: ${this.state.objective}\n
@@ -100,6 +104,18 @@ class Form extends Component {
     Materials: ${this.state.materials}\n
     Description: ${this.state.description}\n
     `);
+
+    var lessonPlan = {
+      title:this.state.title,
+      objective: this.state.objective,
+        overview: this.state.overview,
+        preparation: this.state.preparation,
+        agenda: this.state.agenda,
+        materials: this.state.materials,
+        description: this.state.description,
+        project:"5d3552132f4377820cf05669",
+        user:"5d3552132f4377820cf05668"
+    };
 
     // function validate(lessonTitle) {
     //   const errors = [];
@@ -111,6 +127,9 @@ class Form extends Component {
     // }
 
     //call api.saveLessonPlan(lessonPlan).then...
+    api.saveLessonPlan(lessonPlan).then((result) => {
+      console.log("Lesson Plan saved");
+    });
   };
 
 
@@ -128,14 +147,14 @@ class Form extends Component {
           <label>Organization</label>
           <Select className="org-select" name="orgs" form="organization" type="list"
             value={this.state.selectedOption}
-            onChange={this.handleChange}
+            onChange={this.handleSelectInputChange}
             //options={this.state.organizations}
             options={organizations}
           />
-          <button type="button" className="btn btn-secondary" onClick={() => this.openModal()}>
+          <button type="button" className="btn btn-secondary" onClick={this.openModal}>
             Add New
            </button>
-          <Modal 
+          <Modal
             isOpen={this.state.modalIsOpen}
             onAfterOpen={this.afterOpenModal}
             onRequestClose={this.closeModal}
@@ -153,9 +172,9 @@ class Form extends Component {
           <label>Projects</label>
           <Select className="proj-select" name="proj" form="projects" type="list"
             value={this.state.selectedOption}
-            onChange={this.handleChange}
+            onChange={this.handleSelectInputChange}
             options={projects}
-            />
+          />
           <button type="button" className="btn btn-secondary" onClick={this.openModal}>
             Add New
            </button>
@@ -185,7 +204,7 @@ class Form extends Component {
         <textarea type="text" className="form-control" id="description" placeholder=""
           name="description" value={this.state.description} onChange={this.handleInputChange}></textarea>
 
-        <div className="d-flex justify-content-around">
+        {/* <div className="d-flex justify-content-around">
           <label>Links</label>
           <input type="text" className="form-control" id="links" placeholder=""
             dataname="links"></input>
@@ -199,7 +218,7 @@ class Form extends Component {
           <button type="button" className="btn btn-secondary">
             Add New
            </button>
-        </div>
+        </div> */}
 
         <div className="d-flex justify-content-end">
           <button type="submit" id="submit" className="btn btn-primary userSubmit" onClick={this.handleFormSubmit}>Save</button>
