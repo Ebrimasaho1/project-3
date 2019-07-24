@@ -105,6 +105,8 @@ class Form extends Component {
     Description: ${this.state.description}\n
     `);
 
+    var userId = sessionStorage.getItem("currentUserId");
+
     var lessonPlan = {
       title:this.state.title,
       objective: this.state.objective,
@@ -114,7 +116,7 @@ class Form extends Component {
         materials: this.state.materials,
         description: this.state.description,
         project:"5d3552132f4377820cf05669",
-        user:"5d3552132f4377820cf05668"
+        user:userId
     };
 
     // function validate(lessonTitle) {
