@@ -10,7 +10,7 @@ mongoose.connect(
 db.LessonPlan.create([{ title: 'Test Lesson Plan' }])
   .then(([lessonPlans]) => {
     Promise.all([
-      db.User.create([{ email: 'laurabermudezg@gmail.com', fullName: 'Laura Bermudez', lessonPlans: lessonPlans }]),
+      db.User.create([{ email: 'saho.ebrima93@gmail.com', fullName: 'Ebrima Saho', lessonPlans: lessonPlans }]),
       db.Project.create([{ name: 'Webelos Den', lessonPlans: lessonPlans }])
     ]).then(([users,projects ]) => {
       db.Organization.create([{ name: 'Cub Scouts Pack', projects: projects }]).then(([organizations])=>{
