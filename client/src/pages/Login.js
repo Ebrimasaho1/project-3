@@ -4,6 +4,7 @@ import GoogleLogin from 'react-google-login';
 //import { BrowserRouter as Router } from "react-router-dom";
 import { Redirect } from 'react-router-dom';
 //import Dashboard from "./Dashboard";
+import "./login.css";
 
 import api from '../utils/api'
 
@@ -54,8 +55,14 @@ class Login extends Component {
     } else {
       return (
 
-        <div className="login">
-          <div className="container">
+        <div className="Login" style={{
+        position: 'absolute', left: '50%', top: '50%',
+        transform: 'translate(-50%, -50%)'
+    }}>
+
+<img  className='welcome' ></img>
+          <div className="Container">
+           
           <GoogleLogin className="mx-auto"
             clientId="547450952468-l421k7hpgmguervl65qd35ci8gpvrgs7.apps.googleusercontent.com"
             buttonText="Login with Google"

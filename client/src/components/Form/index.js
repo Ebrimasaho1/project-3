@@ -4,8 +4,7 @@ import api from '../../utils/api'
 import Modal from 'react-modal';
 import Select from 'react-select';
 
-const organizations = [{ description: 'Boy Scouts of America', value: 'boyScouts' }, { description: 'Refugee Womens Alliance', value: 'rwa' }, { description: "Seattle Food Bank", value: "seattleFood" }]
-
+const organizations = [{ description: 'Boy Scouts of America', value: 'boyScouts' }, { description: 'Refugee Womens Alliance', value: 'rwa' }, { description: "Seattle Food Bank", value: "seattleFood" }];
 class Form extends Component {
   constructor(props) {
     super(props);
@@ -34,7 +33,7 @@ class Form extends Component {
 
   componentDidMount(){
     console.log("Lesson id in form:" + this.state.lessonId);
-    if (this.state.lessonId) {
+    if (this.state.lessonId !== "") {
       api.getLessonPlan(this.state.lessonId).then((result) => {
         console.log(result.data.title);
         this.setState = {
@@ -129,7 +128,8 @@ class Form extends Component {
           <button type="button" className="btn btn-secondary" onClick={() => this.openModal()}>
             Add New
            </button>
-          <Modal
+          <Modal 
+            size='lg'
             isOpen={this.state.modalIsOpen}
             onAfterOpen={this.afterOpenModal}
             onRequestClose={this.closeModal}
