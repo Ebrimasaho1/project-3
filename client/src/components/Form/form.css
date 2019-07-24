@@ -1,6 +1,10 @@
 input, textarea {
   margin-bottom: 20px;
 }
+.org-select{
+  width: 100px;
+  color:black;
+}
 
 #links, #attach {
   width: 200px;

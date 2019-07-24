@@ -1,6 +1,6 @@
 import React from 'react';
 import './dashproj.css'
-
+import { Link } from 'react-router-dom';
 import api from '../../utils/api';
 
 class DashProjects extends React.Component {
@@ -19,13 +19,18 @@ class DashProjects extends React.Component {
     });
   }
 
+  // renderRedirect = (lessonId) => {
+
   render() {
 
     return (
       this.state.lessons.map(lesson => (
         <div className="row" key={lesson._id}>
           <div className="col-md-4">
-            <p>{lesson.title}</p>
+            <Link to={{
+              pathname: '/lessonPlan',
+              state: { id: lesson._id }
+            }}>{lesson.title}</Link>
           </div>
           <div className="col-md-4">
             <p>{lesson.project.name}</p>
