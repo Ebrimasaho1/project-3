@@ -14,7 +14,7 @@ function Navbar() {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-blue">
       <a className="navbar-brand navBar__name" href="/">
-        <img className="logoImage" src="logo.png" style={{height:'50px'}}></img>
+        <img className="logoImage" src="logo.png" style={{height:'50px'}} alt="logo"></img>
       </a>
       <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span className="navbar-toggler-icon"></span>
