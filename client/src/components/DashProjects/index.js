@@ -19,8 +19,6 @@ class DashProjects extends React.Component {
     });
   }
 
-  // renderRedirect = (lessonId) => {
-
   render() {
 
     return (

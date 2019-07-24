@@ -4,7 +4,6 @@ import api from '../../utils/api'
 import Modal from 'react-modal';
 import Select from 'react-select';
 
-const organizations = [{ description: 'Boy Scouts of America', value: 'boyScouts' }, { description: 'Refugee Womens Alliance', value: 'rwa' }, { description: "Seattle Food Bank", value: "seattleFood" }]
 
 class Form extends Component {
   constructor(props) {
@@ -18,11 +17,13 @@ class Form extends Component {
         agenda: "",
         materials: "",
         description: "",
+        organization: "",
 
         selectedOption: null,
         modalIsOpen: false,
-
-        lessonId: props.lessonId
+        lessonId: props.lessonId,
+        organizations : [{ description: 'Boy Scouts of America', value: 'boyScouts' }, { description: 'Refugee Womens Alliance', value: 'rwa' }, { description: "Seattle Food Bank", value: "seattleFood" }]
+ 
       };
 
     this.openModal = this.openModal.bind(this);
@@ -34,7 +35,7 @@ class Form extends Component {
 
   componentDidMount(){
     console.log("Lesson id in form:" + this.state.lessonId);
-    if (this.state.lessonId !== "") {
+    if (this.state.lessonId && this.state.lessonId !== "") {
       api.getLessonPlan(this.state.lessonId).then((result) => {
         console.log(result.data.title);
         this.setState = {
@@ -55,13 +56,13 @@ class Form extends Component {
     console.log(`Option selected:`, selectedOption);
   };
 
-  openModal() {
+  openModal = () => {
     this.setState({ modalIsOpen: true });
   };
-  closeModal() {
+  closeModal = () => {
     this.setState({ modalIsOpen: false });
   };
-  afterOpenModal() {
+  afterOpenModal = () => {
     // references are now sync'd and can be accessed.
     this.subtitle.style.color = '#f00';
   }
@@ -76,9 +77,11 @@ class Form extends Component {
 
   addOrganization = event => {
     console.log('Hello');
-    const { description, value } = event.target
+    const { value } = event.target;
+    this.state.organizations.push(value);
     this.setState({
-      [description]: value
+      organization:value, 
+      organizations: this.state.organizations
     })
   }
 
@@ -124,7 +127,7 @@ class Form extends Component {
           <Select className="org-select" name="orgs" form="organization"
             value={this.state.selectedOption}
             onChange={this.handleChange}
-            options={organizations}
+            options={this.state.organizations}
           />
           <button type="button" className="btn btn-secondary" onClick={() => this.openModal()}>
             Add New
