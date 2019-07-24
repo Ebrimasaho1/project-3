@@ -4,27 +4,26 @@ import api from '../../utils/api'
 import Modal from 'react-modal';
 import Select from 'react-select';
 
-const organizations = [{ description: 'Boy Scouts of America', value: 'boyScouts' }, { description: 'Refugee Womens Alliance', value: 'rwa' }, { description: "Seattle Food Bank", value: "seattleFood" }];
-const projects = [{ description: 'Archery', value: 'archery' }, { description: 'Fishing', value: 'fishing' }, { description: 'Camping', value: 'camping' }];
-
 class Form extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-        title: "",
-        objective: "",
-        overview: "",
-        preparation: "",
-        agenda: "",
-        materials: "",
-        description: "",
-        organization: "",
+      title: "",
+      objective: "",
+      overview: "",
+      preparation: "",
+      agenda: "",
+      materials: "",
+      description: "",
+      organization: "",
 
-      selectedOption: null,
+      selectedOrganization: "",
+      selectedProject:"",
       modalIsOpen: false,
       lessonId: props.lessonId,
-      organizations: [{ description: 'Boy Scouts of America', value: 'boyScouts' }, { description: 'Refugee Womens Alliance', value: 'rwa' }, { description: "Seattle Food Bank", value: "seattleFood" }]
+      organizationOpts: [],
+      projsOptions: []
 
     };
 
@@ -37,27 +36,68 @@ class Form extends Component {
   }
 
   componentDidMount() {
+    //populate lessonplan data with existing lesson plan (coming from dashboard click - not working)
     console.log("Lesson id in form:" + this.state.lessonId);
     if (this.state.lessonId && this.state.lessonId !== "") {
       api.getLessonPlan(this.state.lessonId).then((result) => {
         console.log("Title from database:" + result.data.title);
         this.setState = {
-          title: result.data.title
-          // ,
-          // objective: result.data.objective,
-          // overview: result.data.overview,
-          // preparation: result.data.preparation,
-          // agenda: result.data.agenda,
-          // materials: result.data.materials,
-          // description: result.data.description
+          title: result.data.title,
+          objective: result.data.objective,
+          overview: result.data.overview,
+          preparation: result.data.preparation,
+          agenda: result.data.agenda,
+          materials: result.data.materials,
+          description: result.data.description
         };
       });
     }
+
+    //populate organization combo box with all orgs from db
+    api.getOrganizations().then((result) => {
+      var orgsFromDB = result.data;
+      var orgsOptions = [];
+      console.log("Organizations from db: " + JSON.stringify(result.data));
+      for (var i = 0; i < orgsFromDB.length; i++) {
+        console.log("Value " + i + " id =" + orgsFromDB[i]._id + " value = " + orgsFromDB[i].name);
+        orgsOptions[i] = { value: orgsFromDB[i]._id, label: orgsFromDB[i].name };
+        this.state.organizationOpts.push(orgsOptions[i]);
+      }
+
+      this.setState(
+        this.state
+      );
+      console.log("orgsOptions = " + JSON.stringify(this.state.organizationOpts));
+    });
   }
 
   handleSelectInputChange = selectedOption => {
-    this.setState({ selectedOption });
-    console.log(`Option selected:`, selectedOption);
+    //this setState is not working
+    console.log("Selected option value = " + selectedOption.value);
+    this.setState({ selectedOrganization : selectedOption.value});
+    console.log("Option selected:" + this.state.selectedOrganization);
+    //populate the projects from db
+    api.getOrganizationWithProjects(selectedOption.value).then((org) => {
+      console.log(JSON.stringify(org.data));
+      var projects = org.data.projects;
+      var projsOptions = [];
+      for (var i = 0; i < projects.length; i++) {
+        console.log("Value " + i + " id =" + projects[i]._id + " value = " + projects[i].name);
+        projsOptions[i] = { value: projects[i]._id, label: projects[i].name };
+        this.state.projsOptions.push(projsOptions[i]);
+      }
+
+      this.setState(
+        this.state
+      );
+
+      console.log("Project options in state: " + JSON.stringify(this.state.projsOptions));
+    });
+  };
+
+  handleProjectSelectInputChange = selectedOption => {
+    this.setState({ selectedProject : selectedOption.value});
+    console.log(`Option selected:`, this.state.selectedProject);
   };
 
   openModal = () => {
@@ -77,24 +117,24 @@ class Form extends Component {
   handleInputChange = event => {
     const { name, value } = event.target;
     this.setState({
-       [name]: value
+      [name]: value
     });
   };
 
   addOrganization = event => {
     console.log('Hello');
     const { value } = event.target;
-    this.state.organizations.push(value);
+    this.state.organizationOpts.push(value);
     this.setState({
-      organization: value,
-      organizations: this.state.organizations
+      // organization: value,
+      organizations: this.state.organizationOpts
     })
   }
 
 
   handleFormSubmit = event => {
     event.preventDefault();
-   
+
     console.log(`
     Lesson Title: ${this.state.title}\n
     Objectice: ${this.state.objective}\n
@@ -103,20 +143,21 @@ class Form extends Component {
     Agenda: ${this.state.agenda}\n
     Materials: ${this.state.materials}\n
     Description: ${this.state.description}\n
+    Project: ${this.state.selectedProject}
     `);
 
     var userId = sessionStorage.getItem("currentUserId");
 
     var lessonPlan = {
-      title:this.state.title,
+      title: this.state.title,
       objective: this.state.objective,
-        overview: this.state.overview,
-        preparation: this.state.preparation,
-        agenda: this.state.agenda,
-        materials: this.state.materials,
-        description: this.state.description,
-        project:"5d3552132f4377820cf05669",
-        user:userId
+      overview: this.state.overview,
+      preparation: this.state.preparation,
+      agenda: this.state.agenda,
+      materials: this.state.materials,
+      description: this.state.description,
+      project: this.state.selectedProject,
+      user: userId
     };
 
     // function validate(lessonTitle) {
@@ -148,10 +189,9 @@ class Form extends Component {
         <div className="d-flex justify-content-around">
           <label>Organization</label>
           <Select className="org-select" name="orgs" form="organization" type="list"
-            value={this.state.selectedOption}
+            //value={this.state.selectedOption}
             onChange={this.handleSelectInputChange}
-            //options={this.state.organizations}
-            options={organizations}
+            options={this.state.organizationOpts}
           />
           <button type="button" className="btn btn-secondary" onClick={this.openModal}>
             Add New
@@ -173,9 +213,9 @@ class Form extends Component {
 
           <label>Projects</label>
           <Select className="proj-select" name="proj" form="projects" type="list"
-            value={this.state.selectedOption}
-            onChange={this.handleSelectInputChange}
-            options={projects}
+           // value={this.state.selectedOption}
+            onChange={this.handleProjectSelectInputChange}
+            options={this.state.projsOptions}
           />
           <button type="button" className="btn btn-secondary" onClick={this.openModal}>
             Add New
