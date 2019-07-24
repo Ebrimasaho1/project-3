@@ -12,5 +12,11 @@ export default {
   },
   getLessonPlan: function(lessonId){
     return axios.get("/api/lessonPlans/"+lessonId);
+  }, 
+  getOrganizations: function() {
+    return axios.get("/api/organizations");
+  }, 
+  getOrganizationWithProjects: function(organizationId){
+    return axios.get("/api/organizations/"+organizationId);
   }
 };
