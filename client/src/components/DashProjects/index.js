@@ -19,8 +19,6 @@ class DashProjects extends React.Component {
     });
   }
 
-  // renderRedirect = (lessonId) => {
-
   render() {
 
     return (
@@ -31,6 +29,7 @@ class DashProjects extends React.Component {
               pathname: '/lessonPlan',
               state: { id: lesson._id }
             }}>{lesson.title}</Link>
+      
           </div>
           <div className="col-md-4">
             <p>{lesson.project.name}</p>
