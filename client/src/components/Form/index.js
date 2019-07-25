@@ -34,8 +34,8 @@ class Form extends Component {
       lessonId: props.lessonId,
       organizationOpts: [],
       projsOptions: [],
-      errors: []
-
+      errors: [],
+      newOrganization: ""
     };
 
     this.handleSelectInputChange = this.handleSelectInputChange.bind(this);
@@ -137,11 +137,15 @@ class Form extends Component {
 
   addOrganization = event => {
     event.preventDefault();
-    const { value } = event.target;
-    console.log('called add organization with value: ' + event.target);
+    
+    console.log(this.state.newOrganization);
     //save new organization to database
-    api.saveOrganization(value).then((result)=>{
-      console.log(value);
+    var orgObj = {
+      name : this.state.newOrganization,
+      projects : []
+    }
+    api.saveOrganization(orgObj).then((result)=>{
+      console.log(result);
     });
 
     //get organizations from DB again?
@@ -152,6 +156,12 @@ class Form extends Component {
     // })
   }
 
+handleAddOrganizationChange = (event) =>{
+  const { value } = event.target;
+  this.setState({
+    newOrganization : value
+  })
+} 
 
   handleFormSubmit = event => {
     event.preventDefault();
@@ -226,9 +236,9 @@ class Form extends Component {
             <h2 ref={subtitle => this.subtitle = subtitle}>Add</h2>
             <button id="closeBtn" onClick={this.closeModal} style={{color:'white'}}>close</button>
             <div> Name:</div>
-            <form>
-              <input name="organizationInput" />
-              <button onClick=  {this.addOrganization} style={{color:'white'}}>Submit</button>
+            <form onSubmit={this.addOrganization}>
+              <input name="organizationInput" onChange={this.handleAddOrganizationChange} />
+              <button  type="submit" style={{color:'white'}}>Submit</button>
             </form>
           </Modal>
 

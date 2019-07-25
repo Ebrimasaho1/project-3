@@ -19,8 +19,8 @@ export default {
   getOrganizationWithProjects: function(organizationId){
     return axios.get("/api/organizations/"+organizationId);
   }, 
-  saveOrganization: function(organizationName){
-    console.log("organization name to save: " + organizationName);
-    return axios.post("api/organizations/", organizationName);
+  saveOrganization: function(organization){
+    console.log("organization name to save: " + organization.name);
+    return axios.post("api/organizations/", organization);
   }
 };
