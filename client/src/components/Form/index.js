@@ -5,14 +5,14 @@ import Modal from 'react-modal';
 import Select from 'react-select';
 
 //FORM VALIDATION
-function Validate(title, email, objective, overview, preparation, agenda, materials, description){
-  const errors = [];
-  if (title.length === 0 || email.length || objective.length || overview.length 
-      || preparation.length || agenda.length || materials.length || description.length ) {
-      errors.push("Title can't be empty");
-    }
-    return errors;
-}
+// function Validate(title, email, objective, overview, preparation, agenda, materials, description){
+//   const errors = [];
+//   if (title.length === 0 || email.length || objective.length || overview.length 
+//       || preparation.length || agenda.length || materials.length || description.length ) {
+//       errors.push("Title can't be empty");
+//     }
+//     return errors;
+// }
 
 class Form extends Component {
   constructor(props) {
@@ -47,23 +47,7 @@ class Form extends Component {
   }
 
   componentDidMount() {
-    //populate lessonplan data with existing lesson plan (coming from dashboard click - not working)
-    console.log("Lesson id in form:" + this.state.lessonId);
-    if (this.state.lessonId && this.state.lessonId !== "") {
-      api.getLessonPlan(this.state.lessonId).then((result) => {
-        console.log("Title from database:" + result.data.title);
-        this.setState( {
-          title: result.data.title,
-          objective: result.data.objective,
-          overview: result.data.overview,
-          preparation: result.data.preparation,
-          agenda: result.data.agenda,
-          materials: result.data.materials,
-          description: result.data.description
-        });
-      });
-    }
-
+    
     //populate organization combo box with all orgs from db
     api.getOrganizations().then((result) => {
       var orgsFromDB = result.data;
@@ -80,6 +64,25 @@ class Form extends Component {
       );
       console.log("orgsOptions = " + JSON.stringify(this.state.organizationOpts));
     });
+
+    //populate lessonplan data with existing lesson plan (coming from dashboard click - not working)
+    console.log("Lesson id in form:" + this.state.lessonId);
+    if (this.state.lessonId && this.state.lessonId !== "") {
+      api.getLessonPlan(this.state.lessonId).then((result) => {
+        console.log("Title from database:" + result.data.title);
+        this.setState( {
+          title: result.data.title,
+          objective: result.data.objective,
+          overview: result.data.overview,
+          preparation: result.data.preparation,
+          agenda: result.data.agenda,
+          materials: result.data.materials,
+          description: result.data.description, 
+          selectedProject: result.data.project
+        });
+      });
+    }
+
   }
 
   handleSelectInputChange = selectedOption => {
@@ -134,6 +137,7 @@ class Form extends Component {
 
   addOrganization = event => {
     event.preventDefault();
+<<<<<<< HEAD
     console.log('Hello');
     const { value } = event.target;
     const orgOps = this.state.organizationOpts;
@@ -142,6 +146,21 @@ class Form extends Component {
       // organization: value,
       organizations: this.state.organizationOpts
     })
+=======
+    const { value } = event.target;
+    console.log('called add organization with value: ' + event.target);
+    //save new organization to database
+    api.saveOrganization(value).then((result)=>{
+      console.log(value);
+    });
+
+    //get organizations from DB again?
+    // this.state.organizationOpts.push(value);
+    // this.setState({
+    //   // organization: value,
+    //   organizations: this.state.organizationOpts
+    // })
+>>>>>>> 64f7cfe2224468098f05a6bfe1ec4e70628c3f99
   }
 
 
@@ -202,7 +221,7 @@ class Form extends Component {
         <div className="d-flex justify-content-around">
           <label>Organization</label>
           <Select className="org-select" name="orgs" form="organization" type="list"
-            //value={this.state.selectedOption}
+            //value={this.state.selectedOrganization}
             onChange={this.handleSelectInputChange}
             options={this.state.organizationOpts}
           />
@@ -216,18 +235,18 @@ class Form extends Component {
             contentLabel="Example Modal"
             
           >
-            <h2 ref={subtitle => this.subtitle = subtitle}>Hello</h2>
-            <button onClick={this.closeModal} style={{color:'white'}}>close</button>
-            <div>Add an organization or project</div>
+            <h2 ref={subtitle => this.subtitle = subtitle}>Add</h2>
+            <button id="closeBtn" onClick={this.closeModal} style={{color:'white'}}>close</button>
+            <div> Name:</div>
             <form>
-              <input />
-              <button onClick={this.addOrganization} style={{color:'white'}}>Submit</button>
+              <input name="organizationInput" />
+              <button onClick=  {this.addOrganization} style={{color:'white'}}>Submit</button>
             </form>
           </Modal>
 
           <label>Projects</label>
           <Select className="proj-select" name="proj" form="projects" type="list"
-           // value={this.state.selectedOption}
+            value={this.state.selectedProject}
             onChange={this.handleProjectSelectInputChange}
             options={this.state.projsOptions}
           />
