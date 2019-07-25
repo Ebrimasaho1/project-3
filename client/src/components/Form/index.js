@@ -52,7 +52,7 @@ class Form extends Component {
     if (this.state.lessonId && this.state.lessonId !== "") {
       api.getLessonPlan(this.state.lessonId).then((result) => {
         console.log("Title from database:" + result.data.title);
-        this.setState = {
+        this.setState( {
           title: result.data.title,
           objective: result.data.objective,
           overview: result.data.overview,
@@ -60,7 +60,7 @@ class Form extends Component {
           agenda: result.data.agenda,
           materials: result.data.materials,
           description: result.data.description
-        };
+        });
       });
     }
 
