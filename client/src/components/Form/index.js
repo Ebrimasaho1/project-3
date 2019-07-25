@@ -133,9 +133,11 @@ class Form extends Component {
   };
 
   addOrganization = event => {
+    event.preventDefault();
     console.log('Hello');
     const { value } = event.target;
-    this.state.organizationOpts.push(value);
+    const orgOps = this.state.organizationOpts;
+    orgOps.push(value);
     this.setState({
       // organization: value,
       organizations: this.state.organizationOpts
@@ -212,6 +214,7 @@ class Form extends Component {
             onAfterOpen={this.afterOpenModal}
             onRequestClose={this.closeModal}
             contentLabel="Example Modal"
+            
           >
             <h2 ref={subtitle => this.subtitle = subtitle}>Hello</h2>
             <button onClick={this.closeModal} style={{color:'white'}}>close</button>
