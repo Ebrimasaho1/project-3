@@ -6,7 +6,8 @@ import { Redirect } from 'react-router-dom';
 //import Dashboard from "./Dashboard";
 import "./login.css";
 
-import api from '../utils/api'
+import api from '../utils/api';
+import welcome from './welcome.png'
 
 
 class Login extends Component {
@@ -60,10 +61,10 @@ class Login extends Component {
         transform: 'translate(-50%, -50%)'
     }}>
 
-<img  className='welcome' alt="Welcome"></img>
+<img src={welcome} className='welcome' alt="Welcome"></img>
           <div className="Container">
            
-          <GoogleLogin className="mx-auto"
+          <GoogleLogin className="mx-auto" id="loginBut"
             clientId="547450952468-l421k7hpgmguervl65qd35ci8gpvrgs7.apps.googleusercontent.com"
             buttonText="Login with Google"
             onSuccess={this.responseGoogle}

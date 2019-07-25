@@ -11,7 +11,10 @@
       
 }
 .welcome{
-    background-image: url('./welcome.png');
-    height:195px;
-    width:175px;
+    height:110px;
+    width:110px;
+}
+#loginBut{
+    background-color: rgba(22, 69, 114, 0.911);
+    box-shadow: 5px 10px #888888;
 }
