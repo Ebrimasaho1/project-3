@@ -5,14 +5,14 @@ import Modal from 'react-modal';
 import Select from 'react-select';
 
 //FORM VALIDATION
-function Validate(title, email, objective, overview, preparation, agenda, materials, description){
-  const errors = [];
-  if (title.length === 0 || email.length || objective.length || overview.length 
-      || preparation.length || agenda.length || materials.length || description.length ) {
-      errors.push("Title can't be empty");
-    }
-    return errors;
-}
+// function Validate(title, email, objective, overview, preparation, agenda, materials, description){
+//   const errors = [];
+//   if (title.length === 0 || email.length || objective.length || overview.length 
+//       || preparation.length || agenda.length || materials.length || description.length ) {
+//       errors.push("Title can't be empty");
+//     }
+//     return errors;
+// }
 
 class Form extends Component {
   constructor(props) {
@@ -223,9 +223,9 @@ class Form extends Component {
             onRequestClose={this.closeModal}
             contentLabel="Example Modal"
           >
-            <h2 ref={subtitle => this.subtitle = subtitle}>Hello</h2>
-            <button onClick={this.closeModal}>close</button>
-            <div>Add an organization or project</div>
+            <h2 ref={subtitle => this.subtitle = subtitle}>Add</h2>
+            <button id="closeBtn" onClick={this.closeModal}>close</button>
+            <div> Name:</div>
             <form>
               <input name="organizationInput" />
               <button onClick=  {this.addOrganization}>Submit</button>
