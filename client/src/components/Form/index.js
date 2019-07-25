@@ -137,7 +137,8 @@ class Form extends Component {
 
   addOrganization = event => {
     event.preventDefault();
-<<<<<<< HEAD
+    console.log(event.value);
+    
     console.log('Hello');
     const { value } = event.target;
     const orgOps = this.state.organizationOpts;
@@ -146,21 +147,6 @@ class Form extends Component {
       // organization: value,
       organizations: this.state.organizationOpts
     })
-=======
-    const { value } = event.target;
-    console.log('called add organization with value: ' + event.target);
-    //save new organization to database
-    api.saveOrganization(value).then((result)=>{
-      console.log(value);
-    });
-
-    //get organizations from DB again?
-    // this.state.organizationOpts.push(value);
-    // this.setState({
-    //   // organization: value,
-    //   organizations: this.state.organizationOpts
-    // })
->>>>>>> 64f7cfe2224468098f05a6bfe1ec4e70628c3f99
   }
 
 
