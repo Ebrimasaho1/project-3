@@ -36,23 +36,7 @@ class Form extends Component {
   }
 
   componentDidMount() {
-    //populate lessonplan data with existing lesson plan (coming from dashboard click - not working)
-    console.log("Lesson id in form:" + this.state.lessonId);
-    if (this.state.lessonId && this.state.lessonId !== "") {
-      api.getLessonPlan(this.state.lessonId).then((result) => {
-        console.log("Title from database:" + result.data.title);
-        this.setState( {
-          title: result.data.title,
-          objective: result.data.objective,
-          overview: result.data.overview,
-          preparation: result.data.preparation,
-          agenda: result.data.agenda,
-          materials: result.data.materials,
-          description: result.data.description
-        });
-      });
-    }
-
+    
     //populate organization combo box with all orgs from db
     api.getOrganizations().then((result) => {
       var orgsFromDB = result.data;
@@ -69,6 +53,25 @@ class Form extends Component {
       );
       console.log("orgsOptions = " + JSON.stringify(this.state.organizationOpts));
     });
+
+    //populate lessonplan data with existing lesson plan (coming from dashboard click - not working)
+    console.log("Lesson id in form:" + this.state.lessonId);
+    if (this.state.lessonId && this.state.lessonId !== "") {
+      api.getLessonPlan(this.state.lessonId).then((result) => {
+        console.log("Title from database:" + result.data.title);
+        this.setState( {
+          title: result.data.title,
+          objective: result.data.objective,
+          overview: result.data.overview,
+          preparation: result.data.preparation,
+          agenda: result.data.agenda,
+          materials: result.data.materials,
+          description: result.data.description, 
+          selectedProject: result.data.project
+        });
+      });
+    }
+
   }
 
   handleSelectInputChange = selectedOption => {
@@ -122,13 +125,20 @@ class Form extends Component {
   };
 
   addOrganization = event => {
-    console.log('Hello');
+    event.preventDefault();
     const { value } = event.target;
-    this.state.organizationOpts.push(value);
-    this.setState({
-      // organization: value,
-      organizations: this.state.organizationOpts
-    })
+    console.log('called add organization with value: ' + event.target);
+    //save new organization to database
+    api.saveOrganization(value).then((result)=>{
+      console.log(value);
+    });
+
+    //get organizations from DB again?
+    // this.state.organizationOpts.push(value);
+    // this.setState({
+    //   // organization: value,
+    //   organizations: this.state.organizationOpts
+    // })
   }
 
 
@@ -189,7 +199,7 @@ class Form extends Component {
         <div className="d-flex justify-content-around">
           <label>Organization</label>
           <Select className="org-select" name="orgs" form="organization" type="list"
-            //value={this.state.selectedOption}
+            //value={this.state.selectedOrganization}
             onChange={this.handleSelectInputChange}
             options={this.state.organizationOpts}
           />
@@ -206,14 +216,14 @@ class Form extends Component {
             <button onClick={this.closeModal}>close</button>
             <div>Add an organization or project</div>
             <form>
-              <input />
-              <button onClick={this.addOrganization}>Submit</button>
+              <input name="organizationInput" />
+              <button onClick=  {this.addOrganization}>Submit</button>
             </form>
           </Modal>
 
           <label>Projects</label>
           <Select className="proj-select" name="proj" form="projects" type="list"
-           // value={this.state.selectedOption}
+            value={this.state.selectedProject}
             onChange={this.handleProjectSelectInputChange}
             options={this.state.projsOptions}
           />
