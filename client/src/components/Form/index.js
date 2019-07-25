@@ -224,11 +224,11 @@ class Form extends Component {
             contentLabel="Example Modal"
           >
             <h2 ref={subtitle => this.subtitle = subtitle}>Add</h2>
-            <button id="closeBtn" onClick={this.closeModal}>close</button>
+            <button id="closeBtn" onClick={this.closeModal} style={{color:'white'}}>close</button>
             <div> Name:</div>
             <form>
               <input name="organizationInput" />
-              <button onClick=  {this.addOrganization}>Submit</button>
+              <button onClick=  {this.addOrganization} style={{color:'white'}}>Submit</button>
             </form>
           </Modal>
 
