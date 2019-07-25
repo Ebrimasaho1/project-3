@@ -4,6 +4,16 @@ import api from '../../utils/api'
 import Modal from 'react-modal';
 import Select from 'react-select';
 
+//FORM VALIDATION
+function Validate(title, email, objective, overview, preparation, agenda, materials, description){
+  const errors = [];
+  if (title.length === 0 || email.length || objective.length || overview.length 
+      || preparation.length || agenda.length || materials.length || description.length ) {
+      errors.push("Title can't be empty");
+    }
+    return errors;
+}
+
 class Form extends Component {
   constructor(props) {
     super(props);
@@ -23,7 +33,8 @@ class Form extends Component {
       modalIsOpen: false,
       lessonId: props.lessonId,
       organizationOpts: [],
-      projsOptions: []
+      projsOptions: [],
+      errors: []
 
     };
 
@@ -192,7 +203,7 @@ class Form extends Component {
       <div className="container">
         <h1>
           <label>Title:</label>
-          <input type="text" className="form-control" id="title" placeholder=""
+          <input type="text" className="form-control" id="title" placeholder="" 
             name="title" value={this.state.title} onChange={this.handleInputChange}></input>
         </h1>
 
@@ -203,7 +214,7 @@ class Form extends Component {
             onChange={this.handleSelectInputChange}
             options={this.state.organizationOpts}
           />
-          <button type="button" className="btn btn-secondary" onClick={this.openModal}>
+          <button type="button" className="btn btn-secondary" id="addNew" onClick={this.openModal}>
             Add New
            </button>
           <Modal
@@ -227,7 +238,7 @@ class Form extends Component {
             onChange={this.handleProjectSelectInputChange}
             options={this.state.projsOptions}
           />
-          <button type="button" className="btn btn-secondary" onClick={this.openModal}>
+          <button type="button" className="btn btn-secondary" id="addNew" onClick={this.openModal}>
             Add New
            </button>
         </div>
