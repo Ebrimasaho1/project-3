@@ -15,7 +15,7 @@ db.LessonPlan.create([{ title: 'Test Lesson Plan' }])
     ]).then(([users,projects ]) => {
       db.Organization.create([{ name: 'Cub Scouts Pack', projects: projects }]).then(([organizations])=>{
         console.log(JSON.stringify(organizations));
-        return db.Project.updateOne(projects[0], {name:'Webelos2 Den', organization: organizations}).then(()=>{
+        return db.Project.updateOne(projects[0], {name:'ibra persie', organization: organizations}).then(()=>{
           return db.LessonPlan.updateOne(lessonPlans[0], {user:users[0], project:projects[0]})
         });
       });

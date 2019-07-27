@@ -2,12 +2,18 @@ input, textarea {
   margin-bottom: 20px;
 }
 .org-select{
-  width: 100px;
+  width: 150px;
   color:black;
 }
-
+.proj-select{
+  width:150px;
+}
 #links, #attach {
   width: 200px;
+}
+
+#closeBtn{
+float:right;
 }
 
 #submit {
@@ -22,6 +28,37 @@ input, textarea {
   border-color: green;
 }
 
+
 button {
   height: 40px;
+  box-shadow: 5px 10px #888888;
+  background-color: rgba(22, 69, 114, 0.911);
+}
+#addNew{
+  background-color: rgba(22, 69, 114, 0.911);
+}
+#title{
+  border:solid;
+  box-shadow: 5px 10px   #888888;
+}
+#objective{
+  border:solid;
+}
+#overview{
+  border:solid;
+}
+#preparation{
+  border:solid;
+}
+#agenda{
+  border:solid;
+}
+#materials{
+  border:solid;
+}
+#description{
+  border:solid;
+}
+#submit{
+  background-color: rgba(22, 69, 114, 0.911);
 }
