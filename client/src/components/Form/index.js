@@ -125,6 +125,35 @@ class Form extends Component {
     this.setState({ selectedProject: selectedOption.value });
   };
 
+  updateOrgOptions = (name, id) => {
+    //function to update select options -- not functional -- add blank org
+    var newOrg = { value: id, label: name };
+    this.state.organizationOpts.push(newOrg);
+
+    this.setState({
+      organizationOpts : this.state.organizationOpts,
+      selectedOrganization: id, 
+      selectedOrg : newOrg
+    });
+    this.setState(
+      this.state
+    );
+  }
+
+  setSelectedProject = (name, id) => {
+    //function to update the project options in select -- not functional
+    var newProj = {value: id, label: name};
+    this.state.projsOptions.push(newProj);
+
+    this.setState({
+      projsOptions : this.state.projsOptions,
+      selectedProject: id,
+      selectedProj : newProj
+    });
+    this.setState(
+      this.state
+    );
+  }
 
   handleInputChange = event => {
     const { name, value } = event.target;
@@ -177,6 +206,8 @@ class Form extends Component {
     });
   };
 
+ 
+
   openModal = (operation) => {
     //console.log("operation in open modal:" + operation);
     this.setState({
@@ -208,7 +239,8 @@ class Form extends Component {
           <button type="button" className="btn btn-secondary" id="addNew" onClick={() => { this.openModal("Organization") }}>
             Add New
            </button>
-          <AddModal selectedOrganization={this.state.selectedOrganization} addOperation={this.state.addOperation} isModalOpen={this.state.isModalOpen} closeModal={this.closeModal} />
+          <AddModal selectedOrganization={this.state.selectedOrganization} addOperation={this.state.addOperation} isModalOpen={this.state.isModalOpen} closeModal={this.closeModal} 
+          setSelectedOrganization = {this.updateOrgOptions} setSelectedProject = {this.setSelectedProject}/>
 
           <label>Projects</label>
           <Select className="proj-select" name="proj" form="projects" type="list"
