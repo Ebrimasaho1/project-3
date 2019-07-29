@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Redirect } from 'react-router-dom';
 import api from "../utils/api";
 import LessonPlans from "../components/LessonPlans";
-import Header from "../components/Header";
 
 
 class Search extends Component {
