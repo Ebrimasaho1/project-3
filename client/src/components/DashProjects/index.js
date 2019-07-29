@@ -2,6 +2,7 @@ import React from 'react';
 import './dashproj.css'
 import { Link } from 'react-router-dom';
 import api from '../../utils/api';
+import DeleteBtn from '../DeleteBtn';
 
 class DashProjects extends React.Component {
 
@@ -34,8 +35,9 @@ class DashProjects extends React.Component {
           <div className="col-md-4">
             <p>{lesson.project.name}</p>
           </div>
-          <div className="col-md-4">
+          <div className="col-md-4 d-flex justify-content-between">
             <p>{lesson.project.organization.name}</p>
+            <DeleteBtn />
           </div>
         </div>
       ))
