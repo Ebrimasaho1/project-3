@@ -29,5 +29,9 @@ export default {
   saveProject: function(project){
     console.log("Project name to save: " + project.name);
     return axios.post("api/projects/", project);
+  },
+  searchLessonPlans: function(keyWords){
+    return axios.get("api/search/"+keyWords);
+
   }
 };

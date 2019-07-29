@@ -20,7 +20,8 @@ module.exports = {
   findByTitle: function (req, res) {
     db.LessonPlan
       .find({ title: { $regex: '.*' + req.params.words + '.*' } })
-      .limit(5)
+      .populate({path:'project', populate: {path:'organization'}})
+      .limit(10)
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },

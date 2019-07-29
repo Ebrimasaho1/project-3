@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 //import "./addmodal.css";
 import Modal from 'react-modal';
-import api from '../../utils/api'
+  import api from '../../utils/api'
 
 class AddModal extends Component {
 
