@@ -20,6 +20,19 @@ class DashProjects extends React.Component {
     });
   }
 
+  updateLessons = (id) => {
+    console.log("Update lessons called with id: " + id);
+    for (var i = 0; i < this.state.lessons.length; i++) {
+      if (this.state.lessons[i]._id === id) {
+        this.state.lessons.splice(i, 1);
+        this.setState(
+          {lessons : this.state.lessons}
+        );
+      }
+    }
+  }
+
+
   render() {
 
     return (
@@ -30,14 +43,14 @@ class DashProjects extends React.Component {
               pathname: '/lessonPlan',
               state: { id: lesson._id }
             }}>{lesson.title}</Link>
-      
+
           </div>
           <div className="col-md-4">
             <p>{lesson.project.name}</p>
           </div>
           <div className="col-md-4 d-flex justify-content-between">
             <p>{lesson.project.organization.name}</p>
-            <DeleteBtn />
+            <DeleteBtn lessonId={lesson._id} updateLessons={this.updateLessons} />
           </div>
         </div>
       ))

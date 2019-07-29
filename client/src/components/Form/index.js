@@ -228,9 +228,9 @@ class Form extends Component {
         <textarea type="text" className="form-control" id="overview" placeholder=""
           name="overview" value={this.state.overview} onChange={this.handleInputChange}></textarea>
 
-        <label>Preparation</label>
+        {/* <label>Preparation</label>
         <textarea type="text" className="form-control" id="preparation" placeholder=""
-          name="preparation" value={this.state.preparation} onChange={this.handleInputChange}></textarea>
+          name="preparation" value={this.state.preparation} onChange={this.handleInputChange}></textarea> */}
 
         <label>Agenda</label>
         <textarea type="text" className="form-control" id="agenda" placeholder=""
