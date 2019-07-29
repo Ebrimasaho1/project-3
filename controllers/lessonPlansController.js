@@ -1,3 +1,4 @@
+
 const db = require("../models");
 
 module.exports = {
@@ -13,6 +14,7 @@ module.exports = {
     db.LessonPlan
       .findById(req.params.id)
       .then(dbModel => res.json(dbModel))
+
       .catch(err => res.status(422).json(err));
   },
   findByTitle: function (req, res) {
@@ -29,21 +31,24 @@ module.exports = {
         console.log("Lesson plan created:" + dbLessonPlanModel.user);
         Promise.all([
           db.User.findById(dbLessonPlanModel.user).then((userModel) => {
+
+
             console.log("User Model: " + JSON.stringify(userModel));
             userModel.lessonPlans.push(dbLessonPlanModel);
-            db.User.update(userModel).then(userUpdated => {
-              console.log("User updated: " + JSON.stringify(userUpdated));
-            });
+            db.User.updateOne({ _id: userModel._id }, { lessonPlans: userModel.lessonPlans })
+              .then(userUpdated => {
+                console.log("User updated: " + JSON.stringify(userUpdated));
+              });
           }),
           db.Project.findById(dbLessonPlanModel.project).then((projectModel) => {
             console.log("Project Model: " + JSON.stringify(projectModel));
             projectModel.lessonPlans.push(dbLessonPlanModel);
-            db.Project.update(projectModel).then(projectUpdated => {
+            db.Project.updateOne({ _id: projectModel._id }, { lessonPlans: projectModel.lessonPlans }).then(projectUpdated => {
               console.log("Project updated: " + JSON.stringify(projectUpdated));
             });
           })
         ]).then((user, project) => {
-          console.log("User and project updated" );
+          console.log("User and project updated");
         });
         return res.json(dbLessonPlanModel);
       })
