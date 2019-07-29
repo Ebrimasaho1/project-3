@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import './form.css'
 import api from '../../utils/api'
-import Modal from 'react-modal';
+
 import Select from 'react-select';
+import AddModal from "../AddModal";
 
 //FORM VALIDATION
 // function Validate(title, email, objective, overview, preparation, agenda, materials, description){
@@ -28,26 +29,24 @@ class Form extends Component {
       description: "",
       organization: "",
 
-      selectedOrganization: "",
-      selectedProject:"",
-      modalIsOpen: false,
       lessonId: props.lessonId,
-      organizationOpts: [],
-      projsOptions: [],
       errors: [],
-      newOrganization: ""
+
+      isModalOpen: false,
+      addOperation: "",
+
+      selectedOrganization: "",
+      selectedProject: "",
+      organizationOpts: [],
+      projsOptions: []
+
     };
 
-    this.handleSelectInputChange = this.handleSelectInputChange.bind(this);
     this.openModal = this.openModal.bind(this);
-    this.afterOpenModal = this.afterOpenModal.bind(this);
-    this.closeModal = this.closeModal.bind(this);
-    this.addOrganization = this.addOrganization.bind(this);
-
+    this.handleSelectOrganizationInputChange = this.handleSelectOrganizationInputChange.bind(this);
   }
 
-  componentDidMount() {
-    
+  loadOrganizations() {
     //populate organization combo box with all orgs from db
     api.getOrganizations().then((result) => {
       var orgsFromDB = result.data;
@@ -64,69 +63,68 @@ class Form extends Component {
       );
       console.log("orgsOptions = " + JSON.stringify(this.state.organizationOpts));
     });
+  }
 
-    //populate lessonplan data with existing lesson plan (coming from dashboard click - not working)
+  loadLessonPlan() {
+    //populate lessonplan data with existing lesson plan (coming from dashboard click)
     console.log("Lesson id in form:" + this.state.lessonId);
     if (this.state.lessonId && this.state.lessonId !== "") {
       api.getLessonPlan(this.state.lessonId).then((result) => {
         console.log("Title from database:" + result.data.title);
-        this.setState( {
+        this.setState({
           title: result.data.title,
           objective: result.data.objective,
           overview: result.data.overview,
           preparation: result.data.preparation,
           agenda: result.data.agenda,
           materials: result.data.materials,
-          description: result.data.description, 
+          description: result.data.description,
           selectedProject: result.data.project
         });
       });
     }
-
   }
 
-  handleSelectInputChange = selectedOption => {
-    //this setState is not working
-    console.log("Selected option value = " + selectedOption.value);
-    this.setState({ selectedOrganization : selectedOption.value});
-    console.log("Option selected:" + this.state.selectedOrganization);
+  componentDidMount() {
+    this.loadOrganizations();
+    this.loadLessonPlan();
+    if(this.state.selectedOrganization){
+      this.populateProjectsForSelectedOrg(this.state.selectedOrganization);
+    }
+  }
+
+  populateProjectsForSelectedOrg(orgId) {
     //populate the projects from db
-    api.getOrganizationWithProjects(selectedOption.value).then((org) => {
+    var projsOptions = [];
+    api.getOrganizationWithProjects(orgId).then((org) => {
       console.log(JSON.stringify(org.data));
       var projects = org.data.projects;
-      var projsOptions = [];
-      for (var i = 0; i < projects.length; i++) {
-        console.log("Value " + i + " id =" + projects[i]._id + " value = " + projects[i].name);
-        projsOptions[i] = { value: projects[i]._id, label: projects[i].name };
-        this.state.projsOptions.push(projsOptions[i]);
+      if (projects) {
+        for (var i = 0; i < projects.length; i++) {
+          console.log("Value " + i + " id =" + projects[i]._id + " value = " + projects[i].name);
+          projsOptions[i] = { value: projects[i]._id, label: projects[i].name };
+          this.state.projsOptions.push(projsOptions[i]);
+        }
       }
-
-      this.setState(
-        this.state
-      );
-
-      console.log("Project options in state: " + JSON.stringify(this.state.projsOptions));
+      this.setState({
+        projsOptions : projsOptions
+      });
     });
-  };
-
-  handleProjectSelectInputChange = selectedOption => {
-    this.setState({ selectedProject : selectedOption.value});
-    console.log(`Option selected:`, this.state.selectedProject);
-  };
-
-  openModal = () => {
-    //console.log("this in open modal:" + JSON.stringify(this));
-    this.setState({ modalIsOpen: true });
-  };
-
-  closeModal = () => {
-    this.setState({ modalIsOpen: false });
-  };
-
-  afterOpenModal = () => {
-    // references are now sync'd and can be accessed.
-    this.subtitle.style.color = '#f00';
   }
+
+  handleSelectOrganizationInputChange = selectedOption => {
+
+    console.log("Selected organization = " + selectedOption.value);
+    var orgId = selectedOption.value;
+    this.setState({ selectedOrganization: orgId });
+    //console.log("Option selected:" + this.state.selectedOrganization);
+    this.populateProjectsForSelectedOrg(orgId);
+  };
+
+  handleSelectProjectInputChange = selectedOption => {
+    this.setState({ selectedProject: selectedOption.value });
+  };
+
 
   handleInputChange = event => {
     const { name, value } = event.target;
@@ -135,33 +133,6 @@ class Form extends Component {
     });
   };
 
-  addOrganization = event => {
-    event.preventDefault();
-    
-    console.log(this.state.newOrganization);
-    //save new organization to database
-    var orgObj = {
-      name : this.state.newOrganization,
-      projects : []
-    }
-    api.saveOrganization(orgObj).then((result)=>{
-      console.log(result);
-    });
-
-    //get organizations from DB again?
-    // this.state.organizationOpts.push(value);
-    // this.setState({
-    //   // organization: value,
-    //   organizations: this.state.organizationOpts
-    // })
-  }
-
-handleAddOrganizationChange = (event) =>{
-  const { value } = event.target;
-  this.setState({
-    newOrganization : value
-  })
-} 
 
   handleFormSubmit = event => {
     event.preventDefault();
@@ -206,6 +177,17 @@ handleAddOrganizationChange = (event) =>{
     });
   };
 
+  openModal = (operation) => {
+    //console.log("operation in open modal:" + operation);
+    this.setState({
+      isModalOpen: true,
+      addOperation: operation
+    });
+  };
+
+  closeModal = () => {
+    this.setState({ isModalOpen: false });
+  };
 
   render() {
     // const { selectedOption } = ;
@@ -213,42 +195,27 @@ handleAddOrganizationChange = (event) =>{
       <div className="container">
         <h1>
           <label>Title:</label>
-          <input type="text" className="form-control" id="title" placeholder="" 
+          <input type="text" className="form-control" id="title" placeholder=""
             name="title" value={this.state.title} onChange={this.handleInputChange}></input>
         </h1>
 
         <div className="d-flex justify-content-around">
           <label>Organization</label>
           <Select className="org-select" name="orgs" form="organization" type="list"
-            //value={this.state.selectedOrganization}
-            onChange={this.handleSelectInputChange}
+            onChange={this.handleSelectOrganizationInputChange}
             options={this.state.organizationOpts}
           />
-          <button type="button" className="btn btn-secondary" id="addNew" onClick={this.openModal}>
+          <button type="button" className="btn btn-secondary" id="addNew" onClick={() => { this.openModal("Organization") }}>
             Add New
            </button>
-          <Modal
-            isOpen={this.state.modalIsOpen}
-            onAfterOpen={this.afterOpenModal}
-            onRequestClose={this.closeModal}
-            contentLabel="Example Modal"
-          >
-            <h2 ref={subtitle => this.subtitle = subtitle}>Add</h2>
-            <button id="closeBtn" onClick={this.closeModal} style={{color:'white'}}>close</button>
-            <div> Name:</div>
-            <form onSubmit={this.addOrganization}>
-              <input name="organizationInput" onChange={this.handleAddOrganizationChange} />
-              <button  type="submit" style={{color:'white'}}>Submit</button>
-            </form>
-          </Modal>
+          <AddModal selectedOrganization={this.state.selectedOrganization} addOperation={this.state.addOperation} isModalOpen={this.state.isModalOpen} closeModal={this.closeModal} />
 
           <label>Projects</label>
           <Select className="proj-select" name="proj" form="projects" type="list"
-            value={this.state.selectedProject}
-            onChange={this.handleProjectSelectInputChange}
+            onChange={this.handleSelectProjectInputChange}
             options={this.state.projsOptions}
           />
-          <button type="button" className="btn btn-secondary" id="addNew" onClick={this.openModal}>
+          <button type="button" className="btn btn-secondary" id="addNew" onClick={() => { this.openModal("Project") }}>
             Add New
            </button>
         </div>

@@ -2,11 +2,11 @@ input, textarea {
   margin-bottom: 20px;
 }
 .org-select{
-  width: 100px;
+  width: 150px;
   color:black;
 }
 .proj-select{
-  width:100px;
+  width:150px;
 }
 #links, #attach {
   width: 200px;

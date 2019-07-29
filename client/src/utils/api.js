@@ -22,5 +22,9 @@ export default {
   saveOrganization: function(organization){
     console.log("organization name to save: " + organization.name);
     return axios.post("api/organizations/", organization);
+  }, 
+  saveProject: function(project){
+    console.log("Project name to save: " + project.name);
+    return axios.post("api/projects/", project);
   }
 };
