@@ -56,7 +56,7 @@ class Form extends Component {
         console.log("Value " + i + " id =" + orgsFromDB[i]._id + " value = " + orgsFromDB[i].name);
         orgsOptions[i] = { value: orgsFromDB[i]._id, label: orgsFromDB[i].name };
         this.state.organizationOpts.push(orgsOptions[i]);
-      }
+      };
 
       this.setState(
         this.state
@@ -64,6 +64,25 @@ class Form extends Component {
       console.log("orgsOptions = " + JSON.stringify(this.state.organizationOpts));
     });
   }
+
+   //starting to load project options
+   loadProjects() {
+    //populate organization combo box with all orgs from db
+    api.getProjects().then((result) => {
+      var projsFromDB = result.data;
+      var projsOptions = [];
+      console.log("Projects within an Organization: " + JSON.stringify(result.data));
+      for (var i = 0; i < projsFromDB.length; i++) {
+        console.log("Value " + i + " id =" + projsFromDB[i]._id + " value = " + projsFromDB[i].name);
+        projsOptions[i] = { value: projsFromDB[i]._id, label: projsFromDB[i].name };
+        this.state.projsOptions.push(projsOptions[i]);
+      }
+        this.setState(
+          this.state
+        );
+        console.log("orgsOptions = " + JSON.stringify(this.state.projsOptions));
+      });
+      }
 
   loadLessonPlan() {
     //populate lessonplan data with existing lesson plan (coming from dashboard click)
@@ -126,18 +145,24 @@ class Form extends Component {
   };
 
   updateOrgOptions = (name, id) => {
+    console.log('did updateorgoptions run?');
+    
     //function to update select options -- not functional -- add blank org
-    var newOrg = { value: id, label: name };
-    this.state.organizationOpts.push(newOrg);
+    const newOrg = { value: id, label: name };
+    console.log(newOrg);
+    
+    const newOrgOpts = this.state.organizationOpts;
+
+    newOrgOpts.push(newOrg);
 
     this.setState({
-      organizationOpts : this.state.organizationOpts,
+      organizationOpts : newOrgOpts,
       selectedOrganization: id, 
       selectedOrg : newOrg
     });
-    this.setState(
-      this.state
-    );
+    // this.setState(
+    //   this.state
+    // );
   }
 
   setSelectedProject = (name, id) => {

@@ -42,7 +42,7 @@ class AddModal extends Component {
       api.saveOrganization(orgObj).then((result) => {
         console.log(result);
         //call function to update select options with new organization
-        this.props.setSelectedOrganization(result.name, result._id);
+        this.props.setSelectedOrganization(result.data.name, result.data._id);
       });
     } else {
       console.log("Selected Organization inside modal: " + this.props.selectedOrganization);
@@ -55,7 +55,7 @@ class AddModal extends Component {
         api.saveProject(projObj).then((result) => {
           console.log(result);
           //call function to update project options in select with new project
-          this.props.setSelectedProject(result.name, result._id);
+          this.props.setSelectedProject(result.data.name, result.data._id);
         });
       }
     }
