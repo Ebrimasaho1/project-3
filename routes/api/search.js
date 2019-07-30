@@ -5,4 +5,9 @@ const lessonPlansController = require("../../controllers/lessonPlansController")
 router.route("/:words")
   .get(lessonPlansController.findByTitle);
 
+// router.route("/:words")
+// .get(organizationsController.findAll);
+
+// router.route("/:words")
+// .get()
   module.exports = router;

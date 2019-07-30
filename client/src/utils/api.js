@@ -34,4 +34,7 @@ export default {
     return axios.get("api/search/"+keyWords);
 
   }
+  // searchProjects: function(keyword){
+  //   return axios.get("api/search/"+keyWords);
+  // }
 };
