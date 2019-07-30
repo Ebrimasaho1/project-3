@@ -17,7 +17,7 @@ class LessonPlan extends React.Component {
         <div className="col-md-4">
           <p>{this.props.lesson.project.name}</p>
         </div>
-        <div className="col-md-4 d-flex justify-content-between">
+        <div className="col-md-3">
           <p>{this.props.lesson.project.organization.name}</p>
         </div>
       </React.Fragment>

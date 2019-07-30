@@ -31,7 +31,7 @@ float:right;
 
 button {
   height: 40px;
-  box-shadow: 5px 10px #888888;
+  box-shadow: 2px 4px #888888;
   background-color: rgba(22, 69, 114, 0.911);
 }
 #addNew{
