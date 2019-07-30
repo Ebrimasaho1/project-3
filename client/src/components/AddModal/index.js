@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 //import "./addmodal.css";
 import Modal from 'react-modal';
   import api from '../../utils/api'
+  import './modal.css'
 
 class AddModal extends Component {
 
@@ -73,7 +74,7 @@ class AddModal extends Component {
 
   render() {
     return (
-      <Modal
+      <Modal id="modal"
         isOpen={this.props.isModalOpen}
         onAfterOpen={this.afterOpenModal}
         onRequestClose={this.closeModal}
