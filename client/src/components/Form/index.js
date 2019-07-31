@@ -4,6 +4,7 @@ import api from '../../utils/api'
 
 import Select from 'react-select';
 import AddModal from "../AddModal";
+import Modal from 'react-modal';
 
 //FORM VALIDATION
 // function Validate(title, email, objective, overview, preparation, agenda, materials, description){
@@ -37,8 +38,9 @@ class Form extends Component {
       addOperation: "",
       
       organizationOpts: [],
-      projsOptions: []
-
+      projsOptions: [],
+      //Second modal for for saving. Serves as a popover
+      showModal: false
     };
 
     this.openModal = this.openModal.bind(this);
@@ -192,10 +194,12 @@ class Form extends Component {
     if (this.state.lessonId === "") {
       api.saveLessonPlan(lessonPlan).then((result) => {
         console.log("Lesson Plan saved");
+        this.handleOpenModal();
       });
     } else {
       api.updateLessonPlan(this.state.lessonId, lessonPlan).then((result) => {
         console.log("lesson plan updated");
+        this.handleOpenModal();
       });
     }
   };
@@ -222,6 +226,14 @@ class Form extends Component {
   closeModal = () => {
     this.setState({ isModalOpen: false });
   };
+
+  //for popover
+  handleOpenModal = () => {
+    this.setState({showModal:true})
+  }
+  handleCloseModal = () => {
+    this.setState({showModal:false})
+  }
 
   render() {
     // const { selectedOption } = ;
@@ -298,7 +310,13 @@ class Form extends Component {
 
         <div className="d-flex justify-content-end">
           <button type="submit" id="submit" className="btn btn-primary userSubmit" onClick={this.handleFormSubmit} disabled={this.forbidSave()}>Save</button>
+
+          <Modal className="saveModal" isOpen={this.state.showModal} contentLabel='Form Save'>
+          <button  onClick={this.handleCloseModal}>Close</button>
+          <h1 class="saveConfirm">Form has been saved!</h1>
+         </Modal>
         </div>
+        
 
       </div>
 
