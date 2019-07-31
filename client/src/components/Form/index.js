@@ -28,6 +28,7 @@ class Form extends Component {
       materials: "",
       description: "",
       organization: "",
+      disableSave: true,
 
       lessonId: props.lessonId,
       errors: [],
@@ -46,6 +47,11 @@ class Form extends Component {
     this.handleSelectOrganizationInputChange = this.handleSelectOrganizationInputChange.bind(this);
   }
 
+
+  forbidSave() {
+    return (this.state.title !== "" && this.state.selectedOrganization !== "" && this.state.selectedProject !== "") ? false : true;
+  }
+
   loadOrganizations() {
     //populate organization combo box with all orgs from db
     api.getOrganizations().then((result) => {
@@ -61,28 +67,26 @@ class Form extends Component {
       this.setState(
         this.state
       );
-      console.log("orgsOptions = " + JSON.stringify(this.state.organizationOpts));
+      //console.log("orgsOptions = " + JSON.stringify(this.state.organizationOpts));
     });
   }
 
-   //starting to load project options
-   loadProjects() {
-    //populate organization combo box with all orgs from db
-    api.getProjects().then((result) => {
-      var projsFromDB = result.data;
-      var projsOptions = [];
-      console.log("Projects within an Organization: " + JSON.stringify(result.data));
-      for (var i = 0; i < projsFromDB.length; i++) {
-        console.log("Value " + i + " id =" + projsFromDB[i]._id + " value = " + projsFromDB[i].name);
-        projsOptions[i] = { value: projsFromDB[i]._id, label: projsFromDB[i].name };
-        this.state.projsOptions.push(projsOptions[i]);
-      }
-        this.setState(
-          this.state
-        );
-        console.log("orgsOptions = " + JSON.stringify(this.state.projsOptions));
-      });
-      }
+    // loadProjects() {
+    //   api.getProjects().then((result) => {
+    //     var projsFromDB = result.data;
+    //     var projsOptions = [];
+    //     console.log("Projects within an Organization: " + JSON.stringify(result.data));
+    //     for (var i = 0; i < projsFromDB.length; i++) {
+    //       console.log("Value " + i + " id =" + projsFromDB[i]._id + " value = " + projsFromDB[i].name);
+    //       projsOptions[i] = { value: projsFromDB[i]._id, label: projsFromDB[i].name };
+    //       this.state.projsOptions.push(projsOptions[i]);
+    //     }
+    //     this.setState(
+    //       this.state
+    //     );
+    //     console.log("orgsOptions = " + JSON.stringify(this.state.projsOptions));
+    //   });
+    // }
 
   loadLessonPlan() {
     //populate lessonplan data with existing lesson plan (coming from dashboard click)
@@ -98,18 +102,21 @@ class Form extends Component {
           agenda: result.data.agenda,
           materials: result.data.materials,
           description: result.data.description,
-          selectedProject: result.data.project
+          selectedProject: result.data.project,
+          selectedOrganization: result.data.organization
         });
       });
     }
   }
 
   componentDidMount() {
-    this.loadOrganizations();
     this.loadLessonPlan();
-    if(this.state.selectedOrganization){
+    this.loadOrganizations();
+    if (this.state.selectedOrganization) {
       this.populateProjectsForSelectedOrg(this.state.selectedOrganization);
     }
+    var disableSave = this.forbidSave();
+    this.setState({ disableSave });
   }
 
   populateProjectsForSelectedOrg(orgId) {
@@ -126,7 +133,7 @@ class Form extends Component {
         }
       }
       this.setState({
-        projsOptions : projsOptions
+        projsOptions: projsOptions
       });
     });
   }
@@ -141,39 +148,39 @@ class Form extends Component {
   };
 
   handleSelectProjectInputChange = selectedOption => {
-    this.setState({ selectedProject: selectedOption.value });
+    this.setState({
+      selectedProject: selectedOption.value,
+    });
   };
 
   updateOrgOptions = (name, id) => {
     console.log('did updateorgoptions run?');
-    
+
     //function to update select options -- not functional -- add blank org
     const newOrg = { value: id, label: name };
-    console.log(newOrg);
-    
+    //console.log(newOrg);
+
     const newOrgOpts = this.state.organizationOpts;
 
     newOrgOpts.push(newOrg);
 
     this.setState({
-      organizationOpts : newOrgOpts,
-      selectedOrganization: id, 
-      selectedOrg : newOrg
+      organizationOpts: newOrgOpts,
+      selectedOrganization: id,
+      selectedOrg: newOrg
     });
-    // this.setState(
-    //   this.state
-    // );
+
   }
 
   setSelectedProject = (name, id) => {
     //function to update the project options in select -- not functional
-    var newProj = {value: id, label: name};
+    var newProj = { value: id, label: name };
     this.state.projsOptions.push(newProj);
 
     this.setState({
-      projsOptions : this.state.projsOptions,
+      projsOptions: this.state.projsOptions,
       selectedProject: id,
-      selectedProj : newProj
+      selectedProj: newProj
     });
     this.setState(
       this.state
@@ -231,7 +238,7 @@ class Form extends Component {
     });
   };
 
- 
+
 
   openModal = (operation) => {
     //console.log("operation in open modal:" + operation);
@@ -264,8 +271,8 @@ class Form extends Component {
           <button type="button" className="btn btn-secondary" id="addNew" onClick={() => { this.openModal("Organization") }}>
             Add New
            </button>
-          <AddModal selectedOrganization={this.state.selectedOrganization} addOperation={this.state.addOperation} isModalOpen={this.state.isModalOpen} closeModal={this.closeModal} 
-          setSelectedOrganization = {this.updateOrgOptions} setSelectedProject = {this.setSelectedProject}/>
+          <AddModal selectedOrganization={this.state.selectedOrganization} addOperation={this.state.addOperation} isModalOpen={this.state.isModalOpen} closeModal={this.closeModal}
+            setSelectedOrganization={this.updateOrgOptions} setSelectedProject={this.setSelectedProject} />
 
           <label>Projects</label>
           <Select className="proj-select" name="proj" form="projects" type="list"
@@ -318,7 +325,7 @@ class Form extends Component {
         </div> */}
 
         <div className="d-flex justify-content-end">
-          <button type="submit" id="submit" className="btn btn-primary userSubmit" onClick={this.handleFormSubmit}>Save</button>
+          <button type="submit" id="submit" className="btn btn-primary userSubmit" onClick={this.handleFormSubmit} disabled={this.forbidSave()}>Save</button>
         </div>
 
       </div>
