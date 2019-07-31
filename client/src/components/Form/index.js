@@ -28,7 +28,6 @@ class Form extends Component {
       materials: "",
       description: "",
       organization: "",
-      disableSave: true,
 
       lessonId: props.lessonId,
       errors: [],
@@ -50,6 +49,10 @@ class Form extends Component {
 
   forbidSave() {
     return (this.state.title !== "" && this.state.selectedOrganization !== "" && this.state.selectedProject !== "") ? false : true;
+  }
+
+  forbidAddProject(){
+    return (this.state.selectedOrganization === "");
   }
 
   loadOrganizations() {
@@ -279,7 +282,7 @@ class Form extends Component {
             onChange={this.handleSelectProjectInputChange}
             options={this.state.projsOptions}
           />
-          <button type="button" className="btn btn-secondary" id="addNew" onClick={() => { this.openModal("Project") }}>
+          <button type="button" className="btn btn-secondary" id="addNew" disabled={this.forbidAddProject()} onClick={() => { this.openModal("Project") }}>
             Add New
            </button>
         </div>
