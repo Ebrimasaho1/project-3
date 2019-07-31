@@ -27,16 +27,15 @@ class Form extends Component {
       agenda: "",
       materials: "",
       description: "",
-      organization: "",
+      selectedOrganization: "",
+      selectedProject: "",
 
       lessonId: props.lessonId,
       errors: [],
 
       isModalOpen: false,
       addOperation: "",
-
-      selectedOrganization: "",
-      selectedProject: "",
+      
       organizationOpts: [],
       projsOptions: []
 
@@ -51,7 +50,7 @@ class Form extends Component {
     return (this.state.title !== "" && this.state.selectedOrganization !== "" && this.state.selectedProject !== "") ? false : true;
   }
 
-  forbidAddProject(){
+  forbidAddProject() {
     return (this.state.selectedOrganization === "");
   }
 
@@ -73,23 +72,6 @@ class Form extends Component {
       //console.log("orgsOptions = " + JSON.stringify(this.state.organizationOpts));
     });
   }
-
-    // loadProjects() {
-    //   api.getProjects().then((result) => {
-    //     var projsFromDB = result.data;
-    //     var projsOptions = [];
-    //     console.log("Projects within an Organization: " + JSON.stringify(result.data));
-    //     for (var i = 0; i < projsFromDB.length; i++) {
-    //       console.log("Value " + i + " id =" + projsFromDB[i]._id + " value = " + projsFromDB[i].name);
-    //       projsOptions[i] = { value: projsFromDB[i]._id, label: projsFromDB[i].name };
-    //       this.state.projsOptions.push(projsOptions[i]);
-    //     }
-    //     this.setState(
-    //       this.state
-    //     );
-    //     console.log("orgsOptions = " + JSON.stringify(this.state.projsOptions));
-    //   });
-    // }
 
   loadLessonPlan() {
     //populate lessonplan data with existing lesson plan (coming from dashboard click)
@@ -142,7 +124,6 @@ class Form extends Component {
   }
 
   handleSelectOrganizationInputChange = selectedOption => {
-
     console.log("Selected organization = " + selectedOption.value);
     var orgId = selectedOption.value;
     this.setState({ selectedOrganization: orgId });
@@ -157,14 +138,8 @@ class Form extends Component {
   };
 
   updateOrgOptions = (name, id) => {
-    console.log('did updateorgoptions run?');
-
-    //function to update select options -- not functional -- add blank org
     const newOrg = { value: id, label: name };
-    //console.log(newOrg);
-
     const newOrgOpts = this.state.organizationOpts;
-
     newOrgOpts.push(newOrg);
 
     this.setState({
@@ -172,7 +147,6 @@ class Form extends Component {
       selectedOrganization: id,
       selectedOrg: newOrg
     });
-
   }
 
   setSelectedProject = (name, id) => {
@@ -201,17 +175,6 @@ class Form extends Component {
   handleFormSubmit = event => {
     event.preventDefault();
 
-    console.log(`
-    Lesson Title: ${this.state.title}\n
-    Objectice: ${this.state.objective}\n
-    Overview: ${this.state.overview}\n
-    Preparation: ${this.state.preparation}\n
-    Agenda: ${this.state.agenda}\n
-    Materials: ${this.state.materials}\n
-    Description: ${this.state.description}\n
-    Project: ${this.state.selectedProject}
-    `);
-
     var userId = sessionStorage.getItem("currentUserId");
 
     var lessonPlan = {
@@ -226,22 +189,27 @@ class Form extends Component {
       user: userId
     };
 
-    // function validate(lessonTitle) {
-    //   const errors = [];
-
-    //   if (lessonTitle.length === 0) {
-    //     errors.push("Lesson Title can't be empty");
-    //   }
-    //   return errors;
-    // }
-
-    //call api.saveLessonPlan(lessonPlan).then...
-    api.saveLessonPlan(lessonPlan).then((result) => {
-      console.log("Lesson Plan saved");
-    });
+    if (this.state.lessonId === "") {
+      api.saveLessonPlan(lessonPlan).then((result) => {
+        console.log("Lesson Plan saved");
+      });
+    } else {
+      api.updateLessonPlan(this.state.lessonId, lessonPlan).then((result) => {
+        console.log("lesson plan updated");
+      });
+    }
   };
 
 
+  getOrgIdx(){
+    console.log("Organization options: " + JSON.stringify(this.state.organizationOpts));
+    console.log("Current organization: " + this.state.selectedOrganization);
+    return this.state.organizationOpts.findIndex(element => element.value === this.state.selectedOrganization);
+  }
+
+  isUpdate() {
+    return (this.state.lessonId !== "");
+  }
 
   openModal = (operation) => {
     //console.log("operation in open modal:" + operation);
@@ -270,8 +238,9 @@ class Form extends Component {
           <Select className="org-select" name="orgs" form="organization" type="list"
             onChange={this.handleSelectOrganizationInputChange}
             options={this.state.organizationOpts}
+            isDisabled={this.isUpdate()}
           />
-          <button type="button" className="btn btn-secondary" id="addNew" onClick={() => { this.openModal("Organization") }}>
+          <button type="button" className="btn btn-secondary" id="addNew" disabled={this.isUpdate()} onClick={() => { this.openModal("Organization") }}>
             Add New
            </button>
           <AddModal selectedOrganization={this.state.selectedOrganization} addOperation={this.state.addOperation} isModalOpen={this.state.isModalOpen} closeModal={this.closeModal}

@@ -10,6 +10,9 @@ export default {
   saveLessonPlan: function(lessonPlanData){
     return axios.post("/api/lessonPlans/", lessonPlanData);
   },
+  updateLessonPlan: function(lessonId, lessonPlanData){
+    return axios.put("/api/lessonPlans/"+lessonId, lessonPlanData);
+  },
   getLessonPlan: function(lessonId){
     return axios.get("/api/lessonPlans/"+lessonId);
   },

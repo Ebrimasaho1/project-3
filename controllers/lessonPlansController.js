@@ -29,11 +29,9 @@ module.exports = {
     db.LessonPlan
       .create(req.body)
       .then((dbLessonPlanModel) => {
-        console.log("Lesson plan created:" + dbLessonPlanModel.user);
+        console.log("Lesson plan saved:" + dbLessonPlanModel.user);
         Promise.all([
           db.User.findById(dbLessonPlanModel.user).then((userModel) => {
-
-
             console.log("User Model: " + JSON.stringify(userModel));
             userModel.lessonPlans.push(dbLessonPlanModel);
             db.User.updateOne({ _id: userModel._id }, { lessonPlans: userModel.lessonPlans })
