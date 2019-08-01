@@ -5,7 +5,7 @@ import api from '../../utils/api'
 import Select from 'react-select';
 import AddModal from "../AddModal";
 //import Modal from 'react-modal';
-import { Button, Popover, PopoverHeader, PopoverBody } from 'reactstrap';
+import { Button, Popover, PopoverBody } from 'reactstrap';
 
 //FORM VALIDATION
 // function Validate(title, email, objective, overview, preparation, agenda, materials, description){
@@ -309,8 +309,6 @@ class Form extends Component {
           <PopoverBody>Lesson plan saved!</PopoverBody>
         </Popover>
         </div>
-        
-
       </div>
 
     );
