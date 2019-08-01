@@ -1,6 +1,6 @@
 .footer{
     text-align: center;
-    padding: 20ox;
+    padding: 20px;
     position: fixed;
     left: 0;
     bottom: 0;
@@ -8,5 +8,5 @@
     width: 100%;
     background-color: rgba(22, 69, 114, 0.911);
     color:white;
-    font-size: 10px;
+    font-size: 12px;
 }
