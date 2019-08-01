@@ -12,7 +12,9 @@
     "react-modal": "^3.9.1",
     "react-router-dom": "^4.3.1",
     "react-scripts": "^2.1.1",
-    "react-select": "^3.0.4"
+    "react-select": "^3.0.4",
+    "react-sticky-footer": "0.1.0-rc3",
+    "reactstrap": "^8.0.1"
   },
   "scripts": {
     "start": "react-scripts start",

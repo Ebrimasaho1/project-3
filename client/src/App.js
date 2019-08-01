@@ -5,6 +5,7 @@ import Search from "./pages/Search";
 import Dashboard from "./pages/Dashboard";
 import NavBar from "./components/Navbar";
 import LessonForm from "./pages/LessonForm";
+import Footer from "./components/Footer/Footer";
 
 function App() {  
   return (
@@ -17,8 +18,9 @@ function App() {
           <Route exact path="/dashboard" component={Dashboard} />
           <Route exact path="/lessonPlan" component={LessonForm} />
         </Switch>
+        <Footer/>
       </div>
-    </Router>
+    </Router>     
   );
 }
 

@@ -1,6 +1,3 @@
-input, textarea {
-  margin-bottom: 20px;
-}
 .org-select{
   width: 150px;
   color:black;
@@ -18,6 +15,7 @@ float:right;
 
 #submit {
   margin-top: 30px;
+  margin-bottom: 50px; 
 }
 
 .invalid {
@@ -39,7 +37,7 @@ button {
 }
 #title{
   border:solid;
-  box-shadow: 5px 10px   #888888;
+  box-shadow: 2px 4px   #888888;
 }
 #objective{
   border:solid;
@@ -62,6 +60,14 @@ button {
 #submit{
   background-color: rgba(22, 69, 114, 0.911);
 }
+
+.error {
+  display: flex;
+  color: red;
+  text-align: center;
+  margin-bottom: 8px;
+}
+
 .saveModal{
   width:500px;
   height:200px;

@@ -37,7 +37,7 @@ class DashProjects extends React.Component {
 
     return (
       this.state.lessons.map(lesson => (
-        <div className="row" key={lesson._id}>
+        <div className="row" id="dashcard" key={lesson._id}>
         <LessonPlan lesson={lesson} /> 
         <DeleteBtn lessonId={lesson._id} updateLessons={this.updateLessons} />
         </div>

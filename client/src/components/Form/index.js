@@ -4,17 +4,7 @@ import api from '../../utils/api'
 
 import Select from 'react-select';
 import AddModal from "../AddModal";
-import Modal from 'react-modal';
-
-//FORM VALIDATION
-// function Validate(title, email, objective, overview, preparation, agenda, materials, description){
-//   const errors = [];
-//   if (title.length === 0 || email.length || objective.length || overview.length 
-//       || preparation.length || agenda.length || materials.length || description.length ) {
-//       errors.push("Title can't be empty");
-//     }
-//     return errors;
-// }
+import { Button, Popover, PopoverBody } from 'reactstrap';
 
 class Form extends Component {
   constructor(props) {
@@ -28,19 +18,26 @@ class Form extends Component {
       agenda: "",
       materials: "",
       description: "",
+      titleError: "",
+      organizationError: "",
+      projecrError: "",
       selectedOrganization: "",
       selectedProject: "",
 
       lessonId: props.lessonId,
-      errors: [],
+      errors: {},
 
       isModalOpen: false,
       addOperation: "",
 
       organizationOpts: [],
       projsOptions: [],
+      
       //Second modal for for saving. Serves as a popover
-      showModal: false
+     // showModal: false,
+
+      //popover
+      popoverOpen: false
     };
 
     this.openModal = this.openModal.bind(this);
@@ -126,7 +123,10 @@ class Form extends Component {
   handleSelectOrganizationInputChange = selectedOption => {
     console.log("Selected organization = " + selectedOption.value);
     var orgId = selectedOption.value;
-    this.setState({ selectedOrganization: orgId });
+    this.setState({ 
+      selectedOrganization: orgId,
+      organizationError: "",
+     });
     //console.log("Option selected:" + this.state.selectedOrganization);
     this.populateProjectsForSelectedOrg(orgId);
   };
@@ -134,6 +134,7 @@ class Form extends Component {
   handleSelectProjectInputChange = selectedOption => {
     this.setState({
       selectedProject: selectedOption.value,
+      projectError: "",
     });
   };
 
@@ -167,12 +168,60 @@ class Form extends Component {
   handleInputChange = event => {
     const { name, value } = event.target;
     this.setState({
-      [name]: value
+      [name]: value,
+      titleError: "",
     });
   };
 
-  saveLesson() {
-    var userId = sessionStorage.getItem("currentUserId");
+
+  handleFormSubmit = event => {
+    event.preventDefault();
+
+    let errors = {};
+    errors.errorFree = true;
+
+    if (!this.state.title) {
+      errors.title = "Enter lesson title";
+      errors.errorFree = false
+    }
+    if (!this.state.selectedOrganization) {
+      errors.organization = "Enter lesson organization";
+      errors.errorFree = false
+    }
+    if (!this.state.selectedProject) {
+      errors.project = "Enter lesson project";
+      errors.errorFree = false
+    }
+
+    console.log(`
+    Lesson Title: ${this.state.title}\n
+    Organization: ${this.state.selectedOrganization}\n
+    Project: ${this.state.selectedProject}\n
+    Objective: ${this.state.objective}\n
+    Overview: ${this.state.overview}\n
+    Preparation: ${this.state.preparation}\n
+    Agenda: ${this.state.agenda}\n
+    Materials: ${this.state.materials}\n
+    Description: ${this.state.description}\n
+    Project ID: ${this.state.selectedProject}
+    `);
+
+    if (errors.errorFree) {
+
+     this.saveLesson();
+
+    } else {
+      this.setState({
+        titleError: errors.title,
+        organizationError: errors.organization,
+        projectError: errors.project,
+      })
+    }
+  };  
+  
+
+saveLesson() {
+  var userId = sessionStorage.getItem("currentUserId");
 
     var lessonPlan = {
       title: this.state.title,
@@ -197,16 +246,7 @@ class Form extends Component {
         this.handleOpenModal();
       });
     }
-  }
-
-  handleFormSubmit = event => {
-    event.preventDefault();
-
-    //handle validateion
-    this.saveLesson();
-
-  };
-
+}
 
   getIdx = (entity) => {
     if (entity === "Org") {
@@ -234,11 +274,15 @@ class Form extends Component {
 
   //for popover
   handleOpenModal = () => {
-    this.setState({ showModal: true })
+    this.setState({showModal:true})
+  };
+
+  toggle = () => {
+    this.setState({
+      popoverOpen: !this.state.popoverOpen
+    });
   }
-  handleCloseModal = () => {
-    this.setState({ showModal: false })
-  }
+
 
   render() {
     return (
@@ -248,6 +292,7 @@ class Form extends Component {
           <input type="text" className="form-control" id="title" placeholder=""
             name="title" value={this.state.title} onChange={this.handleInputChange}></input>
         </h1>
+        <span className="error">{this.state.titleError}</span>
 
         <div className="d-flex justify-content-around">
           <label>Organization</label>
@@ -257,6 +302,8 @@ class Form extends Component {
             value={(this.getIdx("Org") !== -1) ? this.state.organizationOpts[this.getIdx("Org")] : ""}
             isDisabled={this.isUpdate()}
           />
+          <span className="error">{this.state.organizationError}</span>
+
           <button type="button" className="btn btn-secondary" id="addNew" disabled={this.isUpdate()} onClick={() => { this.openModal("Organization") }}>
             Add New
            </button>
@@ -269,6 +316,7 @@ class Form extends Component {
             options={this.state.projsOptions}
             value={(this.getIdx("Proj") !== -1) ? this.state.projsOptions[this.getIdx("Proj")] : ""}
           />
+          <span className="error">{this.state.projectError}</span>
           <button type="button" className="btn btn-secondary" id="addNew" disabled={this.forbidAddProject()} onClick={() => { this.openModal("Project") }}>
             Add New
            </button>
@@ -277,6 +325,7 @@ class Form extends Component {
         <label>Objective</label>
         <textarea type="text" className="form-control" id="objective" placeholder=""
           name="objective" value={this.state.objective} onChange={this.handleInputChange}></textarea>
+        <span className="error">{this.state.objectiveError}</span>
 
         <label>Overview</label>
         <textarea type="text" className="form-control" id="overview" placeholder=""
@@ -298,37 +347,16 @@ class Form extends Component {
         <textarea type="text" className="form-control" id="description" placeholder=""
           name="description" value={this.state.description} onChange={this.handleInputChange}></textarea>
 
-        {/* <div className="d-flex justify-content-around">
-          <label>Links</label>
-          <input type="text" className="form-control" id="links" placeholder=""
-            dataname="links"></input>
-          <button type="button" className="btn btn-secondary">
-            Add New
-           </button>
-
-          <label>Attachments</label>
-          <input type="text" className="form-control" id="attach" placeholder=""
-            dataname="attachments"></input>
-          <button type="button" className="btn btn-secondary">
-            Add New
-           </button>
-        </div> */}
-
         <div className="d-flex justify-content-end">
-          <button type="submit" id="submit" className="btn btn-primary userSubmit" onClick={this.handleFormSubmit} disabled={this.forbidSave()}>Save</button>
-
-          <Modal className="saveModal" isOpen={this.state.showModal} contentLabel='Form Save'>
-            <button onClick={this.handleCloseModal}>Close</button>
-            <h1 class="saveConfirm">Form has been saved!</h1>
-          </Modal>
+          <Button type="submit" id="submit" className="btn btn-primary userSubmit" onClick={this.handleFormSubmit}>Save</Button>
+         <Popover placement="bottom" isOpen={this.state.popoverOpen} trigger="focus" target="submit" toggle={this.toggle}>
+          <PopoverBody>Lesson plan saved!</PopoverBody>
+        </Popover>
         </div>
-
-
       </div>
 
     );
   }
 };
-
 
 export default Form;
