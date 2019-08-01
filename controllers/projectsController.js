@@ -18,8 +18,18 @@ module.exports = {
   create: function(req, res) {
     db.Project
       .create(req.body)
-      .then(dbModel => res.json(dbModel))
-      .catch(err => res.status(422).json(err));
+      .then((dbModelProject) => {
+        db.Organization.findById(dbModelProject.organization).then((orgToUpdate) => {
+          orgToUpdate.projects.push(dbModelProject._id);
+          console.log("OrgToUpdate: " + orgToUpdate);
+          db.Organization.updateOne({_id:orgToUpdate._id}, {projects: orgToUpdate.projects}).then( (updatedOrg) => {
+            console.log("Organization updated: " + JSON.stringify(updatedOrg));
+          });
+        }).then(() => {
+          console.log("Org updated: ");
+          return res.json(dbModelProject);
+        });
+      }).catch(err => res.status(422).json(err));
   },
   update: function(req, res) {
     db.Project
