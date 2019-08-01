@@ -43,7 +43,7 @@ class Navbar extends Component {
                 <Link className="nav-link" to="/dashboard">Dashbboard</Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link" to="/search">Search</Link>
+                <Link className="nav-link" style={{color:'white'}}to="/search">Search</Link>
               </li>
               <li className="nav-item">
                 <GoogleLogout

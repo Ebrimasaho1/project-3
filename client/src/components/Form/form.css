@@ -15,6 +15,7 @@ float:right;
 
 #submit {
   margin-top: 30px;
+  
 }
 
 .invalid {
@@ -65,4 +66,17 @@ button {
   color: red;
   text-align: center;
   margin-bottom: 8px;
+}
+
+.saveModal{
+  width:500px;
+  height:200px;
+  margin: auto;
+  margin-top:100px;
+  display: block;
+  box-shadow: 2px 4px #888888;
+  background-color: rgba(22, 69, 114, 0.5)
+}
+.saveConfirm{
+  text-align: center;
 }

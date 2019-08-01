@@ -7,7 +7,7 @@ import { Redirect } from 'react-router-dom';
 import "./login.css";
 
 import api from '../utils/api';
-import welcome from './welcome.png'
+import welcome from './welcome.png';
 
 
 class Login extends Component {

@@ -40,6 +40,16 @@ class Search extends Component {
       });
     });
   }
+  // searchOrg = event => {
+  //   event.preventDefault();
+  //   console.log("calling search");
+  //   api.searchPrjects(this.state.query).then((results) => {
+  //     console.log("Search results: " + JSON.stringify(results));
+  //     this.setState({
+  //         results : results.data
+  //     });
+  //   });
+  // }
 
   render() {
     if (this.state.redirect) {
