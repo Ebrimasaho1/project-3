@@ -4,7 +4,8 @@ import api from '../../utils/api'
 
 import Select from 'react-select';
 import AddModal from "../AddModal";
-import Modal from 'react-modal';
+//import Modal from 'react-modal';
+import { Button, Popover, PopoverHeader, PopoverBody } from 'reactstrap';
 
 //FORM VALIDATION
 // function Validate(title, email, objective, overview, preparation, agenda, materials, description){
@@ -39,8 +40,12 @@ class Form extends Component {
       
       organizationOpts: [],
       projsOptions: [],
+      
       //Second modal for for saving. Serves as a popover
-      showModal: false
+     // showModal: false,
+
+      //popover
+      popoverOpen: false
     };
 
     this.openModal = this.openModal.bind(this);
@@ -230,10 +235,16 @@ class Form extends Component {
   //for popover
   handleOpenModal = () => {
     this.setState({showModal:true})
+  };
+  // handleCloseModal = () => {
+  //   this.setState({showModal:false})
+  // };
+  toggle = () => {
+    this.setState({
+      popoverOpen: !this.state.popoverOpen
+    });
   }
-  handleCloseModal = () => {
-    this.setState({showModal:false})
-  }
+
 
   render() {
     // const { selectedOption } = ;
@@ -309,12 +320,15 @@ class Form extends Component {
         </div> */}
 
         <div className="d-flex justify-content-end">
-          <button type="submit" id="submit" className="btn btn-primary userSubmit" onClick={this.handleFormSubmit} disabled={this.forbidSave()}>Save</button>
+          <Button type="submit" id="submit" className="btn btn-primary userSubmit" onClick={this.handleFormSubmit} disabled={this.forbidSave()}>Save</Button>
 
-          <Modal className="saveModal" isOpen={this.state.showModal} contentLabel='Form Save'>
+          {/* <Modal className="saveModal" isOpen={this.state.showModal} contentLabel='Form Save'>
           <button  onClick={this.handleCloseModal}>Close</button>
           <h1 class="saveConfirm">Form has been saved!</h1>
-         </Modal>
+         </Modal> */}
+         <Popover placement="bottom" isOpen={this.state.popoverOpen} trigger="focus" target="submit" toggle={this.toggle}>
+          <PopoverBody>Lesson plan saved</PopoverBody>
+        </Popover>
         </div>
         
 
