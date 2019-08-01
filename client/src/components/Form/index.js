@@ -303,31 +303,10 @@ class Form extends Component {
         <textarea type="text" className="form-control" id="description" placeholder=""
           name="description" value={this.state.description} onChange={this.handleInputChange}></textarea>
 
-        {/* <div className="d-flex justify-content-around">
-          <label>Links</label>
-          <input type="text" className="form-control" id="links" placeholder=""
-            dataname="links"></input>
-          <button type="button" className="btn btn-secondary">
-            Add New
-           </button>
-
-          <label>Attachments</label>
-          <input type="text" className="form-control" id="attach" placeholder=""
-            dataname="attachments"></input>
-          <button type="button" className="btn btn-secondary">
-            Add New
-           </button>
-        </div> */}
-
         <div className="d-flex justify-content-end">
           <Button type="submit" id="submit" className="btn btn-primary userSubmit" onClick={this.handleFormSubmit} disabled={this.forbidSave()}>Save</Button>
-
-          {/* <Modal className="saveModal" isOpen={this.state.showModal} contentLabel='Form Save'>
-          <button  onClick={this.handleCloseModal}>Close</button>
-          <h1 class="saveConfirm">Form has been saved!</h1>
-         </Modal> */}
          <Popover placement="bottom" isOpen={this.state.popoverOpen} trigger="focus" target="submit" toggle={this.toggle}>
-          <PopoverBody>Lesson plan saved</PopoverBody>
+          <PopoverBody>Lesson plan saved!</PopoverBody>
         </Popover>
         </div>
         
@@ -337,6 +316,5 @@ class Form extends Component {
     );
   }
 };
-
 
 export default Form;
