@@ -173,10 +173,7 @@ class Form extends Component {
     });
   };
 
-
-  handleFormSubmit = event => {
-    event.preventDefault();
-
+  saveLesson(){
     var userId = sessionStorage.getItem("currentUserId");
 
     var lessonPlan = {
@@ -202,6 +199,14 @@ class Form extends Component {
         this.handleOpenModal();
       });
     }
+  }
+
+  handleFormSubmit = event => {
+    event.preventDefault();
+
+    //handle validateion
+    this.saveLesson();
+    
   };
 
 

@@ -34,10 +34,14 @@ export default {
     return axios.post("api/projects/", project);
   },
   searchLessonPlans: function(keyWords){
-    return axios.get("api/search/"+keyWords);
-
+    return axios.get("api/lessonPlans/titleSearch/"+keyWords);
+  },
+  searchLessonsByProjectName: function(keyWords){
+    return axios.get("/api/projects/search/"+keyWords);
+    //return axios.get("api/lessonPlans/orgSearch/"+keyWords);
+  },
+  searchLessonsByOrganizationName: function(keyWords){
+    return axios.get("/api/organizations/search/"+keyWords);
+    //return axios.get("api/lessonPlans/projSearch/"+keyWords);
   }
-  // searchProjects: function(keyword){
-  //   return axios.get("api/search/"+keyWords);
-  // }
 };

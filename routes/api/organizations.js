@@ -12,4 +12,9 @@ router
   .get(organizationsController.findById)
   .delete(organizationsController.remove);
 
+  // Matches with "/api/organizations/search/:words"
+router
+  .route("/search/:words")
+  .get(organizationsController.findByName);
+
 module.exports = router;
