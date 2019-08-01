@@ -29,11 +29,15 @@ class Form extends Component {
       agenda: "",
       materials: "",
       description: "",
+      organization: "",
+      titleError: "",
+      organizationError: "",
+      projecrError: "",
       selectedOrganization: "",
       selectedProject: "",
 
       lessonId: props.lessonId,
-      errors: [],
+      errors: {},
 
       isModalOpen: false,
       addOperation: "",
@@ -133,7 +137,10 @@ class Form extends Component {
   handleSelectOrganizationInputChange = selectedOption => {
     console.log("Selected organization = " + selectedOption.value);
     var orgId = selectedOption.value;
-    this.setState({ selectedOrganization: orgId });
+    this.setState({ 
+      selectedOrganization: orgId,
+      organizationError: "",
+     });
     //console.log("Option selected:" + this.state.selectedOrganization);
     this.populateProjectsForSelectedOrg(orgId);
   };
@@ -141,6 +148,7 @@ class Form extends Component {
   handleSelectProjectInputChange = selectedOption => {
     this.setState({
       selectedProject: selectedOption.value,
+      projectError: "",
     });
   };
 
@@ -174,7 +182,8 @@ class Form extends Component {
   handleInputChange = event => {
     const { name, value } = event.target;
     this.setState({
-      [name]: value
+      [name]: value,
+      titleError: "",
     });
   };
 
@@ -182,7 +191,49 @@ class Form extends Component {
   handleFormSubmit = event => {
     event.preventDefault();
 
-    var userId = sessionStorage.getItem("currentUserId");
+    let errors = {};
+    errors.errorFree = true;
+
+    if (!this.state.title) {
+      errors.title = "Enter lesson title";
+      errors.errorFree = false
+    }
+    if (!this.state.selectedOrganization) {
+      errors.organization = "Enter lesson organization";
+      errors.errorFree = false
+    }
+    if (!this.state.selectedProject) {
+      errors.project = "Enter lesson project";
+      errors.errorFree = false
+    }
+
+    console.log(`
+    Lesson Title: ${this.state.title}\n
+    Objectice: ${this.state.objective}\n
+    Overview: ${this.state.overview}\n
+    Preparation: ${this.state.preparation}\n
+    Agenda: ${this.state.agenda}\n
+    Materials: ${this.state.materials}\n
+    Description: ${this.state.description}\n
+    Project: ${this.state.selectedProject}
+    `);
+
+    if (errors.errorFree) {
+
+     this.saveLesson();
+
+    } else {
+      this.setState({
+        titleError: errors.title,
+        organizationError: errors.organization,
+        projectError: errors.project,
+      })
+    }
+  };  
+  
+
+saveLesson() {
+  var userId = sessionStorage.getItem("currentUserId");
 
     var lessonPlan = {
       title: this.state.title,
@@ -207,8 +258,7 @@ class Form extends Component {
         this.handleOpenModal();
       });
     }
-  };
-
+}
 
   getOrgIdx(){
     console.log("Organization options: " + JSON.stringify(this.state.organizationOpts));
@@ -255,6 +305,7 @@ class Form extends Component {
           <input type="text" className="form-control" id="title" placeholder=""
             name="title" value={this.state.title} onChange={this.handleInputChange}></input>
         </h1>
+        <span className="error">{this.state.titleError}</span>
 
         <div className="d-flex justify-content-around">
           <label>Organization</label>
@@ -263,6 +314,8 @@ class Form extends Component {
             options={this.state.organizationOpts}
             isDisabled={this.isUpdate()}
           />
+          <span className="error">{this.state.organizationError}</span>
+
           <button type="button" className="btn btn-secondary" id="addNew" disabled={this.isUpdate()} onClick={() => { this.openModal("Organization") }}>
             Add New
            </button>
@@ -274,6 +327,7 @@ class Form extends Component {
             onChange={this.handleSelectProjectInputChange}
             options={this.state.projsOptions}
           />
+          <span className="error">{this.state.projectError}</span>
           <button type="button" className="btn btn-secondary" id="addNew" disabled={this.forbidAddProject()} onClick={() => { this.openModal("Project") }}>
             Add New
            </button>
@@ -282,6 +336,7 @@ class Form extends Component {
         <label>Objective</label>
         <textarea type="text" className="form-control" id="objective" placeholder=""
           name="objective" value={this.state.objective} onChange={this.handleInputChange}></textarea>
+        <span className="error">{this.state.objectiveError}</span>
 
         <label>Overview</label>
         <textarea type="text" className="form-control" id="overview" placeholder=""
