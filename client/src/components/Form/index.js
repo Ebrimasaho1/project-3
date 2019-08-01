@@ -5,7 +5,7 @@ import api from '../../utils/api'
 import Select from 'react-select';
 import AddModal from "../AddModal";
 //import Modal from 'react-modal';
-import { Button, Popover, PopoverHeader, PopoverBody } from 'reactstrap';
+import { Button, Popover, PopoverBody } from 'reactstrap';
 
 //FORM VALIDATION
 // function Validate(title, email, objective, overview, preparation, agenda, materials, description){
@@ -29,7 +29,6 @@ class Form extends Component {
       agenda: "",
       materials: "",
       description: "",
-      organization: "",
       titleError: "",
       organizationError: "",
       projecrError: "",
@@ -209,13 +208,15 @@ class Form extends Component {
 
     console.log(`
     Lesson Title: ${this.state.title}\n
-    Objectice: ${this.state.objective}\n
+    Organization: ${this.state.selectedOrganization}\n
+    Project: ${this.state.selectedProject}\n
+    Objective: ${this.state.objective}\n
     Overview: ${this.state.overview}\n
     Preparation: ${this.state.preparation}\n
     Agenda: ${this.state.agenda}\n
     Materials: ${this.state.materials}\n
     Description: ${this.state.description}\n
-    Project: ${this.state.selectedProject}
+    Project ID: ${this.state.selectedProject}
     `);
 
     if (errors.errorFree) {
@@ -359,7 +360,7 @@ saveLesson() {
           name="description" value={this.state.description} onChange={this.handleInputChange}></textarea>
 
         <div className="d-flex justify-content-end">
-          <Button type="submit" id="submit" className="btn btn-primary userSubmit" onClick={this.handleFormSubmit} disabled={this.forbidSave()}>Save</Button>
+          <Button type="submit" id="submit" className="btn btn-primary userSubmit" onClick={this.handleFormSubmit}>Save</Button>
          <Popover placement="bottom" isOpen={this.state.popoverOpen} trigger="focus" target="submit" toggle={this.toggle}>
           <PopoverBody>Lesson plan saved!</PopoverBody>
         </Popover>
