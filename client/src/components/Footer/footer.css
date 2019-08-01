@@ -1,12 +1,16 @@
 .footer{
     text-align: center;
-    padding: 20px;
+    padding: 15px;
     position: fixed;
     left: 0;
     bottom: 0;
-    height: 30px;
+    height: 20px;
     width: 100%;
     background-color: rgba(22, 69, 114, 0.911);
     color:white;
     font-size: 12px;
+}
+.copyright{
+    position: relative;
+    top:-10px;
 }
