@@ -1,5 +1,14 @@
 import axios from "axios";
 
+function convertIntoRegex(words){
+  var KeyWords = words.split(" ");
+  var regexExpresion = '.*';
+  KeyWords.forEach(word => {
+    regexExpresion += word + '.*';
+  }); 
+  return regexExpresion;
+}
+
 export default {
   getLessonPlans: function(userId) {
     return axios.get("/api/user/"+userId);
@@ -34,14 +43,14 @@ export default {
     return axios.post("api/projects/", project);
   },
   searchLessonPlans: function(keyWords){
-    return axios.get("api/lessonPlans/titleSearch/"+keyWords);
+    return axios.get("api/lessonPlans/titleSearch/"+convertIntoRegex(keyWords));
   },
   searchLessonsByProjectName: function(keyWords){
-    return axios.get("/api/projects/search/"+keyWords);
+    return axios.get("/api/projects/search/"+convertIntoRegex(keyWords));
     //return axios.get("api/lessonPlans/orgSearch/"+keyWords);
   },
   searchLessonsByOrganizationName: function(keyWords){
-    return axios.get("/api/organizations/search/"+keyWords);
+    return axios.get("/api/organizations/search/"+convertIntoRegex(keyWords));
     //return axios.get("api/lessonPlans/projSearch/"+keyWords);
   }
 };
