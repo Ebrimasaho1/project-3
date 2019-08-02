@@ -19,7 +19,7 @@ module.exports = {
   },
   findByTitle: function (req, res) {
     db.LessonPlan
-      .find( {title: { $regex: '.*' + req.params.words + '.*' }} )
+      .find( {title: { $regex: '.*' + req.params.words + '.*' , '$options' : 'i' }} )
       .populate({path:'project', populate: {path:'organization'}})
       .limit(10)
       .then(dbModel => res.json(dbModel))
@@ -30,7 +30,7 @@ module.exports = {
     .find({})
     .populate({path:'project', 
             populate: {path:'organization', 
-                       match:{'organization.name':{ $regex: '.*' + req.params.words + '.*' }} 
+                       match:{'organization.name':{ $regex: '.*' + req.params.words + '.*', '$options' : 'i' }} 
                       }})
     .limit(10)
     .then(dbModel => res.json(dbModel))
@@ -40,7 +40,7 @@ module.exports = {
     db.LessonPlan
     .find({})
     .populate({path:'project', 
-              match:{'project.name':{ $regex: '.*' + req.params.words + '.*' } }, 
+              match:{'project.name':{ $regex: '.*' + req.params.words + '.*', '$options' : 'i' } }, 
               populate: {path:'organization'}})
     .limit(10)
     .then(dbModel => res.json(dbModel))

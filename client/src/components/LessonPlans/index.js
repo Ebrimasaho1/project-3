@@ -15,7 +15,7 @@ class LessonPlans extends React.Component {
       );
     }else{
       return(
-        <div></div>
+        <div><h4>No lesson plans...</h4></div>
       );
     }
   }

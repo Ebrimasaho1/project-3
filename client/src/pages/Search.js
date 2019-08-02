@@ -24,9 +24,11 @@ class Search extends Component {
       redirect: !isLoggedIn,
     };
 
+    this.handleInputChange = this.handleInputChange.bind(this);
+
   }
 
-  handleInputChange = event => {
+  handleInputChange(event){
     const { name, value } = event.target;
     this.setState({
       [name]: value
@@ -39,7 +41,8 @@ class Search extends Component {
     api.searchLessonPlans(this.state.title).then((results) => {
       //console.log("Search results: " + JSON.stringify(results));
       this.setState({
-        results: results.data
+        results: results.data,
+        title : ""
       });
     });
   }
@@ -52,12 +55,13 @@ class Search extends Component {
       var resLessonPlans = [];
       results.data.forEach(project => {
         resLessonPlans = resLessonPlans.concat(project.lessonPlans);
-        console.log(project.lessonPlans);
+        // console.log(project.lessonPlans);
       });
       //console.log("result lesson plans for proj search: "+ JSON.stringify(resLessonPlans));
       
       this.setState({
-          results : resLessonPlans
+          results : resLessonPlans,
+          project : ""
       });
     });
   }
@@ -74,7 +78,8 @@ class Search extends Component {
         });
       });
       this.setState({
-          results : resLessonPlans
+          results : resLessonPlans,
+          organization : ""
       });
     });
   }
@@ -91,21 +96,20 @@ class Search extends Component {
           </div>
           <div className="row">
             <div className="col-4">
-              <h2>Searh by Title:</h2>
+              <h2> Title:</h2>
               <form onSubmit={this.searchbyTitle}>
                 <input
                   placeholder="Search for..."
                   name="title"
-                  value={this.state.title} onChange={this.handleInputChange}
+                  value={this.state.title} 
+                  onChange={this.handleInputChange}
                 />
                 <button type="submit" className="btn btn-secondary" >Search</button>
                 {/* <p>{this.state.query}</p> */}
               </form>
             </div>
-          </div>
-          <div className="row">
-            <div className="col-3">
-              <h2>Searh by Project:</h2>
+            <div className="col-4">
+              <h2>Project:</h2>
               <form onSubmit={this.searchByProject}>
                 <input
                   placeholder="Search for..."
@@ -117,10 +121,8 @@ class Search extends Component {
                 {/* <p>{this.state.query}</p> */}
               </form>
             </div>
-          </div>
-          <div className="row">
-            <div className="col-3">
-              <h2>Searh by Organization:</h2>
+            <div className="col-4">
+              <h2>Organization:</h2>
               <form onSubmit={this.searchByOrganization}>
                 <input
                   placeholder="Search for..."
@@ -132,7 +134,7 @@ class Search extends Component {
                 {/* <p>{this.state.query}</p> */}
               </form>
             </div>
-          </div>
+            </div>
           {/* Add title header for table */}
           <LessonPlans lessons={this.state.results} />
         </div>
