@@ -29,7 +29,7 @@ class Search extends Component {
 
   }
 
-  handleInputChange(event){
+  handleInputChange(event) {
     const { name, value } = event.target;
     this.setState({
       [name]: value
@@ -43,14 +43,14 @@ class Search extends Component {
       //console.log("Search results: " + JSON.stringify(results));
       this.setState({
         results: results.data,
-        title : ""
+        title: ""
       });
     });
   }
 
   searchByProject = event => {
     event.preventDefault();
-    
+
     console.log("calling project search: " + this.state.project);
     api.searchLessonsByProjectName(this.state.project).then((results) => {
       var resLessonPlans = [];
@@ -59,10 +59,10 @@ class Search extends Component {
         // console.log(project.lessonPlans);
       });
       //console.log("result lesson plans for proj search: "+ JSON.stringify(resLessonPlans));
-      
+
       this.setState({
-          results : resLessonPlans,
-          project : ""
+        results: resLessonPlans,
+        project: ""
       });
     });
   }
@@ -79,8 +79,8 @@ class Search extends Component {
         });
       });
       this.setState({
-          results : resLessonPlans,
-          organization : ""
+        results: resLessonPlans,
+        organization: ""
       });
     });
   }
@@ -103,7 +103,7 @@ class Search extends Component {
                   className="searchInput"
                   placeholder="Search for..."
                   name="title"
-                  value={this.state.title} 
+                  value={this.state.title}
                   onChange={this.handleInputChange}
                 />
                 <button type="submit" className="btn btn-secondary" >Search</button>
@@ -117,7 +117,7 @@ class Search extends Component {
                   className="searchInput"
                   placeholder="Search for..."
                   name="project"
-                  value={this.state.project} 
+                  value={this.state.project}
                   onChange={this.handleInputChange}
                 />
                 <button type="submit" className="btn btn-secondary" >Search</button>
@@ -131,14 +131,14 @@ class Search extends Component {
                   className="searchInput"
                   placeholder="Search for..."
                   name="organization"
-                  value={this.state.organization} 
+                  value={this.state.organization}
                   onChange={this.handleInputChange}
                 />
                 <button type="submit" className="btn btn-secondary" >Search</button>
                 {/* <p>{this.state.query}</p> */}
               </form>
             </div>
-            </div>
+          </div>
           {/* Add title header for table */}
           <LessonPlans lessons={this.state.results} />
         </div>

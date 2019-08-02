@@ -32,9 +32,9 @@ class Form extends Component {
 
       organizationOpts: [],
       projsOptions: [],
-      
-      //Second modal for for saving. Serves as a popover
-     // showModal: false,
+
+      lessonOwner: "",
+      currentUser: "",
 
       //popover
       popoverOpen: false
@@ -46,11 +46,11 @@ class Form extends Component {
 
 
   forbidSave() {
-    return (this.state.title !== "" && this.state.selectedOrganization !== "" && this.state.selectedProject !== "") ? false : true;
+    return (this.state.lessonOwner !== this.state.currentUser) ? true : false;
   }
 
   forbidAddProject() {
-    return (this.state.selectedOrganization === "");
+    return (this.state.selectedOrganization === "" || this.state.lessonId !== "");
   }
 
   loadOrganizations = () => {
@@ -77,6 +77,7 @@ class Form extends Component {
     console.log("Lesson id in form:" + this.state.lessonId);
     if (this.state.lessonId && this.state.lessonId !== "") {
       api.getLessonPlan(this.state.lessonId).then((result) => {
+        console.log("Lesson Plan loaded: " + result.data)
         this.setState({
           title: result.data.title,
           objective: result.data.objective,
@@ -86,7 +87,8 @@ class Form extends Component {
           materials: result.data.materials,
           description: result.data.description,
           selectedProject: result.data.project._id,
-          selectedOrganization: result.data.project.organization._id
+          selectedOrganization: result.data.project.organization._id,
+          lessonOwner : result.data.user
         });
         if (this.state.selectedOrganization) {
           console.log("selected organization: " + this.state.selectedOrganization);
@@ -97,6 +99,9 @@ class Form extends Component {
   }
 
   componentDidMount() {
+    this.setState({
+        currentUser : sessionStorage.getItem('currentUserId')
+    });
     this.loadOrganizations();
     this.loadLessonPlan();
   }
@@ -315,6 +320,7 @@ saveLesson() {
             onChange={this.handleSelectProjectInputChange}
             options={this.state.projsOptions}
             value={(this.getIdx("Proj") !== -1) ? this.state.projsOptions[this.getIdx("Proj")] : ""}
+            isDisabled={this.isUpdate()}
           />
           <span className="error">{this.state.projectError}</span>
           <button type="button" className="btn btn-secondary" id="addNew" disabled={this.forbidAddProject()} onClick={() => { this.openModal("Project") }}>
@@ -348,7 +354,7 @@ saveLesson() {
           name="description" value={this.state.description} onChange={this.handleInputChange}></textarea>
 
         <div className="d-flex justify-content-end">
-          <Button type="submit" id="submit" className="btn btn-primary userSubmit" onClick={this.handleFormSubmit}>Save</Button>
+          <Button type="submit" id="submit" className="btn btn-primary userSubmit" onClick={this.handleFormSubmit} disabled={this.forbidSave()}>Save</Button>
          <Popover placement="bottom" isOpen={this.state.popoverOpen} trigger="focus" target="submit" toggle={this.toggle}>
           <PopoverBody>Lesson plan saved!</PopoverBody>
         </Popover>
