@@ -29,6 +29,7 @@
     "react-google-login": "^5.0.4",
     "react-select": "^3.0.4",
     "react-sticky-footer": "0.1.0-rc3",
+    "react-to-pdf": "0.0.8",
     "reactstrap": "^8.0.1"
   }
 }

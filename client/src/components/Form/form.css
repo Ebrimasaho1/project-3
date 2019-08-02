@@ -13,9 +13,11 @@
 float:right;
 }
 
-#submit {
+.finalActions {
   margin-top: 30px;
   margin-bottom: 50px; 
+  margin-right: 1%;
+  background-color: rgba(22, 69, 114, 0.911);
 }
 
 .invalid {
@@ -56,9 +58,6 @@ button {
 }
 #description{
   border:solid;
-}
-#submit{
-  background-color: rgba(22, 69, 114, 0.911);
 }
 
 .error {
