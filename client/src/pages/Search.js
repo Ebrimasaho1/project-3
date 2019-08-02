@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Redirect } from 'react-router-dom';
 import api from "../utils/api";
 import LessonPlans from "../components/LessonPlans";
+import "./search.css";
 
 
 class Search extends Component {
@@ -90,10 +91,11 @@ class Search extends Component {
             <h1>Search lesson plans </h1>
           </div>
           <div className="row">
-            <div className="col-4">
-              <h2>Searh by Title:</h2>
+            <div className="col-6">
+              <h2>Search by Title:</h2>
               <form onSubmit={this.searchbyTitle}>
                 <input
+                  className="searchInput"
                   placeholder="Search for..."
                   name="title"
                   value={this.state.title} onChange={this.handleInputChange}
@@ -104,10 +106,11 @@ class Search extends Component {
             </div>
           </div>
           <div className="row">
-            <div className="col-3">
-              <h2>Searh by Project:</h2>
+            <div className="col-6">
+              <h2>Search by Project:</h2>
               <form onSubmit={this.searchByProject}>
                 <input
+                  className="searchInput"
                   placeholder="Search for..."
                   name="project"
                   value={this.state.project} 
@@ -119,10 +122,11 @@ class Search extends Component {
             </div>
           </div>
           <div className="row">
-            <div className="col-3">
-              <h2>Searh by Organization:</h2>
+            <div className="col-6">
+              <h2>Search by Organization:</h2>
               <form onSubmit={this.searchByOrganization}>
                 <input
+                  className="searchInput"
                   placeholder="Search for..."
                   name="organization"
                   value={this.state.organization} 
