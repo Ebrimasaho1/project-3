@@ -3,7 +3,8 @@ h1 {
   margin-bottom: 20px;
 }
 #add-lesson{
-  border: solid white .5px;
+  color: white;
+  /* border: solid white .5px;
   background-color:  rgba(22, 69, 114, 0.911);
-  box-shadow: 2px 4px    #888888;
+  box-shadow: 2px 4px    #888888; */
 }

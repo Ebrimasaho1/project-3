@@ -286,7 +286,7 @@ saveLesson() {
 
   render() {
     return (
-      <div className="container">
+      <div className="container shadow-lg p-3 mb-5 bg-white rounded">
         <h1>
           <label>Title:</label>
           <input type="text" className="form-control" id="title" placeholder=""
