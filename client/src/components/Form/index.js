@@ -46,6 +46,8 @@ class Form extends Component {
 
 
   forbidSave() {
+    // console.log("Current user in forbid Save: " + this.state.currentUser);
+    // console.log("Lesson owner in forbid save: " + this.state.lessonOwner);
     return (this.state.lessonOwner !== this.state.currentUser) ? true : false;
   }
 
@@ -101,7 +103,7 @@ class Form extends Component {
   componentDidMount() {
     this.setState({
         currentUser : sessionStorage.getItem('currentUserId')
-    });
+    });    
     this.loadOrganizations();
     this.loadLessonPlan();
   }
