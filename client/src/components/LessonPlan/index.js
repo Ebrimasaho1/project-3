@@ -1,6 +1,6 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
+import './lessonplan.css';
 
 class LessonPlan extends React.Component {
 
