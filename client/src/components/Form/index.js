@@ -297,76 +297,86 @@ class Form extends Component {
 
   render() {
     return (
-        <div ref={ref}>
-          <div className="container">
-            <h1>
-              <label>Title:</label>
-              <input type="text" className="form-control" id="title" placeholder=""
-                name="title" value={this.state.title} onChange={this.handleInputChange}></input>
-            </h1>
-            <span className="error">{this.state.titleError}</span>
-
-            <div className="d-flex justify-content-around">
-              <label>Organization</label>
-              <Select className="org-select" name="orgs" form="organization" type="list"
-                onChange={this.handleSelectOrganizationInputChange}
-                options={this.state.organizationOpts}
-                value={(this.getIdx("Org") !== -1) ? this.state.organizationOpts[this.getIdx("Org")] : ""}
-                isDisabled={this.isUpdate()}
-              />
-              <span className="error">{this.state.organizationError}</span>
-
-              <button type="button" className="btn btn-secondary" id="addNew" disabled={this.isUpdate()} onClick={() => { this.openModal("Organization") }}>
-                Add New
-           </button>
-              <AddModal selectedOrganization={this.state.selectedOrganization} addOperation={this.state.addOperation} isModalOpen={this.state.isModalOpen} closeModal={this.closeModal}
-                setSelectedOrganization={this.updateOrgOptions} setSelectedProject={this.setSelectedProject} />
-
-              <label>Projects</label>
-              <Select className="proj-select" name="proj" form="projects" type="list"
-                onChange={this.handleSelectProjectInputChange}
-                options={this.state.projsOptions}
-                value={(this.getIdx("Proj") !== -1) ? this.state.projsOptions[this.getIdx("Proj")] : ""}
-                isDisabled={this.isUpdate()}
-              />
-              <span className="error">{this.state.projectError}</span>
-              <button type="button" className="btn btn-secondary" id="addNew" disabled={this.forbidAddProject()} onClick={() => { this.openModal("Project") }}>
-                Add New
-           </button>
+      <React.Fragment>
+        <div className="container">
+          <div className="row">
+            <div className="col-12">
+              <div className="d-flex justify-content-end">
+                <Pdf targetRef={ref} filename={this.state.title + ".pdf"}>
+                  {({ toPdf }) => <button className="btn btn-primary finalActions" onClick={toPdf}>Generate Pdf</button>}
+                </Pdf>
+                <Button type="submit" id="submit" className="btn btn-primary finalActions" onClick={this.handleFormSubmit} disabled={this.forbidSave()}>Save</Button>
+                <Popover placement="bottom" isOpen={this.state.popoverOpen} trigger="focus" target="submit" toggle={this.toggle}>
+                  <PopoverBody>Lesson plan saved!</PopoverBody>
+                </Popover>
+              </div>
             </div>
+          </div>
+          <div className="row">
+            <div ref={ref}>
+              <div className="container">
+                <div className="d-flex justify-content-around title">
+                  <label id="titlelbl"> Title:</label>
+                  <input type="text" className="form-control" id="title" placeholder=""
+                    name="title" value={this.state.title} onChange={this.handleInputChange}></input>
 
-            <label>Objective</label>
-            <textarea type="text" className="form-control" id="objective" placeholder=""
-              name="objective" value={this.state.objective} onChange={this.handleInputChange}></textarea>
-            <span className="error">{this.state.objectiveError}</span>
+                  <span className="error">{this.state.titleError}</span>
+                </div>
 
-            <label>Overview</label>
-            <textarea type="text" className="form-control" id="overview" placeholder=""
-              name="overview" value={this.state.overview} onChange={this.handleInputChange}></textarea>
+                <div className="d-flex justify-content-around">
+                  <label>Organization</label>
+                  <Select className="org-select" name="orgs" form="organization" type="list"
+                    onChange={this.handleSelectOrganizationInputChange}
+                    options={this.state.organizationOpts}
+                    value={(this.getIdx("Org") !== -1) ? this.state.organizationOpts[this.getIdx("Org")] : ""}
+                    isDisabled={this.isUpdate()}
+                  />
+                  <span className="error">{this.state.organizationError}</span>
 
-            <label>Agenda</label>
-            <textarea type="text" className="form-control" id="agenda" placeholder=""
-              name="agenda" value={this.state.agenda} onChange={this.handleInputChange}></textarea>
+                  <button type="button" className="btn btn-secondary" id="addNew" disabled={this.isUpdate()} onClick={() => { this.openModal("Organization") }}>
+                    Add New
+           </button>
+                  <AddModal selectedOrganization={this.state.selectedOrganization} addOperation={this.state.addOperation} isModalOpen={this.state.isModalOpen} closeModal={this.closeModal}
+                    setSelectedOrganization={this.updateOrgOptions} setSelectedProject={this.setSelectedProject} />
 
-            <label>Materials</label>
-            <textarea type="text" className="form-control" id="materials" placeholder=""
-              name="materials" value={this.state.materials} onChange={this.handleInputChange}></textarea>
+                  <label>Project</label>
+                  <Select className="proj-select" name="proj" form="projects" type="list"
+                    onChange={this.handleSelectProjectInputChange}
+                    options={this.state.projsOptions}
+                    value={(this.getIdx("Proj") !== -1) ? this.state.projsOptions[this.getIdx("Proj")] : ""}
+                    isDisabled={this.isUpdate()}
+                  />
+                  <span className="error">{this.state.projectError}</span>
+                  <button type="button" className="btn btn-secondary" id="addNew" disabled={this.forbidAddProject()} onClick={() => { this.openModal("Project") }}>
+                    Add New
+           </button>
+                </div>
 
-            <label>Description</label>
-            <textarea type="text" className="form-control" id="description" placeholder=""
-              name="description" value={this.state.description} onChange={this.handleInputChange}></textarea>
+                <label>Objective</label>
+                <textarea type="text" className="form-control" id="objective" placeholder=""
+                  name="objective" value={this.state.objective} onChange={this.handleInputChange}></textarea>
+                <span className="error">{this.state.objectiveError}</span>
 
-            <div className="d-flex justify-content-end">
-              <Pdf targetRef={ref} filename={this.state.title+".pdf"}>
-                {({ toPdf }) => <button className="btn btn-primary finalActions" onClick={toPdf}>Generate Pdf</button>}
-              </Pdf>
-              <Button type="submit" id="submit" className="btn btn-primary finalActions" onClick={this.handleFormSubmit} disabled={this.forbidSave()}>Save</Button>
-              <Popover placement="bottom" isOpen={this.state.popoverOpen} trigger="focus" target="submit" toggle={this.toggle}>
-                <PopoverBody>Lesson plan saved!</PopoverBody>
-              </Popover>
+                <label>Overview</label>
+                <textarea type="text" className="form-control" id="overview" placeholder=""
+                  name="overview" value={this.state.overview} onChange={this.handleInputChange}></textarea>
+
+                <label>Agenda</label>
+                <textarea type="text" className="form-control" id="agenda" placeholder=""
+                  name="agenda" value={this.state.agenda} onChange={this.handleInputChange}></textarea>
+
+                <label>Materials</label>
+                <textarea type="text" className="form-control" id="materials" placeholder=""
+                  name="materials" value={this.state.materials} onChange={this.handleInputChange}></textarea>
+
+                <label>Description</label>
+                <textarea type="text" className="form-control" id="description" placeholder=""
+                  name="description" value={this.state.description} onChange={this.handleInputChange}></textarea>
+              </div>
             </div>
           </div>
         </div>
+      </React.Fragment>
     );
   }
 };

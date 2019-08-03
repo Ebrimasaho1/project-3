@@ -14,10 +14,16 @@ float:right;
 }
 
 .finalActions {
-  margin-top: 30px;
-  margin-bottom: 50px; 
+  margin-top: 1%;
+  margin-bottom: 1%; 
   margin-right: 1%;
   background-color: rgba(22, 69, 114, 0.911);
+}
+
+.title{
+  margin-bottom: 3%;
+  font-size: 150%;
+  font-weight: bold;
 }
 
 .invalid {
@@ -28,6 +34,10 @@ float:right;
   border-color: green;
 }
 
+.container{
+  /* margin-left: 1%; */
+  margin-top: 1%;
+}
 
 button {
   height: 40px;
