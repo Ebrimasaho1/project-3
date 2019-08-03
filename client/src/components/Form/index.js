@@ -48,7 +48,7 @@ class Form extends Component {
   forbidSave() {
     // console.log("Current user in forbid Save: " + this.state.currentUser);
     // console.log("Lesson owner in forbid save: " + this.state.lessonOwner);
-    return (this.state.lessonOwner !== this.state.currentUser) ? true : false;
+    return (this.state.lessonId === "" || (this.state.lessonId !== "" && (this.state.lessonOwner === this.state.currentUser))) ? false : true;
   }
 
   forbidAddProject() {
