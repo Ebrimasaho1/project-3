@@ -18,9 +18,9 @@ deleteLesson = () =>{
 render(){
   return (
     <td>
-      <button className="btn btn-danger" id="delete-lesson" onClick={this.deleteLesson}>
-        <i class="far fa-trash-alt"></i>
-      </button>
+      {/* <button className="btn btn-danger" id="delete-lesson" onClick={this.deleteLesson}> */}
+        <i className="btn btn-danger far fa-trash-alt" id="delete-lesson"></i>
+      {/* </button> */}
     </td>
   );
 }
