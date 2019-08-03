@@ -85,6 +85,7 @@ class Search extends Component {
       });
     });
   }
+  
 
   render() {
     if (this.state.redirect) {
@@ -106,6 +107,7 @@ class Search extends Component {
                   className="searchInput"
                   placeholder="Search for..."
                   name="title"
+                  id="test"
                   value={this.state.title}
                   onChange={this.handleInputChange}
                 />
