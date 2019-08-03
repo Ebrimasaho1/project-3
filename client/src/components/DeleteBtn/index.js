@@ -18,9 +18,8 @@ deleteLesson = () =>{
 render(){
   return (
     <div className="d-flex justify-content-beginning">
-      <button className="btn btn-danger" id="delete-lesson" onClick={this.deleteLesson}>
-        x
-      {/* <i class="far fa-trash-alt"></i> */}
+      <button className="btn-danger" id="delete-lesson" >
+      <i class="far fa-trash-alt" onClick={this.deleteLesson}></i>
       </button>
     </div>
   );

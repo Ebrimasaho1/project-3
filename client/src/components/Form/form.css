@@ -27,11 +27,11 @@ float:right;
 }
 
 
-button {
+/* button {
   height: 40px;
   box-shadow: 2px 4px #888888;
   background-color: rgba(22, 69, 114, 0.911);
-}
+} */
 #addNew{
   background-color: rgba(22, 69, 114, 0.911);
 }
