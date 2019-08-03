@@ -13,7 +13,7 @@ const DashContent = (props) => {
       <Header />
       <div className="dash-content shadow-lg p-3 mb-5 bg-white rounded">
         <DashProjects />
-      </div>
+      </div> 
       <AddBtn />
     </div>
   );
