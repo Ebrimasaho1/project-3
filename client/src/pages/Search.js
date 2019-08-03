@@ -3,6 +3,7 @@ import { Redirect } from 'react-router-dom';
 import api from "../utils/api";
 import LessonPlans from "../components/LessonPlans";
 import "./search.css";
+import TableHeader from '../../src/components/TableHeader';
 
 
 class Search extends Component {
@@ -84,6 +85,7 @@ class Search extends Component {
       });
     });
   }
+  
 
   render() {
     if (this.state.redirect) {
@@ -105,6 +107,7 @@ class Search extends Component {
                   className="searchInput"
                   placeholder="Search for..."
                   name="title"
+                  id="test"
                   value={this.state.title}
                   onChange={this.handleInputChange}
                 />
@@ -141,7 +144,6 @@ class Search extends Component {
               </form>
             </div>
           </div>
-          {/* Add title header for table */}
           <LessonPlans lessons={this.state.results} />
         </div>
       );
