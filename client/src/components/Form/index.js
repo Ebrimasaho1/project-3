@@ -4,18 +4,7 @@ import api from '../../utils/api'
 
 import Select from 'react-select';
 import AddModal from "../AddModal";
-//import Modal from 'react-modal';
 import { Button, Popover, PopoverBody } from 'reactstrap';
-
-//FORM VALIDATION
-// function Validate(title, email, objective, overview, preparation, agenda, materials, description){
-//   const errors = [];
-//   if (title.length === 0 || email.length || objective.length || overview.length 
-//       || preparation.length || agenda.length || materials.length || description.length ) {
-//       errors.push("Title can't be empty");
-//     }
-//     return errors;
-// }
 
 class Form extends Component {
   constructor(props) {
@@ -40,7 +29,7 @@ class Form extends Component {
 
       isModalOpen: false,
       addOperation: "",
-      
+
       organizationOpts: [],
       projsOptions: [],
       
@@ -64,14 +53,14 @@ class Form extends Component {
     return (this.state.selectedOrganization === "");
   }
 
-  loadOrganizations() {
+  loadOrganizations = () => {
     //populate organization combo box with all orgs from db
     api.getOrganizations().then((result) => {
       var orgsFromDB = result.data;
       var orgsOptions = [];
-      console.log("Organizations from db: " + JSON.stringify(result.data));
+      //console.log("Organizations from db: " + JSON.stringify(result.data));
       for (var i = 0; i < orgsFromDB.length; i++) {
-        console.log("Value " + i + " id =" + orgsFromDB[i]._id + " value = " + orgsFromDB[i].name);
+        //console.log("Value " + i + " id =" + orgsFromDB[i]._id + " value = " + orgsFromDB[i].name);
         orgsOptions[i] = { value: orgsFromDB[i]._id, label: orgsFromDB[i].name };
         this.state.organizationOpts.push(orgsOptions[i]);
       };
@@ -83,12 +72,11 @@ class Form extends Component {
     });
   }
 
-  loadLessonPlan() {
+  loadLessonPlan = () => {
     //populate lessonplan data with existing lesson plan (coming from dashboard click)
     console.log("Lesson id in form:" + this.state.lessonId);
     if (this.state.lessonId && this.state.lessonId !== "") {
       api.getLessonPlan(this.state.lessonId).then((result) => {
-        console.log("Title from database:" + result.data.title);
         this.setState({
           title: result.data.title,
           objective: result.data.objective,
@@ -97,32 +85,31 @@ class Form extends Component {
           agenda: result.data.agenda,
           materials: result.data.materials,
           description: result.data.description,
-          selectedProject: result.data.project,
-          selectedOrganization: result.data.organization
+          selectedProject: result.data.project._id,
+          selectedOrganization: result.data.project.organization._id
         });
+        if (this.state.selectedOrganization) {
+          console.log("selected organization: " + this.state.selectedOrganization);
+          this.populateProjectsForSelectedOrg(this.state.selectedOrganization);
+        }
       });
     }
   }
 
   componentDidMount() {
-    this.loadLessonPlan();
     this.loadOrganizations();
-    if (this.state.selectedOrganization) {
-      this.populateProjectsForSelectedOrg(this.state.selectedOrganization);
-    }
-    var disableSave = this.forbidSave();
-    this.setState({ disableSave });
+    this.loadLessonPlan();
   }
 
-  populateProjectsForSelectedOrg(orgId) {
+  populateProjectsForSelectedOrg = (orgId) => {
     //populate the projects from db
     var projsOptions = [];
     api.getOrganizationWithProjects(orgId).then((org) => {
-      console.log(JSON.stringify(org.data));
+      //console.log(JSON.stringify(org.data));
       var projects = org.data.projects;
       if (projects) {
         for (var i = 0; i < projects.length; i++) {
-          console.log("Value " + i + " id =" + projects[i]._id + " value = " + projects[i].name);
+          //console.log("Value " + i + " id =" + projects[i]._id + " value = " + projects[i].name);
           projsOptions[i] = { value: projects[i]._id, label: projects[i].name };
           this.state.projsOptions.push(projsOptions[i]);
         }
@@ -261,10 +248,12 @@ saveLesson() {
     }
 }
 
-  getOrgIdx(){
-    console.log("Organization options: " + JSON.stringify(this.state.organizationOpts));
-    console.log("Current organization: " + this.state.selectedOrganization);
-    return this.state.organizationOpts.findIndex(element => element.value === this.state.selectedOrganization);
+  getIdx = (entity) => {
+    if (entity === "Org") {
+      return this.state.organizationOpts.findIndex(element => element.value === this.state.selectedOrganization);
+    } else if (entity === "Proj") {
+      return this.state.projsOptions.findIndex(element => element.value === this.state.selectedProject);
+    }
   }
 
   isUpdate() {
@@ -287,9 +276,7 @@ saveLesson() {
   handleOpenModal = () => {
     this.setState({showModal:true})
   };
-  // handleCloseModal = () => {
-  //   this.setState({showModal:false})
-  // };
+
   toggle = () => {
     this.setState({
       popoverOpen: !this.state.popoverOpen
@@ -298,9 +285,8 @@ saveLesson() {
 
 
   render() {
-    // const { selectedOption } = ;
     return (
-      <div className="container">
+      <div className="container shadow-lg p-3 mb-5 bg-white rounded">
         <h1>
           <label>Title:</label>
           <input type="text" className="form-control" id="title" placeholder=""
@@ -313,6 +299,7 @@ saveLesson() {
           <Select className="org-select" name="orgs" form="organization" type="list"
             onChange={this.handleSelectOrganizationInputChange}
             options={this.state.organizationOpts}
+            value={(this.getIdx("Org") !== -1) ? this.state.organizationOpts[this.getIdx("Org")] : ""}
             isDisabled={this.isUpdate()}
           />
           <span className="error">{this.state.organizationError}</span>
@@ -327,6 +314,7 @@ saveLesson() {
           <Select className="proj-select" name="proj" form="projects" type="list"
             onChange={this.handleSelectProjectInputChange}
             options={this.state.projsOptions}
+            value={(this.getIdx("Proj") !== -1) ? this.state.projsOptions[this.getIdx("Proj")] : ""}
           />
           <span className="error">{this.state.projectError}</span>
           <button type="button" className="btn btn-secondary" id="addNew" disabled={this.forbidAddProject()} onClick={() => { this.openModal("Project") }}>

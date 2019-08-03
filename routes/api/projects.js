@@ -12,4 +12,9 @@ router
   .get(projectsController.findById)
   .delete(projectsController.remove);
 
+  // Matches with "/api/projects/search/:words"
+router
+  .route("/search/:words")
+  .get(projectsController.findByName);
+
 module.exports = router;

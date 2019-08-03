@@ -4,3 +4,9 @@
 /* #dashcard{
   display: inline;
 } */
+
+@media (max-width: 767px) { 
+  #dashcard {
+      background-color: blueviolet;
+  }
+}

@@ -3,6 +3,7 @@ import './dashproj.css'
 import api from '../../utils/api';
 import DeleteBtn from '../DeleteBtn';
 import LessonPlan from '../LessonPlan';
+// import MediaQuery from 'react-responsive';
 
 class DashProjects extends React.Component {
 
@@ -11,7 +12,7 @@ class DashProjects extends React.Component {
 
     this.state = {
       lessons: [],
-      userId: sessionStorage.getItem("currentUserId"),      
+      userId: sessionStorage.getItem("currentUserId"),
     }
 
     api.getLessonPlans(this.state.userId).then((results) => {
@@ -26,7 +27,7 @@ class DashProjects extends React.Component {
       if (this.state.lessons[i]._id === id) {
         this.state.lessons.splice(i, 1);
         this.setState(
-          {lessons : this.state.lessons}
+          { lessons: this.state.lessons }
         );
       }
     }
@@ -38,8 +39,10 @@ class DashProjects extends React.Component {
     return (
       this.state.lessons.map(lesson => (
         <div className="row" id="dashcard" key={lesson._id}>
-        <LessonPlan lesson={lesson} /> 
-        <DeleteBtn lessonId={lesson._id} updateLessons={this.updateLessons} />
+          {/* <MediaQuery query="(max-width: 767px)"> */}
+            <LessonPlan lesson={lesson} />
+            <DeleteBtn lessonId={lesson._id} updateLessons={this.updateLessons} />
+          {/* </MediaQuery> */}
         </div>
       ))
     );

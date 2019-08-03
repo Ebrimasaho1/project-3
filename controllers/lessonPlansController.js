@@ -13,17 +13,38 @@ module.exports = {
     console.log("called find by id");
     db.LessonPlan
       .findById(req.params.id)
+      .populate({path:'project', populate: {path:'organization'}})
       .then(dbModel => res.json(dbModel))
-
       .catch(err => res.status(422).json(err));
   },
   findByTitle: function (req, res) {
     db.LessonPlan
-      .find({ title: { $regex: '.*' + req.params.words + '.*' } })
+      .find( {title: { $regex: '.*' + req.params.words + '.*' }} )
       .populate({path:'project', populate: {path:'organization'}})
       .limit(10)
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
+  },
+  findByOrganization: function (req, res){
+    db.LessonPlan
+    .find({})
+    .populate({path:'project', 
+            populate: {path:'organization', 
+                       match:{'organization.name':{ $regex: '.*' + req.params.words + '.*' }} 
+                      }})
+    .limit(10)
+    .then(dbModel => res.json(dbModel))
+    .catch(err => res.status(422).json(err));
+  },
+  findByProject: function (req, res){
+    db.LessonPlan
+    .find({})
+    .populate({path:'project', 
+              match:{'project.name':{ $regex: '.*' + req.params.words + '.*' } }, 
+              populate: {path:'organization'}})
+    .limit(10)
+    .then(dbModel => res.json(dbModel))
+    .catch(err => res.status(422).json(err));
   },
   create: function (req, res) {
     db.LessonPlan
