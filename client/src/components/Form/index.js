@@ -36,7 +36,6 @@ class Form extends Component {
       lessonOwner: "",
       currentUser: "",
 
-      //popover
       popoverOpen: false
     };
 
@@ -180,7 +179,6 @@ class Form extends Component {
     });
   };
 
-
   handleFormSubmit = event => {
     event.preventDefault();
 
@@ -200,23 +198,8 @@ class Form extends Component {
       errors.errorFree = false
     }
 
-    console.log(`
-    Lesson Title: ${this.state.title}\n
-    Organization: ${this.state.selectedOrganization}\n
-    Project: ${this.state.selectedProject}\n
-    Objective: ${this.state.objective}\n
-    Overview: ${this.state.overview}\n
-    Preparation: ${this.state.preparation}\n
-    Agenda: ${this.state.agenda}\n
-    Materials: ${this.state.materials}\n
-    Description: ${this.state.description}\n
-    Project ID: ${this.state.selectedProject}
-    `);
-
     if (errors.errorFree) {
-
       this.saveLesson();
-
     } else {
       this.setState({
         titleError: errors.title,
@@ -225,7 +208,6 @@ class Form extends Component {
       })
     }
   };
-
 
   saveLesson() {
     var userId = sessionStorage.getItem("currentUserId");
@@ -245,12 +227,10 @@ class Form extends Component {
     if (this.state.lessonId === "") {
       api.saveLessonPlan(lessonPlan).then((result) => {
         console.log("Lesson Plan saved");
-        this.handleOpenModal();
       });
     } else {
       api.updateLessonPlan(this.state.lessonId, lessonPlan).then((result) => {
         console.log("lesson plan updated");
-        this.handleOpenModal();
       });
     }
   }
@@ -277,11 +257,6 @@ class Form extends Component {
 
   closeModal = () => {
     this.setState({ isModalOpen: false });
-  };
-
-  //for popover
-  handleOpenModal = () => {
-    this.setState({ showModal: true })
   };
 
   toggle = () => {

@@ -9,19 +9,6 @@ const Header = (props) => {
       <div className="header__wrap">
         <h1>{currentUser.fullName} Dashboard</h1>
       </div>
-      <div className="container">
-        <div className="row">
-          <div className="col-md-4">
-            <h3>My Lesson Plans</h3>
-          </div>
-          <div className="col-md-4">
-            <h3>Project</h3>
-          </div>
-          <div className="col-md-3">
-            <h3>Organization</h3>
-          </div>
-        </div>
-      </div>
     </React.Fragment>
   );
 }
