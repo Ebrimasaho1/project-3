@@ -17,7 +17,7 @@ const Header = (props) => {
           <div className="col-md-4">
             <h3>Project</h3>
           </div>
-          <div className="col-md-4">
+          <div className="col-md-3">
             <h3>Organization</h3>
           </div>
         </div>
