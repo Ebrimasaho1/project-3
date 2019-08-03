@@ -6,6 +6,10 @@ import Select from 'react-select';
 import AddModal from "../AddModal";
 import { Button, Popover, PopoverBody } from 'reactstrap';
 
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
+
+
 class Form extends Component {
   constructor(props) {
     super(props);
@@ -37,13 +41,16 @@ class Form extends Component {
       currentUser: "",
 
       //popover
-      popoverOpen: false
+      popoverOpen: false,
+
+      //react PDF
+      numPages: null,
+      pageNumber: 1,
     };
 
     this.openModal = this.openModal.bind(this);
     this.handleSelectOrganizationInputChange = this.handleSelectOrganizationInputChange.bind(this);
   }
-
 
   forbidSave() {
     // console.log("Current user in forbid Save: " + this.state.currentUser);
@@ -290,6 +297,18 @@ class Form extends Component {
     });
   }
 
+  _exportPdf = () => {
+
+    html2canvas(document.querySelector(".container")).then(canvas => {
+       document.body.appendChild(canvas);  // if you want see your screenshot in body.
+       const imgData = canvas.toDataURL('image/jpg');
+       const pdf = new jsPDF("p", "mm", "a0");
+       pdf.addImage(imgData, 'JPG', 0, 0);
+       pdf.save("download.pdf"); 
+       window.location.reload();
+   });
+
+}
 
   render() {
     return (
@@ -297,6 +316,7 @@ class Form extends Component {
         <div className="row">
           <div className="col-sm-12">
             <div className="d-flex justify-content-end">
+              <button  onClick={this._exportPdf} className="pdfGenerator">Generate pdf</button>
               <Button type="submit" id="submit" className="btn btn-primary userSubmit" onClick={this.handleFormSubmit} disabled={this.forbidSave()}>Save</Button>
               <Popover placement="bottom" isOpen={this.state.popoverOpen} trigger="focus" target="submit" toggle={this.toggle}>
                 <PopoverBody>Lesson plan saved!</PopoverBody>
