@@ -25,9 +25,11 @@ class Search extends Component {
       redirect: !isLoggedIn,
     };
 
+    this.handleInputChange = this.handleInputChange.bind(this);
+
   }
 
-  handleInputChange = event => {
+  handleInputChange(event) {
     const { name, value } = event.target;
     this.setState({
       [name]: value
@@ -40,25 +42,27 @@ class Search extends Component {
     api.searchLessonPlans(this.state.title).then((results) => {
       //console.log("Search results: " + JSON.stringify(results));
       this.setState({
-        results: results.data
+        results: results.data,
+        title: ""
       });
     });
   }
 
   searchByProject = event => {
     event.preventDefault();
-    
+
     console.log("calling project search: " + this.state.project);
     api.searchLessonsByProjectName(this.state.project).then((results) => {
       var resLessonPlans = [];
       results.data.forEach(project => {
         resLessonPlans = resLessonPlans.concat(project.lessonPlans);
-        console.log(project.lessonPlans);
+        // console.log(project.lessonPlans);
       });
       //console.log("result lesson plans for proj search: "+ JSON.stringify(resLessonPlans));
-      
+
       this.setState({
-          results : resLessonPlans
+        results: resLessonPlans,
+        project: ""
       });
     });
   }
@@ -75,7 +79,8 @@ class Search extends Component {
         });
       });
       this.setState({
-          results : resLessonPlans
+        results: resLessonPlans,
+        organization: ""
       });
     });
   }
@@ -88,48 +93,47 @@ class Search extends Component {
       return (
         <div className="container">
           <div className="row">
+            <div className="col-md-12">
             <h1>Search lesson plans </h1>
+            </div>
           </div>
-          <div className="row">
-            <div className="col-6">
-              <h2>Search by Title:</h2>
+          <div className="row header">
+            <div className="col-md-4">
+              <h3> Title:</h3>
               <form onSubmit={this.searchbyTitle}>
                 <input
                   className="searchInput"
                   placeholder="Search for..."
                   name="title"
-                  value={this.state.title} onChange={this.handleInputChange}
-                />
-                <button type="submit" className="btn btn-secondary" >Search</button>
-                {/* <p>{this.state.query}</p> */}
-              </form>
-            </div>
-          </div>
-          <div className="row">
-            <div className="col-6">
-              <h2>Search by Project:</h2>
-              <form onSubmit={this.searchByProject}>
-                <input
-                  className="searchInput"
-                  placeholder="Search for..."
-                  name="project"
-                  value={this.state.project} 
+                  value={this.state.title}
                   onChange={this.handleInputChange}
                 />
                 <button type="submit" className="btn btn-secondary" >Search</button>
                 {/* <p>{this.state.query}</p> */}
               </form>
             </div>
-          </div>
-          <div className="row">
-            <div className="col-6">
-              <h2>Search by Organization:</h2>
+            <div className="col-md-4">
+              <h3>Project:</h3>
+              <form onSubmit={this.searchByProject}>
+                <input
+                  className="searchInput"
+                  placeholder="Search for..."
+                  name="project"
+                  value={this.state.project}
+                  onChange={this.handleInputChange}
+                />
+                <button type="submit" className="btn btn-secondary" >Search</button>
+                {/* <p>{this.state.query}</p> */}
+              </form>
+            </div>
+            <div className="col-md-4">
+              <h3>Organization:</h3>
               <form onSubmit={this.searchByOrganization}>
                 <input
                   className="searchInput"
                   placeholder="Search for..."
                   name="organization"
-                  value={this.state.organization} 
+                  value={this.state.organization}
                   onChange={this.handleInputChange}
                 />
                 <button type="submit" className="btn btn-secondary" >Search</button>

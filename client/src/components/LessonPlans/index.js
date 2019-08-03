@@ -14,9 +14,9 @@ class LessonPlans extends React.Component {
           </div>
       ))
       );
-    } else {
-      return (
-        <div></div>
+    }else{
+      return(
+        <div><h4>No lesson plans...</h4></div>
       );
     }
   }

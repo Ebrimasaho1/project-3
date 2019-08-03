@@ -17,7 +17,7 @@ module.exports = {
   },
   findByName: function (req, res) {
     db.Project
-      .find({ name: { $regex: '.*' + req.params.words + '.*' } })
+      .find({ name: { $regex: req.params.words, '$options' : 'i' } })
       .populate({ path: 'lessonPlans',  populate: {path:'project', populate: {path: 'organization'} }})
       .populate({ path: 'organization' })
       .limit(10)

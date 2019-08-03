@@ -18,7 +18,7 @@ module.exports = {
   findByName: function(req,res){
     console.log("find by organization name called");
     db.Organization
-    .find({ name: { $regex: '.*' + req.params.words + '.*' } })
+    .find({ name: { $regex: req.params.words, '$options' : 'i' } })
       .populate({ path: 'projects', 
                   populate: { path: 'lessonPlans',  
                               populate: {path:'project', 
