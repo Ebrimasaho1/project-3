@@ -268,7 +268,7 @@ class Form extends Component {
 
   render() {
     return (
-      <div className="container">
+      <div className="container dash-content shadow-lg p-3 mb-5 bg-white rounded">
         <div className="row">
           <div className="col-sm-12">
             <div className="d-flex justify-content-end">

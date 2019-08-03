@@ -4,6 +4,7 @@ h1 {
 }
 #add-lesson{
   color: white;
+  justify-content: end;
   /* border: solid white .5px;
   background-color:  rgba(22, 69, 114, 0.911);
   box-shadow: 2px 4px    #888888; */
