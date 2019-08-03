@@ -1,9 +1,9 @@
 .org-select{
-  width: 150px;
+  width: 25%;
   color:black;
 }
 .proj-select{
-  width:150px;
+  width:25%;
 }
 #links, #attach {
   width: 200px;
@@ -22,6 +22,7 @@ float:right;
 
 .title{
   margin-bottom: 3%;
+  margin-top: 2%;
   font-size: 150%;
   font-weight: bold;
 }
@@ -46,6 +47,7 @@ button {
 }
 #addNew{
   background-color: rgba(22, 69, 114, 0.911);
+  width: 10%;
 }
 #title{
   border:solid;
@@ -88,4 +90,8 @@ button {
 }
 .saveConfirm{
   text-align: center;
+}
+
+label{
+  font-weight: bold;
 }

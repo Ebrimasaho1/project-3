@@ -11,10 +11,11 @@ const DashContent = (props) => {
   return (
     <div className="col-md">
       <Header />
-      <AddBtn />
+      
       <div className="container dash-content">
         <DashProjects />
       </div>
+      <AddBtn />
      
     </div>
   );

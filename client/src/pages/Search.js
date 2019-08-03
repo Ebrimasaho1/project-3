@@ -97,7 +97,7 @@ class Search extends Component {
             <h1>Search lesson plans </h1>
             </div>
           </div>
-          <div className="row title">
+          <div className="row header">
             <div className="col-md-4">
               <h2> Title:</h2>
               <form onSubmit={this.searchbyTitle}>

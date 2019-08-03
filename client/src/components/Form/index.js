@@ -296,13 +296,17 @@ class Form extends Component {
 
 
   render() {
+   
+const options = {
+    orientation: 'landscape'
+};
     return (
       <React.Fragment>
         <div className="container">
           <div className="row">
-            <div className="col-12">
+            <div className="col-sm-12">
               <div className="d-flex justify-content-end">
-                <Pdf targetRef={ref} filename={this.state.title + ".pdf"}>
+                <Pdf targetRef={ref} filename={this.state.title + ".pdf"} options={options} x={1.5} y={5.5}> 
                   {({ toPdf }) => <button className="btn btn-primary finalActions" onClick={toPdf}>Generate Pdf</button>}
                 </Pdf>
                 <Button type="submit" id="submit" className="btn btn-primary finalActions" onClick={this.handleFormSubmit} disabled={this.forbidSave()}>Save</Button>
@@ -313,8 +317,8 @@ class Form extends Component {
             </div>
           </div>
           <div className="row">
-            <div ref={ref}>
-              <div className="container">
+            <div className="col-sm-12" >
+              <div className="container" ref={ref}>
                 <div className="d-flex justify-content-around title">
                   <label id="titlelbl"> Title:</label>
                   <input type="text" className="form-control" id="title" placeholder=""
@@ -374,8 +378,9 @@ class Form extends Component {
                   name="description" value={this.state.description} onChange={this.handleInputChange}></textarea>
               </div>
             </div>
+            </div>
           </div>
-        </div>
+ 
       </React.Fragment>
     );
   }
