@@ -270,11 +270,11 @@ class Form extends Component {
 
   _exportPdf = () => {
 
-    html2canvas(document.querySelector(".container")).then(canvas => {
+    html2canvas(document.querySelector("#formDiv")).then(canvas => {
        document.body.appendChild(canvas);  // if you want see your screenshot in body.
        const imgData = canvas.toDataURL('image/jpg');
        const pdf = new jsPDF("p", "mm", "a0");
-       pdf.addImage(imgData, 'JPG', 0, 0);
+       pdf.addImage(imgData, 'JPG', 1, 1);
        pdf.save("download.pdf"); 
        window.location.reload();
    });
@@ -283,7 +283,7 @@ class Form extends Component {
 
   render() {
     return (
-      <div className="container dash-content shadow-lg p-3 mb-5 bg-white rounded">
+      <div className="container dash-content shadow-lg p-3 mb-5 bg-white rounded" id="formDiv">
         <div className="row">
           <div className="col-sm-12">
             <div className="d-flex justify-content-end">

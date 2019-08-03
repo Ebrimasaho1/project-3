@@ -34,7 +34,8 @@ if (process.env.NODE_ENV === "production") {
 app.use(routes);
 
 // Connect to the Mongo DB
-mongoose.connect(process.env.MONGODB_URI || "mongodb://user:password1@ds259347.mlab.com:59347/heroku_n28rfv2s");
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/revolve"|| "mongodb://user:password1@ds259347.mlab.com:59347/heroku_n28rfv2s");
+
 
 // Start the API server
 app.listen(PORT, function() {
