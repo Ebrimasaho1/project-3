@@ -3,6 +3,7 @@ import { Redirect } from 'react-router-dom';
 import api from "../utils/api";
 import LessonPlans from "../components/LessonPlans";
 import "./search.css";
+import TableHeader from '../../src/components/TableHeader';
 
 
 class Search extends Component {
@@ -141,7 +142,6 @@ class Search extends Component {
               </form>
             </div>
           </div>
-          {/* Add title header for table */}
           <LessonPlans lessons={this.state.results} />
         </div>
       );
