@@ -93,10 +93,12 @@ class Search extends Component {
       return (
         <div className="container">
           <div className="row">
+            <div className="col-md-12">
             <h1>Search lesson plans </h1>
+            </div>
           </div>
-          <div className="row">
-            <div className="col-4">
+          <div className="row title">
+            <div className="col-md-4">
               <h2> Title:</h2>
               <form onSubmit={this.searchbyTitle}>
                 <input
@@ -110,7 +112,7 @@ class Search extends Component {
                 {/* <p>{this.state.query}</p> */}
               </form>
             </div>
-            <div className="col-4">
+            <div className="col-md-4">
               <h2>Project:</h2>
               <form onSubmit={this.searchByProject}>
                 <input
@@ -124,7 +126,7 @@ class Search extends Component {
                 {/* <p>{this.state.query}</p> */}
               </form>
             </div>
-            <div className="col-4">
+            <div className="col-md-4">
               <h2>Organization:</h2>
               <form onSubmit={this.searchByOrganization}>
                 <input

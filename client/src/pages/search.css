@@ -2,3 +2,14 @@
   width: 70%;
   margin-right: 2%;
 }
+
+.btn{
+  border: solid white .5px;
+  background-color:  rgba(22, 69, 114, 0.911);
+  box-shadow: 2px 4px    #888888;
+}
+
+.title{
+  border-bottom: solid black 1px;
+  padding-bottom: 2%; 
+}
