@@ -4,16 +4,7 @@ import api from '../../utils/api'
 
 import Select from 'react-select';
 import AddModal from "../AddModal";
-
-//FORM VALIDATION
-// function Validate(title, email, objective, overview, preparation, agenda, materials, description){
-//   const errors = [];
-//   if (title.length === 0 || email.length || objective.length || overview.length 
-//       || preparation.length || agenda.length || materials.length || description.length ) {
-//       errors.push("Title can't be empty");
-//     }
-//     return errors;
-// }
+import { Button, Popover, PopoverBody } from 'reactstrap';
 
 class Form extends Component {
   constructor(props) {
@@ -27,18 +18,26 @@ class Form extends Component {
       agenda: "",
       materials: "",
       description: "",
+      titleError: "",
+      organizationError: "",
+      projecrError: "",
       selectedOrganization: "",
       selectedProject: "",
 
       lessonId: props.lessonId,
-      errors: [],
+      errors: {},
 
       isModalOpen: false,
       addOperation: "",
-      
-      organizationOpts: [],
-      projsOptions: []
 
+      organizationOpts: [],
+      projsOptions: [],
+
+      lessonOwner: "",
+      currentUser: "",
+
+      //popover
+      popoverOpen: false
     };
 
     this.openModal = this.openModal.bind(this);
@@ -47,21 +46,23 @@ class Form extends Component {
 
 
   forbidSave() {
-    return (this.state.title !== "" && this.state.selectedOrganization !== "" && this.state.selectedProject !== "") ? false : true;
+    // console.log("Current user in forbid Save: " + this.state.currentUser);
+    // console.log("Lesson owner in forbid save: " + this.state.lessonOwner);
+    return (this.state.lessonOwner !== this.state.currentUser) ? true : false;
   }
 
   forbidAddProject() {
-    return (this.state.selectedOrganization === "");
+    return (this.state.selectedOrganization === "" || this.state.lessonId !== "");
   }
 
-  loadOrganizations() {
+  loadOrganizations = () => {
     //populate organization combo box with all orgs from db
     api.getOrganizations().then((result) => {
       var orgsFromDB = result.data;
       var orgsOptions = [];
-      console.log("Organizations from db: " + JSON.stringify(result.data));
+      //console.log("Organizations from db: " + JSON.stringify(result.data));
       for (var i = 0; i < orgsFromDB.length; i++) {
-        console.log("Value " + i + " id =" + orgsFromDB[i]._id + " value = " + orgsFromDB[i].name);
+        //console.log("Value " + i + " id =" + orgsFromDB[i]._id + " value = " + orgsFromDB[i].name);
         orgsOptions[i] = { value: orgsFromDB[i]._id, label: orgsFromDB[i].name };
         this.state.organizationOpts.push(orgsOptions[i]);
       };
@@ -73,12 +74,12 @@ class Form extends Component {
     });
   }
 
-  loadLessonPlan() {
+  loadLessonPlan = () => {
     //populate lessonplan data with existing lesson plan (coming from dashboard click)
     console.log("Lesson id in form:" + this.state.lessonId);
     if (this.state.lessonId && this.state.lessonId !== "") {
       api.getLessonPlan(this.state.lessonId).then((result) => {
-        console.log("Title from database:" + result.data.title);
+        console.log("Lesson Plan loaded: " + result.data)
         this.setState({
           title: result.data.title,
           objective: result.data.objective,
@@ -87,32 +88,35 @@ class Form extends Component {
           agenda: result.data.agenda,
           materials: result.data.materials,
           description: result.data.description,
-          selectedProject: result.data.project,
-          selectedOrganization: result.data.organization
+          selectedProject: result.data.project._id,
+          selectedOrganization: result.data.project.organization._id,
+          lessonOwner : result.data.user
         });
+        if (this.state.selectedOrganization) {
+          console.log("selected organization: " + this.state.selectedOrganization);
+          this.populateProjectsForSelectedOrg(this.state.selectedOrganization);
+        }
       });
     }
   }
 
   componentDidMount() {
-    this.loadLessonPlan();
+    this.setState({
+        currentUser : sessionStorage.getItem('currentUserId')
+    });    
     this.loadOrganizations();
-    if (this.state.selectedOrganization) {
-      this.populateProjectsForSelectedOrg(this.state.selectedOrganization);
-    }
-    var disableSave = this.forbidSave();
-    this.setState({ disableSave });
+    this.loadLessonPlan();
   }
 
-  populateProjectsForSelectedOrg(orgId) {
+  populateProjectsForSelectedOrg = (orgId) => {
     //populate the projects from db
     var projsOptions = [];
     api.getOrganizationWithProjects(orgId).then((org) => {
-      console.log(JSON.stringify(org.data));
+      //console.log(JSON.stringify(org.data));
       var projects = org.data.projects;
       if (projects) {
         for (var i = 0; i < projects.length; i++) {
-          console.log("Value " + i + " id =" + projects[i]._id + " value = " + projects[i].name);
+          //console.log("Value " + i + " id =" + projects[i]._id + " value = " + projects[i].name);
           projsOptions[i] = { value: projects[i]._id, label: projects[i].name };
           this.state.projsOptions.push(projsOptions[i]);
         }
@@ -126,7 +130,10 @@ class Form extends Component {
   handleSelectOrganizationInputChange = selectedOption => {
     console.log("Selected organization = " + selectedOption.value);
     var orgId = selectedOption.value;
-    this.setState({ selectedOrganization: orgId });
+    this.setState({ 
+      selectedOrganization: orgId,
+      organizationError: "",
+     });
     //console.log("Option selected:" + this.state.selectedOrganization);
     this.populateProjectsForSelectedOrg(orgId);
   };
@@ -134,6 +141,7 @@ class Form extends Component {
   handleSelectProjectInputChange = selectedOption => {
     this.setState({
       selectedProject: selectedOption.value,
+      projectError: "",
     });
   };
 
@@ -167,7 +175,8 @@ class Form extends Component {
   handleInputChange = event => {
     const { name, value } = event.target;
     this.setState({
-      [name]: value
+      [name]: value,
+      titleError: "",
     });
   };
 
@@ -175,7 +184,51 @@ class Form extends Component {
   handleFormSubmit = event => {
     event.preventDefault();
 
-    var userId = sessionStorage.getItem("currentUserId");
+    let errors = {};
+    errors.errorFree = true;
+
+    if (!this.state.title) {
+      errors.title = "Enter lesson title";
+      errors.errorFree = false
+    }
+    if (!this.state.selectedOrganization) {
+      errors.organization = "Enter lesson organization";
+      errors.errorFree = false
+    }
+    if (!this.state.selectedProject) {
+      errors.project = "Enter lesson project";
+      errors.errorFree = false
+    }
+
+    console.log(`
+    Lesson Title: ${this.state.title}\n
+    Organization: ${this.state.selectedOrganization}\n
+    Project: ${this.state.selectedProject}\n
+    Objective: ${this.state.objective}\n
+    Overview: ${this.state.overview}\n
+    Preparation: ${this.state.preparation}\n
+    Agenda: ${this.state.agenda}\n
+    Materials: ${this.state.materials}\n
+    Description: ${this.state.description}\n
+    Project ID: ${this.state.selectedProject}
+    `);
+
+    if (errors.errorFree) {
+
+     this.saveLesson();
+
+    } else {
+      this.setState({
+        titleError: errors.title,
+        organizationError: errors.organization,
+        projectError: errors.project,
+      })
+    }
+  };  
+  
+
+saveLesson() {
+  var userId = sessionStorage.getItem("currentUserId");
 
     var lessonPlan = {
       title: this.state.title,
@@ -192,19 +245,22 @@ class Form extends Component {
     if (this.state.lessonId === "") {
       api.saveLessonPlan(lessonPlan).then((result) => {
         console.log("Lesson Plan saved");
+        this.handleOpenModal();
       });
     } else {
       api.updateLessonPlan(this.state.lessonId, lessonPlan).then((result) => {
         console.log("lesson plan updated");
+        this.handleOpenModal();
       });
     }
-  };
+}
 
-
-  getOrgIdx(){
-    console.log("Organization options: " + JSON.stringify(this.state.organizationOpts));
-    console.log("Current organization: " + this.state.selectedOrganization);
-    return this.state.organizationOpts.findIndex(element => element.value === this.state.selectedOrganization);
+  getIdx = (entity) => {
+    if (entity === "Org") {
+      return this.state.organizationOpts.findIndex(element => element.value === this.state.selectedOrganization);
+    } else if (entity === "Proj") {
+      return this.state.projsOptions.findIndex(element => element.value === this.state.selectedProject);
+    }
   }
 
   isUpdate() {
@@ -223,8 +279,19 @@ class Form extends Component {
     this.setState({ isModalOpen: false });
   };
 
+  //for popover
+  handleOpenModal = () => {
+    this.setState({showModal:true})
+  };
+
+  toggle = () => {
+    this.setState({
+      popoverOpen: !this.state.popoverOpen
+    });
+  }
+
+
   render() {
-    // const { selectedOption } = ;
     return (
       <div className="container">
         <h1>
@@ -232,14 +299,18 @@ class Form extends Component {
           <input type="text" className="form-control" id="title" placeholder=""
             name="title" value={this.state.title} onChange={this.handleInputChange}></input>
         </h1>
+        <span className="error">{this.state.titleError}</span>
 
         <div className="d-flex justify-content-around">
           <label>Organization</label>
           <Select className="org-select" name="orgs" form="organization" type="list"
             onChange={this.handleSelectOrganizationInputChange}
             options={this.state.organizationOpts}
+            value={(this.getIdx("Org") !== -1) ? this.state.organizationOpts[this.getIdx("Org")] : ""}
             isDisabled={this.isUpdate()}
           />
+          <span className="error">{this.state.organizationError}</span>
+
           <button type="button" className="btn btn-secondary" id="addNew" disabled={this.isUpdate()} onClick={() => { this.openModal("Organization") }}>
             Add New
            </button>
@@ -250,7 +321,10 @@ class Form extends Component {
           <Select className="proj-select" name="proj" form="projects" type="list"
             onChange={this.handleSelectProjectInputChange}
             options={this.state.projsOptions}
+            value={(this.getIdx("Proj") !== -1) ? this.state.projsOptions[this.getIdx("Proj")] : ""}
+            isDisabled={this.isUpdate()}
           />
+          <span className="error">{this.state.projectError}</span>
           <button type="button" className="btn btn-secondary" id="addNew" disabled={this.forbidAddProject()} onClick={() => { this.openModal("Project") }}>
             Add New
            </button>
@@ -259,6 +333,7 @@ class Form extends Component {
         <label>Objective</label>
         <textarea type="text" className="form-control" id="objective" placeholder=""
           name="objective" value={this.state.objective} onChange={this.handleInputChange}></textarea>
+        <span className="error">{this.state.objectiveError}</span>
 
         <label>Overview</label>
         <textarea type="text" className="form-control" id="overview" placeholder=""
@@ -280,31 +355,16 @@ class Form extends Component {
         <textarea type="text" className="form-control" id="description" placeholder=""
           name="description" value={this.state.description} onChange={this.handleInputChange}></textarea>
 
-        {/* <div className="d-flex justify-content-around">
-          <label>Links</label>
-          <input type="text" className="form-control" id="links" placeholder=""
-            dataname="links"></input>
-          <button type="button" className="btn btn-secondary">
-            Add New
-           </button>
-
-          <label>Attachments</label>
-          <input type="text" className="form-control" id="attach" placeholder=""
-            dataname="attachments"></input>
-          <button type="button" className="btn btn-secondary">
-            Add New
-           </button>
-        </div> */}
-
         <div className="d-flex justify-content-end">
-          <button type="submit" id="submit" className="btn btn-primary userSubmit" onClick={this.handleFormSubmit} disabled={this.forbidSave()}>Save</button>
+          <Button type="submit" id="submit" className="btn btn-primary userSubmit" onClick={this.handleFormSubmit} disabled={this.forbidSave()}>Save</Button>
+         <Popover placement="bottom" isOpen={this.state.popoverOpen} trigger="focus" target="submit" toggle={this.toggle}>
+          <PopoverBody>Lesson plan saved!</PopoverBody>
+        </Popover>
         </div>
-
       </div>
 
     );
   }
 };
-
 
 export default Form;

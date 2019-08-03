@@ -13,4 +13,17 @@ router
   .put(lessonPlansController.update)
   .delete(lessonPlansController.remove);
 
+  //matches with "/api/lessonPlans/titleSearch/:words"
+router
+  .route("/titleSearch/:words")
+  .get(lessonPlansController.findByTitle);
+
+router
+  .route("/orgSearch/:words")
+  .get(lessonPlansController.findByOrganization);
+
+router
+  .route("/projSearch/:words")
+  .get(lessonPlansController.findByProject);
+
 module.exports = router;

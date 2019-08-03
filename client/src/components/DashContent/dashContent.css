@@ -1,0 +1,7 @@
+.dash-content{
+    /* box-shadow: 2px 4px #888888; */
+    border:black solid 5px;
+    background-color: rgb(212, 220, 245);
+    border-radius: 5%;
+    padding: 10px;
+}

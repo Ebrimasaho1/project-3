@@ -15,6 +15,18 @@ module.exports = {
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
+  findByName: function(req,res){
+    console.log("find by organization name called");
+    db.Organization
+    .find({ name: { $regex: req.params.words, '$options' : 'i' } })
+      .populate({ path: 'projects', 
+                  populate: { path: 'lessonPlans',  
+                              populate: {path:'project', 
+                                        populate: {path: 'organization'} }} })
+      .limit(10)
+      .then(dbModel => res.json(dbModel))
+      .catch(err => res.status(422).json(err));
+  },
   create: function(req, res) {
     db.Organization
       .create(req.body)
