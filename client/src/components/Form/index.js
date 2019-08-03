@@ -6,6 +6,10 @@ import Select from 'react-select';
 import AddModal from "../AddModal";
 import { Button, Popover, PopoverBody } from 'reactstrap';
 
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
+
+
 class Form extends Component {
   constructor(props) {
     super(props);
@@ -42,7 +46,6 @@ class Form extends Component {
     this.openModal = this.openModal.bind(this);
     this.handleSelectOrganizationInputChange = this.handleSelectOrganizationInputChange.bind(this);
   }
-
 
   forbidSave() {
     // console.log("Current user in forbid Save: " + this.state.currentUser);
@@ -265,13 +268,26 @@ class Form extends Component {
     });
   }
 
+  _exportPdf = () => {
+
+    html2canvas(document.querySelector("#formDiv")).then(canvas => {
+       document.body.appendChild(canvas);  // if you want see your screenshot in body.
+       const imgData = canvas.toDataURL('image/jpg');
+       const pdf = new jsPDF("p", "mm", "a0");
+       pdf.addImage(imgData, 'JPG', 1, 1);
+       pdf.save("download.pdf"); 
+       window.location.reload();
+   });
+
+}
 
   render() {
     return (
-      <div className="container dash-content shadow-lg p-3 mb-5 bg-white rounded">
+      <div className="container dash-content shadow-lg p-3 mb-5 bg-white rounded" id="formDiv">
         <div className="row">
           <div className="col-sm-12">
             <div className="d-flex justify-content-end">
+              <button  onClick={this._exportPdf} className="pdfGenerator">Generate pdf</button>
               <Button type="submit" id="submit" className="btn btn-primary userSubmit" onClick={this.handleFormSubmit} disabled={this.forbidSave()}>Save</Button>
               <Popover placement="bottom" isOpen={this.state.popoverOpen} trigger="focus" target="submit" toggle={this.toggle}>
                 <PopoverBody>Lesson plan saved!</PopoverBody>
@@ -351,8 +367,8 @@ class Form extends Component {
               name="materials" value={this.state.materials} onChange={this.handleInputChange}></textarea>
           </div>
         </div>
-        <div className="row">
-          <div className="col-md-12">
+        <div className="row" >
+          <div className="col-md-12" id="">
             <label>Description</label>
             <textarea type="text" rows="10" className="form-control" id="description" placeholder=""
               name="description" value={this.state.description} onChange={this.handleInputChange}></textarea>
