@@ -99,7 +99,7 @@ class Search extends Component {
           </div>
           <div className="row header">
             <div className="col-md-4">
-              <h2> Title:</h2>
+              <h3> Title:</h3>
               <form onSubmit={this.searchbyTitle}>
                 <input
                   className="searchInput"
@@ -113,7 +113,7 @@ class Search extends Component {
               </form>
             </div>
             <div className="col-md-4">
-              <h2>Project:</h2>
+              <h3>Project:</h3>
               <form onSubmit={this.searchByProject}>
                 <input
                   className="searchInput"
@@ -127,7 +127,7 @@ class Search extends Component {
               </form>
             </div>
             <div className="col-md-4">
-              <h2>Organization:</h2>
+              <h3>Organization:</h3>
               <form onSubmit={this.searchByOrganization}>
                 <input
                   className="searchInput"
