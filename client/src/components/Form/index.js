@@ -376,8 +376,8 @@ class Form extends Component {
               name="materials" value={this.state.materials} onChange={this.handleInputChange}></textarea>
           </div>
         </div>
-        <div className="row">
-          <div className="col-md-12">
+        <div className="row" >
+          <div className="col-md-12" id="">
             <label>Description</label>
             <textarea type="text" rows="10" className="form-control" id="description" placeholder=""
               name="description" value={this.state.description} onChange={this.handleInputChange}></textarea>
