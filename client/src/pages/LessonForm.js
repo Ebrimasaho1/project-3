@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import Form from '../components/Form';
 import { Redirect } from 'react-router-dom';
 
-class LessonForm extends Component {
-    constructor(props) {
-        super(props);
+    class LessonForm extends Component {
+        constructor(props) {
+            super(props);
 
         var isLoggedIn;
         if (sessionStorage.getItem('currentUserId') == null) {
