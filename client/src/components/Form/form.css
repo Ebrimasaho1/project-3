@@ -1,9 +1,9 @@
 .org-select{
-  width: 25%;
+  width: 55%;
   color:black;
 }
 .proj-select{
-  width:25%;
+  width:55%;
 }
 #links, #attach {
   width: 200px;
@@ -26,6 +26,10 @@ float:right;
   font-size: 150%;
   font-weight: bold;
 }
+.container{
+  /* margin-left: 1%; */
+  margin-top: 1%;
+}
 
 .invalid {
   border-color: red;
@@ -43,6 +47,7 @@ button {
 }
 #addNew{
   background-color: rgba(22, 69, 114, 0.911);
+  width: 20%;
 }
 #title{
   border:solid;
@@ -70,6 +75,9 @@ button {
   background-color: rgba(22, 69, 114, 0.911);
 }
 
+textarea{
+  height: auto;
+}
 .error {
   display: flex;
   color: red;
@@ -88,4 +96,9 @@ button {
 }
 .saveConfirm{
   text-align: center;
+}
+
+label{
+  font-weight: bold;
+  margin-right: 1%;
 }

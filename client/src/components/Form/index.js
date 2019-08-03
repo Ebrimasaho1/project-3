@@ -90,7 +90,7 @@ class Form extends Component {
           description: result.data.description,
           selectedProject: result.data.project._id,
           selectedOrganization: result.data.project.organization._id,
-          lessonOwner : result.data.user
+          lessonOwner: result.data.user
         });
         if (this.state.selectedOrganization) {
           console.log("selected organization: " + this.state.selectedOrganization);
@@ -102,8 +102,8 @@ class Form extends Component {
 
   componentDidMount() {
     this.setState({
-        currentUser : sessionStorage.getItem('currentUserId')
-    });    
+      currentUser: sessionStorage.getItem('currentUserId')
+    });
     this.loadOrganizations();
     this.loadLessonPlan();
   }
@@ -130,10 +130,10 @@ class Form extends Component {
   handleSelectOrganizationInputChange = selectedOption => {
     console.log("Selected organization = " + selectedOption.value);
     var orgId = selectedOption.value;
-    this.setState({ 
+    this.setState({
       selectedOrganization: orgId,
       organizationError: "",
-     });
+    });
     //console.log("Option selected:" + this.state.selectedOrganization);
     this.populateProjectsForSelectedOrg(orgId);
   };
@@ -215,7 +215,7 @@ class Form extends Component {
 
     if (errors.errorFree) {
 
-     this.saveLesson();
+      this.saveLesson();
 
     } else {
       this.setState({
@@ -224,11 +224,11 @@ class Form extends Component {
         projectError: errors.project,
       })
     }
-  };  
-  
+  };
 
-saveLesson() {
-  var userId = sessionStorage.getItem("currentUserId");
+
+  saveLesson() {
+    var userId = sessionStorage.getItem("currentUserId");
 
     var lessonPlan = {
       title: this.state.title,
@@ -253,7 +253,7 @@ saveLesson() {
         this.handleOpenModal();
       });
     }
-}
+  }
 
   getIdx = (entity) => {
     if (entity === "Org") {
@@ -281,7 +281,7 @@ saveLesson() {
 
   //for popover
   handleOpenModal = () => {
-    this.setState({showModal:true})
+    this.setState({ showModal: true })
   };
 
   toggle = () => {
@@ -294,75 +294,96 @@ saveLesson() {
   render() {
     return (
       <div className="container">
-        <h1>
-          <label>Title:</label>
-          <input type="text" className="form-control" id="title" placeholder=""
-            name="title" value={this.state.title} onChange={this.handleInputChange}></input>
-        </h1>
-        <span className="error">{this.state.titleError}</span>
+        <div className="row">
+          <div className="col-sm-12">
+            <div className="d-flex justify-content-end">
+              <Button type="submit" id="submit" className="btn btn-primary userSubmit" onClick={this.handleFormSubmit} disabled={this.forbidSave()}>Save</Button>
+              <Popover placement="bottom" isOpen={this.state.popoverOpen} trigger="focus" target="submit" toggle={this.toggle}>
+                <PopoverBody>Lesson plan saved!</PopoverBody>
+              </Popover>
+            </div>
+          </div>
+        </div>
+        <div className="row">
+          <div className="col-md-12">
+            <div className="d-flex justify-content-around title">
 
-        <div className="d-flex justify-content-around">
-          <label>Organization</label>
-          <Select className="org-select" name="orgs" form="organization" type="list"
-            onChange={this.handleSelectOrganizationInputChange}
-            options={this.state.organizationOpts}
-            value={(this.getIdx("Org") !== -1) ? this.state.organizationOpts[this.getIdx("Org")] : ""}
-            isDisabled={this.isUpdate()}
-          />
-          <span className="error">{this.state.organizationError}</span>
+              <label id="titlelbl">Title:</label>
+              <input type="text" className="form-control" id="title" placeholder=""
+                name="title" value={this.state.title} onChange={this.handleInputChange}></input>
 
-          <button type="button" className="btn btn-secondary" id="addNew" disabled={this.isUpdate()} onClick={() => { this.openModal("Organization") }}>
-            Add New
+              <span className="error">{this.state.titleError}</span>
+            </div>
+          </div>
+        </div>
+        <div className="row">
+          <div className="col-md-6 d-flex justify-content-around ">
+            <label>Organization</label>
+            <Select className="org-select" name="orgs" form="organization" type="list"
+              onChange={this.handleSelectOrganizationInputChange}
+              options={this.state.organizationOpts}
+              value={(this.getIdx("Org") !== -1) ? this.state.organizationOpts[this.getIdx("Org")] : ""}
+              isDisabled={this.isUpdate()}
+            />
+            <span className="error">{this.state.organizationError}</span>
+
+            <button type="button" className="btn btn-secondary" id="addNew" disabled={this.isUpdate()} onClick={() => { this.openModal("Organization") }}>
+              New...
            </button>
-          <AddModal selectedOrganization={this.state.selectedOrganization} addOperation={this.state.addOperation} isModalOpen={this.state.isModalOpen} closeModal={this.closeModal}
-            setSelectedOrganization={this.updateOrgOptions} setSelectedProject={this.setSelectedProject} />
-
-          <label>Projects</label>
-          <Select className="proj-select" name="proj" form="projects" type="list"
-            onChange={this.handleSelectProjectInputChange}
-            options={this.state.projsOptions}
-            value={(this.getIdx("Proj") !== -1) ? this.state.projsOptions[this.getIdx("Proj")] : ""}
-            isDisabled={this.isUpdate()}
-          />
-          <span className="error">{this.state.projectError}</span>
-          <button type="button" className="btn btn-secondary" id="addNew" disabled={this.forbidAddProject()} onClick={() => { this.openModal("Project") }}>
-            Add New
+            <AddModal selectedOrganization={this.state.selectedOrganization} addOperation={this.state.addOperation} isModalOpen={this.state.isModalOpen} closeModal={this.closeModal}
+              setSelectedOrganization={this.updateOrgOptions} setSelectedProject={this.setSelectedProject} />
+          </div>
+          <div className="col-md-6 d-flex justify-content-around">
+            <label>Project</label>
+            <Select className="proj-select" name="proj" form="projects" type="list"
+              onChange={this.handleSelectProjectInputChange}
+              options={this.state.projsOptions}
+              value={(this.getIdx("Proj") !== -1) ? this.state.projsOptions[this.getIdx("Proj")] : ""}
+              isDisabled={this.isUpdate()}
+            />
+            <span className="error">{this.state.projectError}</span>
+            <button type="button" className="btn btn-secondary" id="addNew" disabled={this.forbidAddProject()} onClick={() => { this.openModal("Project") }}>
+              New...
            </button>
+          </div>
         </div>
 
-        <label>Objective</label>
-        <textarea type="text" className="form-control" id="objective" placeholder=""
-          name="objective" value={this.state.objective} onChange={this.handleInputChange}></textarea>
-        <span className="error">{this.state.objectiveError}</span>
 
-        <label>Overview</label>
-        <textarea type="text" className="form-control" id="overview" placeholder=""
-          name="overview" value={this.state.overview} onChange={this.handleInputChange}></textarea>
-
-        {/* <label>Preparation</label>
-        <textarea type="text" className="form-control" id="preparation" placeholder=""
-          name="preparation" value={this.state.preparation} onChange={this.handleInputChange}></textarea> */}
-
-        <label>Agenda</label>
-        <textarea type="text" className="form-control" id="agenda" placeholder=""
-          name="agenda" value={this.state.agenda} onChange={this.handleInputChange}></textarea>
-
-        <label>Materials</label>
-        <textarea type="text" className="form-control" id="materials" placeholder=""
-          name="materials" value={this.state.materials} onChange={this.handleInputChange}></textarea>
-
-        <label>Description</label>
-        <textarea type="text" className="form-control" id="description" placeholder=""
-          name="description" value={this.state.description} onChange={this.handleInputChange}></textarea>
-
-        <div className="d-flex justify-content-end">
-          <Button type="submit" id="submit" className="btn btn-primary userSubmit" onClick={this.handleFormSubmit} disabled={this.forbidSave()}>Save</Button>
-         <Popover placement="bottom" isOpen={this.state.popoverOpen} trigger="focus" target="submit" toggle={this.toggle}>
-          <PopoverBody>Lesson plan saved!</PopoverBody>
-        </Popover>
+        <div className="row">
+          <div className="col-md-6">
+            <label>Objective</label>
+            <textarea type="text" className="form-control" id="objective" placeholder=""
+              name="objective" value={this.state.objective} onChange={this.handleInputChange}></textarea>
+            <span className="error">{this.state.objectiveError}</span>
+          </div>
+          <div className="col-md-6">
+            <label>Overview</label>
+            <textarea type="text" className="form-control" id="overview" placeholder=""
+              name="overview" value={this.state.overview} onChange={this.handleInputChange}>
+            </textarea>
+          </div>
         </div>
-      </div>
-
+        <div className="row">
+          <div className="col-md-6">
+            <label>Agenda</label>
+            <textarea type="text" rows="5" className="form-control" id="agenda" placeholder=""
+              name="agenda" value={this.state.agenda} onChange={this.handleInputChange}>
+            </textarea>
+          </div>
+          <div className="col-md-6">
+            <label>Materials</label>
+            <textarea type="text" rows="5" className="form-control" id="materials" placeholder=""
+              name="materials" value={this.state.materials} onChange={this.handleInputChange}></textarea>
+          </div>
+        </div>
+        <div className="row">
+          <div className="col-md-12">
+            <label>Description</label>
+            <textarea type="text" rows="10" className="form-control" id="description" placeholder=""
+              name="description" value={this.state.description} onChange={this.handleInputChange}></textarea>
+          </div>
+        </div>
+      </div >
     );
   }
 };
