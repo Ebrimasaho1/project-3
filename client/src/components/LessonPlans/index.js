@@ -1,5 +1,6 @@
 
 import LessonPlan from "../LessonPlan";
+import TableHeader from '../TableHeader';
 
 import React from 'react';
 class LessonPlans extends React.Component {
@@ -9,13 +10,24 @@ class LessonPlans extends React.Component {
       return (
 
         this.props.lessons.map(lesson => (
+
           <div className="row" key={lesson._id}>
-            <LessonPlan lesson={lesson} />
+            <table className="table">
+              <thead>
+                <tr>
+                  <TableHeader />
+                </tr>
+              </thead>
+              <tbody>              
+                  <LessonPlan lesson={lesson} />        
+              </tbody>
+            </table>
+
           </div>
-      ))
+        ))
       );
-    }else{
-      return(
+    } else {
+      return (
         <div><h4>No lesson plans...</h4></div>
       );
     }

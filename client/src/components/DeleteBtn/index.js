@@ -17,12 +17,11 @@ deleteLesson = () =>{
 
 render(){
   return (
-    <div className="d-flex justify-content-beginning">
-      <button className="btn btn-danger" id="delete-lesson" onClick={this.deleteLesson}>
-        x
-      {/* <i class="far fa-trash-alt"></i> */}
-      </button>
-    </div>
+    <td>
+      {/* <button className="btn btn-danger" id="delete-lesson" onClick={this.deleteLesson}> */}
+        <i className="btn btn-danger far fa-trash-alt" id="delete-lesson"></i>
+      {/* </button> */}
+    </td>
   );
 }
 }

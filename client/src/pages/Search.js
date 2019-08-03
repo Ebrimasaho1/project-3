@@ -3,6 +3,7 @@ import { Redirect } from 'react-router-dom';
 import api from "../utils/api";
 import LessonPlans from "../components/LessonPlans";
 import "./search.css";
+import TableHeader from '../../src/components/TableHeader';
 
 
 class Search extends Component {
@@ -84,6 +85,7 @@ class Search extends Component {
       });
     });
   }
+  
 
   render() {
     if (this.state.redirect) {
@@ -93,16 +95,19 @@ class Search extends Component {
       return (
         <div className="container">
           <div className="row">
+            <div className="col-md-12">
             <h1>Search lesson plans </h1>
+            </div>
           </div>
-          <div className="row">
-            <div className="col-4">
-              <h2> Title:</h2>
+          <div className="row header">
+            <div className="col-md-4">
+              <h3> Title:</h3>
               <form onSubmit={this.searchbyTitle}>
                 <input
                   className="searchInput"
                   placeholder="Search for..."
                   name="title"
+                  id="test"
                   value={this.state.title}
                   onChange={this.handleInputChange}
                 />
@@ -110,8 +115,8 @@ class Search extends Component {
                 {/* <p>{this.state.query}</p> */}
               </form>
             </div>
-            <div className="col-4">
-              <h2>Project:</h2>
+            <div className="col-md-4">
+              <h3>Project:</h3>
               <form onSubmit={this.searchByProject}>
                 <input
                   className="searchInput"
@@ -124,8 +129,8 @@ class Search extends Component {
                 {/* <p>{this.state.query}</p> */}
               </form>
             </div>
-            <div className="col-4">
-              <h2>Organization:</h2>
+            <div className="col-md-4">
+              <h3>Organization:</h3>
               <form onSubmit={this.searchByOrganization}>
                 <input
                   className="searchInput"
@@ -139,7 +144,6 @@ class Search extends Component {
               </form>
             </div>
           </div>
-          {/* Add title header for table */}
           <LessonPlans lessons={this.state.results} />
         </div>
       );
