@@ -29,6 +29,7 @@ class Navbar extends Component {
     const classOne = collapsed ? 'collapse navbar-collapse' : 'collapse navbar-collapse show';
     const classTwo = collapsed ? 'navbar-toggler navbar-toggler-left collapsed' : 'navbar-toggler navbar-toggler-left';
     return (
+      
       <nav className="navbar navbar-expand-lg navbar-dark bg-blue transparent-nav">
         <div className="container">
           <a className="navbar-brand navBar__name" href="/">

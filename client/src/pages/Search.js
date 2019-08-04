@@ -3,7 +3,6 @@ import { Redirect } from 'react-router-dom';
 import api from "../utils/api";
 import LessonPlans from "../components/LessonPlans";
 import "./search.css";
-import TableHeader from '../../src/components/TableHeader';
 
 
 class Search extends Component {

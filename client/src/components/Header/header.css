@@ -12,3 +12,11 @@ h3{
 h1{
   font-family: 'Arbutus Slab', serif;
 }
+
+@media (max-width: 812px) { 
+  h3{
+    text-align: left !important;
+    font-family: 'Poiret One', cursive; 
+    font-size: 20px;
+  }
+} 
