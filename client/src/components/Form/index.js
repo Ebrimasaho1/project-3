@@ -6,6 +6,9 @@ import Select from 'react-select';
 import AddModal from "../AddModal";
 import { Button, Popover, PopoverBody } from 'reactstrap';
 
+import jsPDF from 'jspdf';
+
+
 class Form extends Component {
   constructor(props) {
     super(props);
@@ -42,7 +45,6 @@ class Form extends Component {
     this.openModal = this.openModal.bind(this);
     this.handleSelectOrganizationInputChange = this.handleSelectOrganizationInputChange.bind(this);
   }
-
 
   forbidSave() {
     // console.log("Current user in forbid Save: " + this.state.currentUser);
@@ -89,7 +91,9 @@ class Form extends Component {
           description: result.data.description,
           selectedProject: result.data.project._id,
           selectedOrganization: result.data.project.organization._id,
-          lessonOwner: result.data.user
+          lessonOwner: result.data.user,
+
+          lesson: result.data
         });
         if (this.state.selectedOrganization) {
           console.log("selected organization: " + this.state.selectedOrganization);
@@ -265,13 +269,65 @@ class Form extends Component {
     });
   }
 
+  printToPdf(doc, str, line, font) {
+    if (str === "") {
+      return line;
+    } else {
+      var lineHeight = 1.5,
+          fontSize = 14;
+      doc.setFontStyle(font);
+      var textLines = doc
+        .splitTextToSize(str, 165);
+
+      if (line + textLines.length >= 250) {
+        doc.addPage('a4', 'p');
+        line = 20;
+      }
+      doc.text(textLines, 20, line);
+
+      return line + (((textLines.length * fontSize * lineHeight) / 72) * 25.4);
+    }
+  }
+
+  printSection(nextLine, doc, title, content) {
+    nextLine = this.printToPdf(doc, title, nextLine, "bold");
+    nextLine = this.printToPdf(doc, content, nextLine, 'normal');
+    return nextLine + 5;
+  }
+
+  createPdf = () => {
+    const doc = new jsPDF({ orientation: "p", lineHeight: 1.5 });
+    doc.setFont("times");
+    doc.setFontStyle("bold");
+    doc.setFontSize(22);
+    doc.text(this.state.title, 100, 20, null, null, 'center');
+    doc.setFontSize(12);
+    doc.text(20, 30, 'Created By: ' + this.state.lesson.user.name);
+    doc.text(20, 40, 'Organization: ' + this.state.lesson.project.organization.name);
+    doc.text(20, 50, 'Project: ' + this.state.lesson.project.name);
+    doc.setFontSize(14);
+    var nextLine = 70;
+    nextLine = this.printSection(nextLine, doc, 'Objective', this.state.objective);
+    nextLine = this.printSection(nextLine, doc, 'Overview', this.state.overview);
+    nextLine = this.printSection(nextLine, doc, 'Agenda', this.state.agenda);
+    nextLine = this.printSection(nextLine, doc, 'Materials', this.state.materials);
+    nextLine = this.printSection(nextLine, doc, 'Description', this.state.description);
+    return doc;
+  }
+
+  exportPdf = () => {
+    var doc = this.createPdf();
+    doc.autoPrint();
+    doc.save(`${this.state.title}.pdf`);
+  }
 
   render() {
     return (
-      <div className="container dash-content shadow-lg p-3 mb-5 bg-white rounded">
+      <div className="container dash-content shadow-lg p-3 mb-5 bg-white rounded" >
         <div className="row">
           <div className="col-sm-12">
             <div className="d-flex justify-content-end">
+              <Button onClick={this.exportPdf} className="pdfGenerator">Download</Button>
               <Button type="submit" id="submit" className="btn btn-primary userSubmit" onClick={this.handleFormSubmit} disabled={this.forbidSave()}>Save</Button>
               <Popover placement="bottom" isOpen={this.state.popoverOpen} trigger="focus" target="submit" toggle={this.toggle}>
                 <PopoverBody>Lesson plan saved!</PopoverBody>
@@ -351,8 +407,8 @@ class Form extends Component {
               name="materials" value={this.state.materials} onChange={this.handleInputChange}></textarea>
           </div>
         </div>
-        <div className="row">
-          <div className="col-md-12">
+        <div className="row" >
+          <div className="col-md-12" id="">
             <label>Description</label>
             <textarea type="text" rows="10" className="form-control" id="description" placeholder=""
               name="description" value={this.state.description} onChange={this.handleInputChange}></textarea>
