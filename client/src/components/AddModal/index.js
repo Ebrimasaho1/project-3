@@ -9,7 +9,6 @@ class AddModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
-
       newOrgProject: "",
     }
 
@@ -26,7 +25,7 @@ class AddModal extends Component {
 
   afterOpenModal = () => {
     // references are now sync'd and can be accessed.
-    this.subtitle.style.color = '#f00';
+    this.subtitle.style.color = '#000';
   }
 
   addOrganization = event => {
@@ -60,6 +59,10 @@ class AddModal extends Component {
         });
       }
     }
+  
+    this.setState({
+      newOrgProject: ""
+    });
     
     this.closeModal();
   }
@@ -81,11 +84,11 @@ class AddModal extends Component {
         contentLabel="Example Modal"
       >
         <h2 ref={subtitle => this.subtitle = subtitle}>Add {this.props.addOperation}</h2>
-        <button id="closeBtn" onClick={this.closeModal} style={{ color: 'white' }}>close</button>
+        <button className="btn btn-secondary" id="closeBtn" onClick={this.closeModal} style={{ color: 'white' }}>close</button>
         <div> Name:</div>
         <form onSubmit={this.addOrganization}>
           <input name="newOrgProject" value={this.state.newOrgProject} onChange={this.handleInputChange} />
-          <button type="submit" style={{ color: 'white' }}>Submit</button>
+          <button className="btn btn-secondary" type="submit" style={{ color: 'white' }}>Submit</button>
         </form>
       </Modal>
     );

@@ -10,26 +10,25 @@ const DashContent = (props) => {
 
 
   return (
-    <div className="container dash-content shadow-lg p-3 mb-5 bg-white rounded">
+    <div className="container dash-content shadow-lg p-3 mb-5 bg-white rounded ">
       <div className="row">
-<Header/>
+        <Header />
       </div>
       <div className="row">
- <AddBtn />
+        <AddBtn />
       </div>
-      
-     
-  <table className="table">
-  <thead>
-    <tr>
-      <TableHeader />
-      </tr>
-       </thead>
-      <tbody>
-        <DashProjects />
-      </tbody>
+
+      <table className="table">
+        <thead>
+          <tr>
+            <TableHeader />
+          </tr>
+        </thead>
+        <tbody>
+          <DashProjects />
+        </tbody>
       </table>
-      
+
     </div>
   );
 
