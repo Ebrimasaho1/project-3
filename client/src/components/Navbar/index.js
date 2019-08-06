@@ -7,7 +7,8 @@ import { GoogleLogout } from 'react-google-login';
 function Logout() {
   console.log("Logout success");
   sessionStorage.removeItem('currentUserId');
-  window.location.reload();
+  // window.location.reload();
+  window.location.replace("/");
 }
 //End off Google Logout
 
