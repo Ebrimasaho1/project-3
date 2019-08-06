@@ -110,7 +110,7 @@ class Search extends Component {
       //console.log("Original results: " + JSON.stringify(projectResults));
       const uniqueResults = Array.from(new Set(resLessonPlans.map(lesson => lesson.id)))
         .map(id => {
-          return resLessonPlans.find(lesson => lesson.id === id)
+          return resLessonPlans.find(lesson => lesson.id === id);
         })
       //console.log("Unique results: " + JSON.stringify(uniqueResults));
 

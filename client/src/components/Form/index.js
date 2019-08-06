@@ -295,6 +295,33 @@ class Form extends Component {
     return nextLine + 5;
   }
 
+  getLessonOrganizationName = () => {
+    if(this.state.lesson && this.state.lesson.organization){ 
+      return this.state.lesson.project.organization.name;
+    }else if(this.state.selectedOrganization !== ""){
+      return this.state.organizationOpts[this.getIdx("Org")].label;
+    }
+    return "";
+  }
+
+  getLessonUserName = () => {
+    if(this.state.lesson){
+      return this.state.lesson.user.fullName;
+    }else{
+      var user = sessionStorage.getItem('currentUser');
+      return JSON.parse(user).fullName;
+    }
+  }
+
+  getLessonProjectName = () => {
+    if(this.state.lesson && this.lesson.project){ 
+      return this.state.lesson.project.name;
+    }else if(this.state.selectedProject !== ""){
+      return  this.state.projsOptions[this.getIdx("Proj")].label;
+    }
+    return "";
+  }
+
   createPdf = () => {
     const doc = new jsPDF({ orientation: "p", lineHeight: 1.5 });
     doc.setFont("times");
@@ -302,12 +329,12 @@ class Form extends Component {
     doc.setFontSize(22);
     doc.text(this.state.title, 100, 20, null, null, 'center');
     doc.setFontSize(12);
-    doc.text(20, 30, 'Created By: ' + this.state.lesson.user.name);
-    doc.text(20, 40, 'Organization: ' + this.state.lesson.project.organization.name);
-    doc.text(20, 50, 'Project: ' + this.state.lesson.project.name);
+    doc.text(20, 30, 'Created By: ' + this.getLessonUserName());
+    doc.text(20, 40, 'Organization: ' + this.getLessonOrganizationName());
+    doc.text(20, 50, 'Project: ' + this.getLessonProjectName());
     doc.setFontSize(14);
-    var nextLine = 70;
-    nextLine = this.printSection(nextLine, doc, 'Objective', this.state.objective);
+    var nextLine;
+    nextLine = this.printSection(70, doc, 'Objective', this.state.objective);
     nextLine = this.printSection(nextLine, doc, 'Overview', this.state.overview);
     nextLine = this.printSection(nextLine, doc, 'Agenda', this.state.agenda);
     nextLine = this.printSection(nextLine, doc, 'Materials', this.state.materials);
@@ -315,9 +342,13 @@ class Form extends Component {
     return doc;
   }
 
-  exportPdf = () => {
+  printPdf = () => {
     var doc = this.createPdf();
     doc.autoPrint();
+  }
+
+  exportPdf = () => {
+    var doc = this.createPdf();
     doc.save(`${this.state.title}.pdf`);
   }
 
@@ -327,6 +358,7 @@ class Form extends Component {
         <div className="row">
           <div className="col-sm-12">
             <div className="d-flex justify-content-end">
+              <Button onClick={this.printPdf} className="pdfGenerator">Print</Button>
               <Button onClick={this.exportPdf} className="pdfGenerator">Download</Button>
               <Button type="submit" id="submit" className="btn btn-primary userSubmit" onClick={this.handleFormSubmit} disabled={this.forbidSave()}>Save</Button>
               <Popover placement="bottom" isOpen={this.state.popoverOpen} trigger="focus" target="submit" toggle={this.toggle}>
@@ -378,7 +410,6 @@ class Form extends Component {
            </button>
           </div>
         </div>
-
 
         <div className="row">
           <div className="col-md-6">
