@@ -333,8 +333,8 @@ class Form extends Component {
     doc.text(20, 40, 'Organization: ' + this.getLessonOrganizationName());
     doc.text(20, 50, 'Project: ' + this.getLessonProjectName());
     doc.setFontSize(14);
-    var nextLine;
-    nextLine = this.printSection(70, doc, 'Objective', this.state.objective);
+    var nextLine = 70;
+    nextLine = this.printSection(nextLine, doc, 'Objective', this.state.objective);
     nextLine = this.printSection(nextLine, doc, 'Overview', this.state.overview);
     nextLine = this.printSection(nextLine, doc, 'Agenda', this.state.agenda);
     nextLine = this.printSection(nextLine, doc, 'Materials', this.state.materials);
