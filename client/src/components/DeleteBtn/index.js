@@ -19,7 +19,7 @@ render(){
   return (
     <td>
       {/* <button className="btn btn-danger" id="delete-lesson" onClick={this.deleteLesson}> */}
-        <i className="btn btn-danger far fa-trash-alt" id="delete-lesson"></i>
+        <i className="btn btn-danger far fa-trash-alt" id="delete-lesson" onClick={this.deleteLesson}></i>
       {/* </button> */}
     </td>
   );

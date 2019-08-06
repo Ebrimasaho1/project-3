@@ -15,6 +15,7 @@ class DashProjects extends React.Component {
       userId: sessionStorage.getItem("currentUserId"),
     }
 
+
     api.getLessonPlans(this.state.userId).then((results) => {
       console.log(results.data);
       this.setState({ lessons: results.data.lessonPlans });
