@@ -35,84 +35,42 @@ class Search extends Component {
     });
   };
 
-  // searchbyTitle = () => {
-  //   event.preventDefault();
-  //   console.log("calling search title query: " + this.state.keyWords);
-  //   api.searchLessonPlans(this.state.keyWords).then((results) => {
-  //     //console.log("Search results: " + JSON.stringify(results));
-  //     this.setState({
-  //       results: results.data,
-  //       title: ""
-  //     });
-  //   });
-  // }
-
-  // searchByProject = () => {
-  //   event.preventDefault();
-
-  //   console.log("calling project search: " + this.state.project);
-  //   api.searchLessonsByProjectName(this.state.project).then((results) => {
-  //     var resLessonPlans = [];
-  //     results.data.forEach(project => {
-  //       resLessonPlans = resLessonPlans.concat(project.lessonPlans);
-  //       // console.log(project.lessonPlans);
-  //     });
-  //     //console.log("result lesson plans for proj search: "+ JSON.stringify(resLessonPlans));
-
-  //     this.setState({
-  //       results: resLessonPlans,
-  //       project: ""
-  //     });
-  //   });
-  // }
-
-  // searchByOrganization = () => {
-  //   event.preventDefault();
-  //   console.log("calling search by organization: " + this.state.organization);
-  //   api.searchLessonsByOrganizationName(this.state.organization).then((results) => {
-  //     //console.log("Search results: " + JSON.stringify(results.data));
-  //     var resLessonPlans = [];
-  //     results.data.forEach(organization => {
-  //       organization.projects.forEach(project => {
-  //         resLessonPlans = resLessonPlans.concat(project.lessonPlans);
-  //       });
-  //     });
-  //     this.setState({
-  //       results: resLessonPlans,
-  //       organization: ""
-  //     });
-  //   });
-  // }
-
   search = (event) => {
     event.preventDefault();
+    console.log(this.state.keyWords);
+    if (this.state.keyWords) {
+      Promise.all([
+        api.searchLessonPlansByTitle(this.state.keyWords),
+        api.searchLessonsByOrganizationName(this.state.keyWords),
+        api.searchLessonsByProjectName(this.state.keyWords)
+      ]).then(([titleResults, organizatioResults, projectResults]) => {
+        // console.log("Title results: " + JSON.stringify(titleResults.data));
+        // console.log("Project resutls: " + JSON.stringify(projectResults.data));
+        // console.log("Organization results" + JSON.stringify(organizatioResults.data));
+        var resLessonPlans = titleResults.data;
+        organizatioResults.data.forEach(organization => {
+          organization.projects.forEach(project => {
+            resLessonPlans = resLessonPlans.concat(project.lessonPlans);
+          });
+        });
 
-    Promise.all([
-      api.searchLessonPlansByTitle(this.state.keyWords),
-      api.searchLessonsByOrganizationName(this.state.keyWords),
-      api.searchLessonsByProjectName(this.state.keyWords)
-    ]).then(([titleResults, organizatioResults, projectResults]) => {
-      // console.log("Title results: " + JSON.stringify(titleResults.data));
-      // console.log("Project resutls: " + JSON.stringify(projectResults.data));
-      // console.log("Organization results" + JSON.stringify(organizatioResults.data));
-      var resLessonPlans = titleResults.data;
-      organizatioResults.data.forEach(organization => {
-        organization.projects.forEach(project => {
+        projectResults.data.forEach(project => {
           resLessonPlans = resLessonPlans.concat(project.lessonPlans);
+          // console.log(project.lessonPlans);
+        });
+
+        //console.log("Original results: " + JSON.stringify(projectResults));
+        const uniqueResults = Array.from(new Set(resLessonPlans.map(lesson => lesson.id)))
+          .map(id => {
+            return resLessonPlans.find(lesson => lesson.id === id);
+          })
+        //console.log("Unique results: " + JSON.stringify(uniqueResults));
+        this.setState({
+          results: uniqueResults,
+          keyWords: ""
         });
       });
-
-      projectResults.data.forEach(project => {
-        resLessonPlans = resLessonPlans.concat(project.lessonPlans);
-        // console.log(project.lessonPlans);
-      });
-
-      this.setState({
-        results: resLessonPlans,
-        keyWords: ""
-      });
-
-    });
+    }
   }
 
   render() {

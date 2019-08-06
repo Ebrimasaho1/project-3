@@ -13,12 +13,17 @@ module.exports = {
     console.log("called find by id");
     db.LessonPlan
       .findById(req.params.id)
-      .populate({ path: 'project', populate: { path: 'organization' } })
+      .populate([{
+        path: 'user'
+      }, {
+        path: 'project',
+        populate: { path: 'organization' }
+      }])
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
   findByTitle: function (req, res) {
-   
+
     db.LessonPlan
       .find({ title: { "$regex": req.params.words, '$options': 'i' } })
       .populate({ path: 'project', populate: { path: 'organization' } })

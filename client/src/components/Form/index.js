@@ -46,6 +46,14 @@ class Form extends Component {
     this.handleSelectOrganizationInputChange = this.handleSelectOrganizationInputChange.bind(this);
   }
 
+  componentDidMount() {
+    this.setState({
+      currentUser: sessionStorage.getItem('currentUserId')
+    });
+    this.loadOrganizations();
+    this.loadLessonPlan();
+  }
+
   forbidSave() {
     // console.log("Current user in forbid Save: " + this.state.currentUser);
     // console.log("Lesson owner in forbid save: " + this.state.lessonOwner);
@@ -91,7 +99,7 @@ class Form extends Component {
           description: result.data.description,
           selectedProject: result.data.project._id,
           selectedOrganization: result.data.project.organization._id,
-          lessonOwner: result.data.user,
+          lessonOwner: result.data.user._id,
 
           lesson: result.data
         });
@@ -101,14 +109,6 @@ class Form extends Component {
         }
       });
     }
-  }
-
-  componentDidMount() {
-    this.setState({
-      currentUser: sessionStorage.getItem('currentUserId')
-    });
-    this.loadOrganizations();
-    this.loadLessonPlan();
   }
 
   populateProjectsForSelectedOrg = (orgId) => {
@@ -295,6 +295,33 @@ class Form extends Component {
     return nextLine + 5;
   }
 
+  getLessonOrganizationName = () => {
+    if(this.state.lesson && this.state.lesson.organization){ 
+      return this.state.lesson.project.organization.name;
+    }else if(this.state.selectedOrganization !== ""){
+      return this.state.organizationOpts[this.getIdx("Org")].label;
+    }
+    return "";
+  }
+
+  getLessonUserName = () => {
+    if(this.state.lesson){
+      return this.state.lesson.user.fullName;
+    }else{
+      var user = sessionStorage.getItem('currentUser');
+      return JSON.parse(user).fullName;
+    }
+  }
+
+  getLessonProjectName = () => {
+    if(this.state.lesson && this.lesson.project){ 
+      return this.state.lesson.project.name;
+    }else if(this.state.selectedProject !== ""){
+      return  this.state.projsOptions[this.getIdx("Proj")].label;
+    }
+    return "";
+  }
+
   createPdf = () => {
     const doc = new jsPDF({ orientation: "p", lineHeight: 1.5 });
     doc.setFont("times");
@@ -302,9 +329,9 @@ class Form extends Component {
     doc.setFontSize(22);
     doc.text(this.state.title, 100, 20, null, null, 'center');
     doc.setFontSize(12);
-    doc.text(20, 30, 'Created By: ' + this.state.lesson.user.name);
-    doc.text(20, 40, 'Organization: ' + this.state.lesson.project.organization.name);
-    doc.text(20, 50, 'Project: ' + this.state.lesson.project.name);
+    doc.text(20, 30, 'Created By: ' + this.getLessonUserName());
+    doc.text(20, 40, 'Organization: ' + this.getLessonOrganizationName());
+    doc.text(20, 50, 'Project: ' + this.getLessonProjectName());
     doc.setFontSize(14);
     var nextLine = 70;
     nextLine = this.printSection(nextLine, doc, 'Objective', this.state.objective);
@@ -313,11 +340,17 @@ class Form extends Component {
     nextLine = this.printSection(nextLine, doc, 'Materials', this.state.materials);
     nextLine = this.printSection(nextLine, doc, 'Description', this.state.description);
     return doc;
-  }
+  } 
+
+  // printPdf = () => {
+  //   var doc = this.createPdf();
+  //   doc.autoPrint();
+  //   doc.save(`${this.state.title}.pdf`);
+  // }
 
   exportPdf = () => {
     var doc = this.createPdf();
-    doc.autoPrint();
+    //doc.autoPrint();
     doc.save(`${this.state.title}.pdf`);
   }
 
@@ -378,7 +411,6 @@ class Form extends Component {
            </button>
           </div>
         </div>
-
 
         <div className="row">
           <div className="col-md-6">
