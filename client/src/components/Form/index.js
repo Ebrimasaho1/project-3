@@ -342,13 +342,15 @@ class Form extends Component {
     return doc;
   }
 
-  printPdf = () => {
-    var doc = this.createPdf();
-    doc.autoPrint();
-  }
+  // printPdf = () => {
+  //   var doc = this.createPdf();
+  //   doc.autoPrint();
+  //   doc.save(`${this.state.title}.pdf`);
+  // }
 
   exportPdf = () => {
     var doc = this.createPdf();
+    //doc.autoPrint();
     doc.save(`${this.state.title}.pdf`);
   }
 
@@ -358,7 +360,7 @@ class Form extends Component {
         <div className="row">
           <div className="col-sm-12">
             <div className="d-flex justify-content-end">
-              <Button onClick={this.printPdf} className="pdfGenerator">Print</Button>
+              {/* <Button onClick={this.printPdf} className="pdfGenerator">Print</Button> */}
               <Button onClick={this.exportPdf} className="pdfGenerator">Download</Button>
               <Button type="submit" id="submit" className="btn btn-primary userSubmit" onClick={this.handleFormSubmit} disabled={this.forbidSave()}>Save</Button>
               <Popover placement="bottom" isOpen={this.state.popoverOpen} trigger="focus" target="submit" toggle={this.toggle}>
