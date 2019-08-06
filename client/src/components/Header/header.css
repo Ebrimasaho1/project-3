@@ -12,3 +12,15 @@ h3{
 h1{
   font-family: 'Arbutus Slab', serif;
 }
+
+@media (max-width: 812px) { 
+  h3{
+    font-size: 20px;
+  }
+} 
+
+@media (max-width: 320px) { 
+  h3{
+    font-size: 16px;
+  }
+} 

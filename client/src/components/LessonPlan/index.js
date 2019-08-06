@@ -7,11 +7,11 @@ class LessonPlan extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <td >
-          <Link to={{
+        <td>
+          <p><Link to={{
             pathname: '/lessonPlan',
             state: { id: this.props.lesson._id }
-          }}>{this.props.lesson.title}</Link>
+          }}>{this.props.lesson.title}</Link></p>
 
         </td>
         <td >

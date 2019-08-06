@@ -1,12 +1,14 @@
 /* .lessons {
   border-bottom: lightgray solid 1px;
-}
+}*/
 
 @media (max-width: 767px) { 
-   #dashcard {
-      background-color: blueviolet; 
-  
-  .lessons {
-    border-bottom: lightgray solid 1px;
-  }
-} */
+   p {
+     font-size: 14px;
+   }
+} 
+@media (max-width: 320px) { 
+   p {
+     font-size: 12px;
+   }
+} 
