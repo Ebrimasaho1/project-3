@@ -9,7 +9,6 @@ class AddModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
-
       newOrgProject: "",
     }
 
@@ -60,6 +59,10 @@ class AddModal extends Component {
         });
       }
     }
+  
+    this.setState({
+      newOrgProject: ""
+    });
     
     this.closeModal();
   }
