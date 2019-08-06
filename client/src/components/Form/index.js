@@ -46,6 +46,14 @@ class Form extends Component {
     this.handleSelectOrganizationInputChange = this.handleSelectOrganizationInputChange.bind(this);
   }
 
+  componentDidMount() {
+    this.setState({
+      currentUser: sessionStorage.getItem('currentUserId')
+    });
+    this.loadOrganizations();
+    this.loadLessonPlan();
+  }
+
   forbidSave() {
     // console.log("Current user in forbid Save: " + this.state.currentUser);
     // console.log("Lesson owner in forbid save: " + this.state.lessonOwner);
@@ -91,7 +99,7 @@ class Form extends Component {
           description: result.data.description,
           selectedProject: result.data.project._id,
           selectedOrganization: result.data.project.organization._id,
-          lessonOwner: result.data.user,
+          lessonOwner: result.data.user._id,
 
           lesson: result.data
         });
@@ -101,14 +109,6 @@ class Form extends Component {
         }
       });
     }
-  }
-
-  componentDidMount() {
-    this.setState({
-      currentUser: sessionStorage.getItem('currentUserId')
-    });
-    this.loadOrganizations();
-    this.loadLessonPlan();
   }
 
   populateProjectsForSelectedOrg = (orgId) => {
@@ -340,7 +340,7 @@ class Form extends Component {
     nextLine = this.printSection(nextLine, doc, 'Materials', this.state.materials);
     nextLine = this.printSection(nextLine, doc, 'Description', this.state.description);
     return doc;
-  }
+  } 
 
   // printPdf = () => {
   //   var doc = this.createPdf();
@@ -360,7 +360,6 @@ class Form extends Component {
         <div className="row">
           <div className="col-sm-12">
             <div className="d-flex justify-content-end">
-              {/* <Button onClick={this.printPdf} className="pdfGenerator">Print</Button> */}
               <Button onClick={this.exportPdf} className="pdfGenerator">Download</Button>
               <Button type="submit" id="submit" className="btn btn-primary userSubmit" onClick={this.handleFormSubmit} disabled={this.forbidSave()}>Save</Button>
               <Popover placement="bottom" isOpen={this.state.popoverOpen} trigger="focus" target="submit" toggle={this.toggle}>
