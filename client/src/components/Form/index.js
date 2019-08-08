@@ -314,7 +314,7 @@ class Form extends Component {
   }
 
   getLessonProjectName = () => {
-    if(this.state.lesson && this.lesson.project){ 
+    if(this.state.lesson && this.state.lesson.project){ 
       return this.state.lesson.project.name;
     }else if(this.state.selectedProject !== ""){
       return  this.state.projsOptions[this.getIdx("Proj")].label;
