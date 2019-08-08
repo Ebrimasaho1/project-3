@@ -42,7 +42,7 @@ class Navbar extends Component {
           <div className={`${classOne}`} id="navbarResponsive">
             <ul className="navbar-nav ml-auto">
               <li className="nav-item active">
-                <Link className="nav-link" to="/dashboard">Dashbboard</Link>
+                <Link className="nav-link" to="/dashboard">Dashboard</Link>
               </li>
               <li className="nav-item">
                 <Link className="nav-link" style={{color:'white'}}to="/search">Search</Link>
